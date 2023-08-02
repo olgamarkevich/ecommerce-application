@@ -54,3 +54,13 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+### `npm run format`
+
+This command uses Prettier to automatically format the source code in the project. Prettier is a code formatting tool that helps maintain consistent code style and improves code readability.
+
+When you run this command, Prettier will format all TypeScript files in the src directory and its subdirectories according to the rules specified in the .prettierrc configuration file.
+
+To customize the code formatting rules, you can modify the .prettierrc file in the root directory of the project.
+
+Keep in mind that running this command will automatically update your code to comply with the defined formatting rules. It's recommended to run this command before committing changes to ensure a consistent code style throughout the project.
