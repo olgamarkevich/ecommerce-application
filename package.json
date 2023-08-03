@@ -23,12 +23,6 @@
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{ts, tsx}\""
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -42,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "eslint-plugin-autofix": "^1.1.0",
     "prettier": "^3.0.0"
   }
 }
