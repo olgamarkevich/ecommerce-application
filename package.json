@@ -21,7 +21,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write \"src/**/*.{ts, tsx}\""
+    "format": "prettier --write \"src/**/*.{ts, tsx}\"",
+    "lint": "eslint --ext .ts,.tsx .",
+    "lint:fix": "npm run lint -- --fix"
   },
   "browserslist": {
     "production": [
@@ -36,7 +38,9 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-autofix": "^1.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.0"
   }
 }
