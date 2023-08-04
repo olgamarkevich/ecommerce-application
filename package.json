@@ -23,7 +23,8 @@
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.{ts, tsx}\"",
     "lint": "eslint --ext .ts,.tsx .",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -41,6 +42,7 @@
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-autofix": "^1.1.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
     "jest": "^27.5.1",
     "prettier": "^3.0.0"
   }
