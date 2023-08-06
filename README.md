@@ -97,3 +97,15 @@ By integrating this into your git workflow with the pre-commit hooks, you can ca
 Husky is a robust tool that enhances our development workflow by automating tasks in response to Git events. When you execute this command, it automatically triggers pre-commit hooks, ensuring that our codebase is always in top shape before any commits are made.
 
 By integrating Husky, we ensure that code linting, formatting, and other preparatory tasks are seamlessly handled before they become part of our version control history. This command, coupled with Husky's capabilities, guarantees consistent code quality, adherence to coding standards, and a hassle-free development experience. 
+
+## Installation
+
+To install and run the application on your local machine, follow these steps:
+
+- Download application files from [repository](https://github.com/olgamarkevich/ecommerce-application).
+
+- Use `npm install` to install dependencies (you should have installed [node.js](https://nodejs.org/)).
+
+- Add file `.env` with environment variables (`REACT_APP_PROJECT_KEY`, `REACT_APP_CLIENT_SECRET`,`REACT_APP_CLIENT_ID`, `REACT_APP_AUTH_URL`, `REACT_APP_API_URL` and `REACT_APP_SCOPES` with api keys). *This project uses backend from [CommerceTools](https://commercetools.com/) and CommerceTools ClientAPI should be created to get api keys.*
+
+- Run `npm start` to start project on [http://localhost:3000](http://localhost:3000) with your browser or `npm run build` to build for production.
