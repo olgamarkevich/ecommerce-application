@@ -21,13 +21,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "format": "prettier --write \"src/**/*.{ts, tsx}\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "format": "prettier --write \"src/**/*.{ts, tsx}\"",
+    "lint": "eslint --ext .ts,.tsx .",
+    "lint:fix": "npm run lint -- --fix",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -42,6 +39,11 @@
     ]
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-autofix": "^1.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "jest": "^27.5.1",
     "prettier": "^3.0.0"
   }
 }
