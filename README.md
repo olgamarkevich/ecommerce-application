@@ -16,7 +16,14 @@ Key pages in the application include:
 - Basket page 🛒
 - About Us page 🙋‍♂️🙋‍♀️
 
-The application is powered by CommerceTools 🌐, a leading provider of commerce solutions for B2C and B2B enterprises. CommerceTools offers a cloud-native, microservices-based commerce platform that enables brands to create unique and engaging digital commerce experiences.
+## Technology Stack
+
+- [React](https://react.dev/)
+- [Redux Toolkit and RTK Query](https://redux-toolkit.js.org/)
+- [React Router](https://reactrouter.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
+
+Backend is provided by [CommerceTools](https://commercetools.com/) - a leading provider of commerce solutions for B2C and B2B enterprises. CommerceTools offers a cloud-native, microservices-based commerce platform that enables brands to create unique and engaging digital commerce experiences.
 
 ## Available Scripts
 
