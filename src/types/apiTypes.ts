@@ -1,3 +1,5 @@
+import type { ProductProjection } from '@commercetools/platform-sdk';
+
 export interface getAccessTokenResponse {
   access_token: string;
   expires_in: number;
@@ -39,5 +41,5 @@ export interface ProductProjectionPagedQueryResponse {
   readonly count: number;
   readonly total?: number;
   readonly offset: number;
-  readonly results: unknown; // TODO replace for ProductProjection[]
+  readonly results: ProductProjection[];
 }
