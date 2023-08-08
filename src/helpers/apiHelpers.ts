@@ -4,44 +4,28 @@ import {
   getCustomerIdFromScopes,
   saveTokensToLocalStorage,
 } from './appHelpers';
-import type { getCustomerTokenResponse } from '../types/apiTypes';
+import type {
+  getCustomerTokenResponse,
+  GetHeadersParams,
+} from '../types/apiTypes';
 import type { RootDispatch } from '../store/store';
 import type { GetProductQueryParams } from '../types/apiTypes';
-import type { BaseQueryApi } from '@reduxjs/toolkit/dist/query/react';
-import type { MaybePromise } from '@reduxjs/toolkit/dist/query/tsHelpers';
 
-export const getBaseUrl = (endpoint: string): string | undefined => {
-  let baseUrl: string | undefined;
-
-  if (endpoint.endsWith('Token') && process.env.REACT_APP_AUTH_URL) {
-    baseUrl = `${process.env.REACT_APP_AUTH_URL}/oauth`;
-  } else if (
-    process.env.REACT_APP_API_URL &&
-    process.env.REACT_APP_PROJECT_KEY !== undefined
-  ) {
-    baseUrl = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}`;
+export const getHeaders = (
+  { type }: GetHeadersParams = { type: 'default' },
+): Headers => {
+  if (type === 'auth') {
+    return new Headers({
+      Authorization: `Basic ${btoa(
+        `${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`,
+      )}==`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    });
   }
 
-  return baseUrl;
-};
-
-export const prepareHeaders = (
-  headers: Headers,
-  {
-    endpoint,
-  }: Pick<BaseQueryApi, 'getState' | 'extra' | 'endpoint' | 'type' | 'forced'>,
-): MaybePromise<Headers | void> => {
-  if (endpoint.endsWith('Token')) {
-    const authorizationHeaderText = `Basic ${btoa(
-      `${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`,
-    )}==`;
-    headers.set('Authorization', authorizationHeaderText);
-    headers.set('Content-Type', 'application/x-www-form-urlencoded');
-  } else {
-    headers.set('Authorization', `Bearer ${getAccessTokenFromLocalStorage()}`);
-  }
-
-  return headers;
+  return new Headers({
+    Authorization: `Bearer ${getAccessTokenFromLocalStorage()}`,
+  });
 };
 
 export const applyResponseEffects = (

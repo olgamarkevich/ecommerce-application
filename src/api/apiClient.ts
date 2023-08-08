@@ -5,11 +5,7 @@ import {
   type FetchBaseQueryError,
 } from '@reduxjs/toolkit/dist/query/react';
 import { removeUserAuthorization } from '../store/authSlice';
-import {
-  applyResponseEffects,
-  getBaseUrl,
-  prepareHeaders,
-} from '../helpers/apiHelpers';
+import { applyResponseEffects, getHeaders } from '../helpers/apiHelpers';
 import {
   getRefreshTokenFromLocalStorage,
   saveTokensToLocalStorage,
@@ -22,13 +18,10 @@ const baseQueryFn: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   const { endpoint, dispatch } = api;
-  const baseUrl = getBaseUrl(endpoint);
-  // TODO Change error handling - return Error No BaseUrl
-  if (!baseUrl) console.error('Can`t get api URLs from environment variables');
+  const baseUrl = '/';
 
   const makeQuery = fetchBaseQuery({
     baseUrl,
-    prepareHeaders,
   });
 
   let result = await makeQuery(args, api, extraOptions);
@@ -36,27 +29,28 @@ const baseQueryFn: BaseQueryFn<
   if (result.error && result.error.status === 401) {
     const refreshToken = getRefreshTokenFromLocalStorage();
     const method = 'POST';
-    const url = `/token?grant_type=refresh_token&refresh_token=${refreshToken}`;
-    const refreshEndpointName = 'refreshToken';
-    const refreshBaseUrl = getBaseUrl(refreshEndpointName) as string;
-    const makeRefreshQuery = fetchBaseQuery({
-      baseUrl: refreshBaseUrl,
-      prepareHeaders,
-    });
+    const url = `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=refresh_token&refresh_token=${refreshToken}`;
+    const endpoint = 'refreshToken';
+    const headers = getHeaders({ type: 'auth' });
 
-    const refreshResult = await makeRefreshQuery(
-      { url, method },
-      { ...api, endpoint: refreshEndpointName },
+    const refreshResult = await makeQuery(
+      { url, method, headers },
+      { ...api, endpoint },
       extraOptions,
     );
     if (refreshResult.data) {
       // TODO Decide if it should effect here or at another place???
       applyResponseEffects(
-        refreshEndpointName,
+        endpoint,
         { ...refreshResult.data, refresh_token: refreshToken },
         dispatch,
       );
-      result = await makeQuery(args, api, extraOptions);
+      const headers = getHeaders();
+      result = await makeQuery(
+        { ...(args as FetchArgs), headers },
+        api,
+        extraOptions,
+      );
     } else {
       dispatch(removeUserAuthorization());
       // TODO Decide if this needed?
