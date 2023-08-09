@@ -40,7 +40,7 @@ const Login: FC = () => {
 
   const onSubmit = (data: FormData) => {
     reset({ ...data });
-    return console.log(data);
+    console.log(data);
   };
 
   const [passwordType, setPasswordType] = useState('password');
@@ -64,15 +64,19 @@ const Login: FC = () => {
 
         <div className={style.form_line}>
           <label>Password</label>
-          <input type={passwordType} {...register('password')} />
-          <span
-            className={style.hidePassword}
-            onClick={() => {
-              return tooglePassword();
-            }}
-          >
-            3
-          </span>
+          <div className={style.passwordHide_line}>
+            <input type={passwordType} {...register('password')} />
+            <span
+              className={[
+                style.hidePassword,
+                passwordType === 'password' ? style.password : style.text,
+              ].join(' ')}
+              onClick={() => {
+                return tooglePassword();
+              }}
+            />
+          </div>
+
           <p>{errors.password?.message}</p>
         </div>
 
