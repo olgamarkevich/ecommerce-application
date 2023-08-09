@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
@@ -32,13 +32,23 @@ const Login: FC = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
+    reset({ ...data });
     return console.log(data);
+  };
+
+  const [passwordType, setPasswordType] = useState('password');
+
+  const tooglePassword = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text');
+    } else setPasswordType('password');
   };
 
   return (
@@ -54,7 +64,15 @@ const Login: FC = () => {
 
         <div className={style.form_line}>
           <label>Password</label>
-          <input {...register('password')} />
+          <input type={passwordType} {...register('password')} />
+          <span
+            className={style.hidePassword}
+            onClick={() => {
+              return tooglePassword();
+            }}
+          >
+            3
+          </span>
           <p>{errors.password?.message}</p>
         </div>
 

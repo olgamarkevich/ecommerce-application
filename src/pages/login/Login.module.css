@@ -36,3 +36,8 @@
   margin-top: 5px;
   color: brown;
 }
+
+.hidePassword {
+  width: 30px;
+  height: 30px;
+}
