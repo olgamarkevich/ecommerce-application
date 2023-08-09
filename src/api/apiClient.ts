@@ -55,6 +55,8 @@ const baseQueryFn: BaseQueryFn<
       dispatch(removeUserAuthorization());
       // TODO Decide if this needed?
       saveTokensToLocalStorage({
+        userType: null,
+        customerId: null,
         accessToken: '',
         refreshToken: '',
       });

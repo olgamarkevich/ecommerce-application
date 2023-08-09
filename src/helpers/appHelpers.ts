@@ -1,14 +1,39 @@
-import type { AuthState } from '../types/storeTypes';
+import type { AuthState, CustomerId, UserType } from '../types/storeTypes';
 
 export const saveTokensToLocalStorage = ({
+  userType,
+  customerId,
   accessToken,
   refreshToken,
 }: {
+  userType: UserType;
+  customerId: CustomerId;
   accessToken: string;
   refreshToken: string;
 }): void => {
+  localStorage.setItem('rss-eca_userType', userType !== null ? userType : '');
+  localStorage.setItem(
+    'rss-eca_customerId',
+    customerId !== null ? customerId : '',
+  );
   localStorage.setItem('rss-eca_accessToken', accessToken);
   localStorage.setItem('rss-eca_refreshToken', refreshToken);
+};
+
+export const getCustomerFromLocalStorage = (): {
+  userType: UserType;
+  customerId: CustomerId;
+} => {
+  let userType = localStorage.getItem('rss-eca_userType') as
+    | UserType
+    | ''
+    | null;
+  if (userType === '') userType = null;
+
+  let customerId = localStorage.getItem('rss-eca_customerId');
+  if (customerId !== null && !customerId.length) customerId = null;
+
+  return { userType, customerId };
 };
 
 export const getAccessTokenFromLocalStorage = (): string => {

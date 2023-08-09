@@ -48,6 +48,7 @@ export const applyResponseEffects = (
     if (customer) {
       dispatch(setUserAuthorization(customer));
       saveTokensToLocalStorage({
+        ...customer,
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
       });
