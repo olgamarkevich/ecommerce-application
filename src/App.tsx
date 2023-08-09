@@ -1,9 +1,8 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
-import { Header } from './components';
-import { Login, Main, Page404, SignUp } from './pages';
+import { Header } from 'components';
+import { Login, Main, Page404, SignUp } from 'pages';
 
 function App() {
   return (
