@@ -12,6 +12,7 @@ export const receiveCustomerFromLocalStorage = createAsyncThunk(
 );
 
 const initialState: AuthState = {
+  isDataLoaded: false,
   userType: null,
   customerId: null,
   accessToken: '',
@@ -22,10 +23,15 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUserAuthorization: (state, action: PayloadAction<AuthState>) => ({
+    setUserAuthorization: (
+      state,
+      action: PayloadAction<Omit<AuthState, 'isDataLoaded'>>,
+    ) => ({
+      ...state,
       ...action.payload,
     }),
     removeUserAuthorization: () => ({
+      isDataLoaded: false,
       userType: null,
       customerId: null,
       accessToken: '',
@@ -35,7 +41,7 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(
       receiveCustomerFromLocalStorage.fulfilled,
-      (state, action) => ({ ...action.payload }),
+      (state, action) => ({ isDataLoaded: true, ...action.payload }),
     );
   },
 });
