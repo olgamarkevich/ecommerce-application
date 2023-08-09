@@ -1,5 +1,15 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
+import { getCustomerFromLocalStorage } from '../helpers/appHelpers';
 import type { AuthState } from '../types/storeTypes';
+
+export const receiveCustomerFromLocalStorage = createAsyncThunk(
+  'auth/receiveCustomerFromLocalStorage',
+  () => getCustomerFromLocalStorage(),
+);
 
 const initialState: AuthState = {
   userType: null,
@@ -14,6 +24,12 @@ export const authSlice = createSlice({
       ...action.payload,
     }),
     removeUserAuthorization: () => ({ userType: null, customerId: null }),
+  },
+  extraReducers: (builder) => {
+    builder.addCase(
+      receiveCustomerFromLocalStorage.fulfilled,
+      (state, action) => ({ ...action.payload }),
+    );
   },
 });
 
