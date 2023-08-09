@@ -12,8 +12,8 @@ function App() {
         <div className='wrapper'>
           <Routes>
             <Route path='/' index element={<Main />} />
-            <Route path='/log-in' element={<Login />} />
-            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<SignUp />} />
             <Route path='*' element={<Page404 />} />
           </Routes>
         </div>
