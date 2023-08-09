@@ -1,31 +1,37 @@
 import { setUserAuthorization } from '../store/authSlice';
 import {
-  getAccessTokenFromLocalStorage,
   getCustomerIdFromScopes,
-  saveTokensToLocalStorage,
+  saveCustomerToLocalStorage,
 } from './appHelpers';
-import type {
-  getCustomerTokenResponse,
-  GetHeadersParams,
-} from '../types/apiTypes';
-import type { RootDispatch } from '../store/store';
+import type { getCustomerTokenResponse } from '../types/apiTypes';
+import type { RootDispatch, RootState } from '../store/store';
 import type { GetProductQueryParams } from '../types/apiTypes';
+import type { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import type { MaybePromise } from '@reduxjs/toolkit/dist/query/tsHelpers';
 
-export const getHeaders = (
-  { type }: GetHeadersParams = { type: 'default' },
-): Headers => {
-  if (type === 'auth') {
-    return new Headers({
-      Authorization: `Basic ${btoa(
+export const prepareHeaders = (
+  headers: Headers,
+  {
+    getState,
+    endpoint,
+  }: Pick<BaseQueryApi, 'getState' | 'extra' | 'endpoint' | 'type' | 'forced'>,
+): MaybePromise<Headers | void> => {
+  if (endpoint.endsWith('Token')) {
+    headers.set(
+      'Authorization',
+      `Basic ${btoa(
         `${process.env.REACT_APP_CLIENT_ID}:${process.env.REACT_APP_CLIENT_SECRET}`,
       )}==`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-    });
+    );
+    headers.set('Content-Type', 'application/x-www-form-urlencoded');
+  } else {
+    headers.set(
+      'Authorization',
+      `Bearer ${(getState() as RootState).auth.accessToken}`,
+    );
   }
 
-  return new Headers({
-    Authorization: `Bearer ${getAccessTokenFromLocalStorage()}`,
-  });
+  return headers;
 };
 
 export const applyResponseEffects = (
@@ -46,12 +52,14 @@ export const applyResponseEffects = (
   ) {
     const customer = getCustomerIdFromScopes(data.scope);
     if (customer) {
-      dispatch(setUserAuthorization(customer));
-      saveTokensToLocalStorage({
+      const customerData = {
         ...customer,
         accessToken: data.access_token,
         refreshToken: data.refresh_token,
-      });
+      };
+
+      dispatch(setUserAuthorization(customerData));
+      saveCustomerToLocalStorage(customerData);
     }
   }
 };

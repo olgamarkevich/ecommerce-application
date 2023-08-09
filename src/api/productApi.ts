@@ -1,11 +1,9 @@
 import { apiClient } from './apiClient';
-import { getHeaders, getPathParams } from '../helpers/apiHelpers';
+import { getPathParams } from '../helpers/apiHelpers';
 import type {
   GetProductQueryParams,
   ProductProjectionPagedQueryResponse,
 } from '../types/apiTypes';
-
-const headers = getHeaders();
 
 const productApi = apiClient.injectEndpoints({
   endpoints: (build) => ({
@@ -22,7 +20,7 @@ const productApi = apiClient.injectEndpoints({
           process.env.REACT_APP_PROJECT_KEY
         }/product-projections${pathParams.length ? '?' : ''}${pathParams}`;
 
-        return { url, method, headers };
+        return { url, method };
       },
     }),
   }),

@@ -1,6 +1,6 @@
-import type { AuthState, CustomerId, UserType } from '../types/storeTypes';
+import type { CustomerId, UserType } from '../types/storeTypes';
 
-export const saveTokensToLocalStorage = ({
+export const saveCustomerToLocalStorage = ({
   userType,
   customerId,
   accessToken,
@@ -11,44 +11,32 @@ export const saveTokensToLocalStorage = ({
   accessToken: string;
   refreshToken: string;
 }): void => {
-  localStorage.setItem('rss-eca_userType', userType !== null ? userType : '');
   localStorage.setItem(
-    'rss-eca_customerId',
-    customerId !== null ? customerId : '',
+    'rss-eca_customer',
+    JSON.stringify({ userType, customerId, accessToken, refreshToken }),
   );
-  localStorage.setItem('rss-eca_accessToken', accessToken);
-  localStorage.setItem('rss-eca_refreshToken', refreshToken);
 };
 
 export const getCustomerFromLocalStorage = (): {
   userType: UserType;
   customerId: CustomerId;
+  accessToken: string;
+  refreshToken: string;
 } => {
-  let userType = localStorage.getItem('rss-eca_userType') as
-    | UserType
-    | ''
-    | null;
-  if (userType === '') userType = null;
+  const customerString = localStorage.getItem('rss-eca_customer');
+  if (customerString) return JSON.parse(customerString);
 
-  let customerId = localStorage.getItem('rss-eca_customerId');
-  if (customerId !== null && !customerId.length) customerId = null;
-
-  return { userType, customerId };
+  return {
+    userType: null,
+    customerId: null,
+    accessToken: '',
+    refreshToken: '',
+  };
 };
 
-export const getAccessTokenFromLocalStorage = (): string => {
-  const token = localStorage.getItem('rss-eca_accessToken');
-
-  return token ? token : '';
-};
-
-export const getRefreshTokenFromLocalStorage = (): string => {
-  const token = localStorage.getItem('rss-eca_refreshToken');
-
-  return token ? token : '';
-};
-
-export const getCustomerIdFromScopes = (scopes: string): AuthState | null => {
+export const getCustomerIdFromScopes = (
+  scopes: string,
+): { userType: UserType; customerId: CustomerId } | null => {
   const scopeArr = (scopes.split(' ') as string[]).map(
     (str) => str.split(':') as [string, string],
   );
