@@ -5,12 +5,10 @@ import {
   type FetchBaseQueryError,
 } from '@reduxjs/toolkit/dist/query/react';
 import { removeUserAuthorization } from '../store/authSlice';
-import { applyResponseEffects, getHeaders } from '../helpers/apiHelpers';
-import {
-  getRefreshTokenFromLocalStorage,
-  saveTokensToLocalStorage,
-} from '../helpers/appHelpers';
+import { applyResponseEffects, prepareHeaders } from '../helpers/apiHelpers';
+import { saveCustomerToLocalStorage } from '../helpers/appHelpers';
 import type { BaseQueryFn } from '@reduxjs/toolkit/src/query/baseQueryTypes';
+import type { RootState } from '../store/store';
 
 const baseQueryFn: BaseQueryFn<
   string | FetchArgs,
@@ -22,39 +20,40 @@ const baseQueryFn: BaseQueryFn<
 
   const makeQuery = fetchBaseQuery({
     baseUrl,
+    prepareHeaders,
   });
 
   let result = await makeQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    const refreshToken = getRefreshTokenFromLocalStorage();
+    const refreshToken = (api.getState() as RootState).auth.refreshToken;
     const method = 'POST';
     const url = `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=refresh_token&refresh_token=${refreshToken}`;
     const endpoint = 'refreshToken';
-    const headers = getHeaders({ type: 'auth' });
 
     const refreshResult = await makeQuery(
-      { url, method, headers },
+      { url, method },
       { ...api, endpoint },
       extraOptions,
     );
-    if (refreshResult.data) {
+    if (
+      refreshResult.data &&
+      typeof refreshResult.data === 'object' &&
+      'access_token' in refreshResult.data
+    ) {
       // TODO Decide if it should effect here or at another place???
       applyResponseEffects(
         endpoint,
         { ...refreshResult.data, refresh_token: refreshToken },
         dispatch,
       );
-      const headers = getHeaders();
-      result = await makeQuery(
-        { ...(args as FetchArgs), headers },
-        api,
-        extraOptions,
-      );
+      result = await makeQuery(args, api, extraOptions);
     } else {
       dispatch(removeUserAuthorization());
       // TODO Decide if this needed?
-      saveTokensToLocalStorage({
+      saveCustomerToLocalStorage({
+        userType: null,
+        customerId: null,
         accessToken: '',
         refreshToken: '',
       });
@@ -73,5 +72,7 @@ const baseQueryFn: BaseQueryFn<
 export const apiClient = createApi({
   reducerPath: 'apiClient',
   baseQuery: baseQueryFn,
-  endpoints: () => ({}),
+  endpoints: () => {
+    return {};
+  },
 });
