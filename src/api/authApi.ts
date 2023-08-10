@@ -1,5 +1,4 @@
 import { apiClient } from './apiClient';
-import { getHeaders } from '../helpers/apiHelpers';
 import type {
   getAccessTokenResponse,
   getCustomerTokenResponse,
@@ -7,8 +6,6 @@ import type {
   CustomerCredentials,
 } from '../types/apiTypes';
 import type { RootState } from '../store/store';
-
-const headers = getHeaders({ type: 'auth' });
 
 const authApi = apiClient.injectEndpoints({
   endpoints: (build) => {
@@ -18,7 +15,7 @@ const authApi = apiClient.injectEndpoints({
           const method = 'POST';
           const url = `${process.env.REACT_APP_AUTH_URL}/oauth/${process.env.REACT_APP_PROJECT_KEY}/anonymous/token?grant_type=client_credentials&scope=${process.env.REACT_APP_SCOPES}`;
 
-          return { url, method, headers };
+          return { url, method };
         },
       }),
       getCustomerToken: build.query<
@@ -29,7 +26,7 @@ const authApi = apiClient.injectEndpoints({
           const method = 'POST';
           const url = `${process.env.REACT_APP_AUTH_URL}/oauth/${process.env.REACT_APP_PROJECT_KEY}/customers/token?grant_type=password&username=${email}&password=${password}&scope=${process.env.REACT_APP_SCOPES}`;
 
-          return { url, method, headers };
+          return { url, method };
         },
       }),
       getAccessToken: build.query<getAccessTokenResponse, void>({
@@ -37,7 +34,7 @@ const authApi = apiClient.injectEndpoints({
           const method = 'POST';
           const url = `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=client_credentials&scope=${process.env.REACT_APP_SCOPES}`;
 
-          return { url, method, headers };
+          return { url, method };
         },
       }),
       introspectToken: build.query<IntrospectTokenResponse, string>({
@@ -45,7 +42,7 @@ const authApi = apiClient.injectEndpoints({
           const method = 'POST';
           const url = `${process.env.REACT_APP_AUTH_URL}/oauth/introspect?token=${token}`;
 
-          return { url, method, headers };
+          return { url, method };
         },
       }),
       refreshToken: build.query<getAccessTokenResponse, string>({
@@ -53,7 +50,7 @@ const authApi = apiClient.injectEndpoints({
           const method = 'POST';
           const url = `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=refresh_token&refresh_token=${refreshToken}`;
 
-          return { url, method, headers };
+          return { url, method };
         },
       }),
     };
@@ -63,6 +60,7 @@ const authApi = apiClient.injectEndpoints({
 // Built-in hooks to make request
 export const {
   useGetAnonymousTokenQuery,
+  useGetCustomerTokenQuery,
   useGetAccessTokenQuery,
   useRefreshTokenQuery,
   useIntrospectTokenQuery,

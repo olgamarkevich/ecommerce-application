@@ -1,29 +1,42 @@
-import type { AuthState } from '../types/storeTypes';
+import type { CustomerId, UserType } from '../types/storeTypes';
 
-export const saveTokensToLocalStorage = ({
+export const saveCustomerToLocalStorage = ({
+  userType,
+  customerId,
   accessToken,
   refreshToken,
 }: {
+  userType: UserType;
+  customerId: CustomerId;
   accessToken: string;
   refreshToken: string;
 }): void => {
-  localStorage.setItem('rss-eca_accessToken', accessToken);
-  localStorage.setItem('rss-eca_refreshToken', refreshToken);
+  localStorage.setItem(
+    'rss-eca_customer',
+    JSON.stringify({ userType, customerId, accessToken, refreshToken }),
+  );
 };
 
-export const getAccessTokenFromLocalStorage = (): string => {
-  const token = localStorage.getItem('rss-eca_accessToken');
+export const getCustomerFromLocalStorage = (): {
+  userType: UserType;
+  customerId: CustomerId;
+  accessToken: string;
+  refreshToken: string;
+} => {
+  const customerString = localStorage.getItem('rss-eca_customer');
+  if (customerString) return JSON.parse(customerString);
 
-  return token ? token : '';
+  return {
+    userType: null,
+    customerId: null,
+    accessToken: '',
+    refreshToken: '',
+  };
 };
 
-export const getRefreshTokenFromLocalStorage = (): string => {
-  const token = localStorage.getItem('rss-eca_refreshToken');
-
-  return token ? token : '';
-};
-
-export const getCustomerIdFromScopes = (scopes: string): AuthState | null => {
+export const getCustomerIdFromScopes = (
+  scopes: string,
+): { userType: UserType; customerId: CustomerId } | null => {
   const scopeArr = (scopes.split(' ') as string[]).map((str) => {
     return str.split(':') as [string, string];
   });

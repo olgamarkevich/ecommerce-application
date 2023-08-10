@@ -32,6 +32,14 @@
   padding: 20px 15px;
 }
 
+.title {
+  margin-bottom: 30px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

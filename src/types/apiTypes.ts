@@ -31,10 +31,6 @@ export type IntrospectTokenResponse =
   | IntrospectTokenSuccessResponse
   | IntrospectTokenFailureResponse;
 
-export type GetHeadersParams = {
-  type: 'auth' | 'default';
-};
-
 export interface GetProductQueryParams {
   limit: number;
   offset: number;
