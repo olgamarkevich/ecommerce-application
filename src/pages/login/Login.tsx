@@ -26,20 +26,21 @@ const schema = yup
       .min(8),
   })
   .required();
+
 type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
-    reset({ ...data });
+    reset();
     console.log(data);
   };
 
