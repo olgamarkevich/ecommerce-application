@@ -55,7 +55,12 @@ export const applyResponseEffects = (
   }
 };
 
-export const getPathParams = (params: Partial<GetProductQueryParams>): string =>
-  Object.entries(params)
-    .map((entry) => `${entry[0]}=${entry[1]}`)
+export const getPathParams = (
+  params: Partial<GetProductQueryParams>,
+): string => {
+  return Object.entries(params)
+    .map((entry) => {
+      return `${entry[0]}=${entry[1]}`;
+    })
     .join('&');
+};

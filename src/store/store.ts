@@ -7,8 +7,9 @@ const store = configureStore({
     auth: authReducer,
     [apiClient.reducerPath]: apiClient.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiClient.middleware),
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(apiClient.middleware);
+  },
   devTools: process.env.NODE_ENV === 'development',
 });
 

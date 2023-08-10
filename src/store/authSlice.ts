@@ -10,10 +10,14 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUserAuthorization: (state, action: PayloadAction<AuthState>) => ({
-      ...action.payload,
-    }),
-    removeUserAuthorization: () => ({ userType: null, customerId: null }),
+    setUserAuthorization: (state, action: PayloadAction<AuthState>) => {
+      return {
+        ...action.payload,
+      };
+    },
+    removeUserAuthorization: () => {
+      return { userType: null, customerId: null };
+    },
   },
 });
 

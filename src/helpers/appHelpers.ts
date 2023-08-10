@@ -24,16 +24,20 @@ export const getRefreshTokenFromLocalStorage = (): string => {
 };
 
 export const getCustomerIdFromScopes = (scopes: string): AuthState | null => {
-  const scopeArr = (scopes.split(' ') as string[]).map(
-    (str) => str.split(':') as [string, string],
-  );
+  const scopeArr = (scopes.split(' ') as string[]).map((str) => {
+    return str.split(':') as [string, string];
+  });
 
-  const anonymousId = scopeArr.find((el) => el[0] === 'anonymous_id');
+  const anonymousId = scopeArr.find((el) => {
+    return el[0] === 'anonymous_id';
+  });
 
   if (anonymousId && anonymousId[1])
     return { userType: 'anonymous', customerId: anonymousId[1] };
 
-  const customerId = scopeArr.find((el) => el[0] === 'customer');
+  const customerId = scopeArr.find((el) => {
+    return el[0] === 'customer';
+  });
 
   if (customerId && customerId[1]) {
     return { userType: 'customer', customerId: customerId[1] };
