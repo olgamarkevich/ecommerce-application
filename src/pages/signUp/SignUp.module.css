@@ -1,0 +1,42 @@
+.form input {
+  height: 30px;
+  outline: none;
+  width: 100%;
+}
+
+.form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.form_line {
+  margin-bottom: 10px;
+}
+
+.form {
+  max-width: 370px;
+  margin: 0 auto;
+}
+
+.form button {
+  background-color: aqua;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  opacity: 0.7;
+}
+
+.form p {
+  font-size: 12px;
+  text-align: left;
+  margin-top: 5px;
+  color: brown;
+}
+
+.passwordHide_line {
+  position: relative;
+}

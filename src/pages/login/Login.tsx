@@ -7,21 +7,17 @@ import * as yup from 'yup';
 
 const schema = yup
   .object({
-    email: yup
-      .string()
-      .email()
-      .min(3, 'must be at least 3 characters long')
-      .required(),
+    email: yup.string().email().required(),
     password: yup
       .string()
       .required()
-      .trim('Password cannot include leading and trailing spaces')
-      .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
-      .matches(/^(?=.*[A-Z])/, 'Must Contain One Uppercase Character')
-      .matches(/^(?=.*[0-9])/, 'Must Contain One Number Character')
+      .trim('password cannot include leading and trailing spaces')
+      .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
+      .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
+      .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
       .matches(
         /^(?=.*[!@#\$%\^&\*])/,
-        'Must Contain  One Special Case Character',
+        'must Contain  One Special Case Character',
       )
       .min(8),
   })
