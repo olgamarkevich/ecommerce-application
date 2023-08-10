@@ -49,7 +49,7 @@ export const getCustomerIdFromScopes = (
     return { userType: 'anonymous', customerId: anonymousId[1] };
 
   const customerId = scopeArr.find((el) => {
-    return el[0] === 'customer';
+    return el[0] === 'customer_id';
   });
 
   if (customerId && customerId[1]) {

@@ -51,6 +51,7 @@ export const applyResponseEffects = (
     typeof data.scope === 'string'
   ) {
     const customer = getCustomerIdFromScopes(data.scope);
+
     if (customer) {
       const customerData = {
         ...customer,
