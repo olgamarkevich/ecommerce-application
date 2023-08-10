@@ -14,7 +14,7 @@ const Page404: FC = () => {
     },
   };
   return (
-    <div className={style.element}>
+    <div className={style.notFoundImg}>
       <Lottie options={defaultOptions} height='max-content' />
     </div>
   );
