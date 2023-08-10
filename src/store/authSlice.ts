@@ -3,8 +3,12 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import { getCustomerFromLocalStorage } from '../helpers/appHelpers';
+import {
+  getCustomerFromLocalStorage,
+  saveCustomerToLocalStorage,
+} from '../helpers/appHelpers';
 import type { AuthState } from '../types/storeTypes';
+import type { CustomerId, UserType } from '../types/storeTypes';
 
 export const receiveCustomerFromLocalStorage = createAsyncThunk(
   'auth/receiveCustomerFromLocalStorage',
@@ -12,6 +16,33 @@ export const receiveCustomerFromLocalStorage = createAsyncThunk(
     return getCustomerFromLocalStorage();
   },
 );
+
+export const setCustomer = createAsyncThunk(
+  'auth/setCustomer',
+  (customer: {
+    userType: UserType;
+    customerId: CustomerId;
+    accessToken: string;
+    refreshToken: string;
+  }) => {
+    saveCustomerToLocalStorage(customer);
+
+    return customer;
+  },
+);
+
+export const logoutCustomer = createAsyncThunk('auth/logoutCustomer', () => {
+  const customer = {
+    userType: null,
+    customerId: null,
+    accessToken: '',
+    refreshToken: '',
+  };
+
+  saveCustomerToLocalStorage(customer);
+
+  return customer;
+});
 
 const initialState: AuthState = {
   isDataLoaded: false,
@@ -51,6 +82,12 @@ export const authSlice = createSlice({
         return { isDataLoaded: true, ...action.payload };
       },
     );
+    builder.addCase(setCustomer.fulfilled, (state, action) => {
+      return { isDataLoaded: true, ...action.payload };
+    });
+    builder.addCase(logoutCustomer.fulfilled, (state, action) => {
+      return { isDataLoaded: true, ...action.payload };
+    });
   },
 });
 
