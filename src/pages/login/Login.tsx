@@ -4,6 +4,13 @@ import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCustomerLogin,
+} from '../../hooks/hooks';
+import { setCustomerCredentials } from '../../store/loginPageSlice';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup
   .object({
@@ -15,38 +22,60 @@ const schema = yup
     password: yup
       .string()
       .required()
-      .trim('Password cannot include leading and trailing spaces')
-      .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
+      .trim('Password cannot include leading and trailing spaces'),
+    /* .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
       .matches(/^(?=.*[A-Z])/, 'Must Contain One Uppercase Character')
       .matches(/^(?=.*[0-9])/, 'Must Contain One Number Character')
       .matches(
         /^(?=.*[!@#\$%\^&\*])/,
         'Must Contain  One Special Case Character',
       )
-      .min(8),
+      .min(8) */
   })
   .required();
 
 type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const { userType } = useAppSelector((state) => {
+    return state.auth;
+  });
+
+  // Just foolproof
+  if (userType !== 'anonymous') navigate('/');
+
+  const { email, password } = useAppSelector((state) => {
+    return state.loginPage;
+  });
+
+  const { data } = useCustomerLogin(
+    { email, password },
+    { skip: (!email || !password) && userType !== 'anonymous' },
+  );
+
+  if (data) console.log(`Query Data: ${JSON.stringify(data)}`);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
-    reset();
+    // reset();
     console.log(data);
+    dispatch(setCustomerCredentials(data));
   };
 
   const [passwordType, setPasswordType] = useState('password');
 
-  const tooglePassword = () => {
+  const togglePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
     } else setPasswordType('password');
@@ -73,7 +102,7 @@ const Login: FC = () => {
                 passwordType === 'password' ? style.password : style.text,
               ].join(' ')}
               onClick={() => {
-                return tooglePassword();
+                return togglePassword();
               }}
             />
           </div>
