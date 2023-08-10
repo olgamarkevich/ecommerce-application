@@ -8,3 +8,8 @@ export interface AuthState {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface CustomerCredentials {
+  email: string;
+  password: string;
+}
