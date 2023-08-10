@@ -72,5 +72,7 @@ const baseQueryFn: BaseQueryFn<
 export const apiClient = createApi({
   reducerPath: 'apiClient',
   baseQuery: baseQueryFn,
-  endpoints: () => ({}),
+  endpoints: () => {
+    return {};
+  },
 });
