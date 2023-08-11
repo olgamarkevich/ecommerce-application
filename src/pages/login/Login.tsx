@@ -7,9 +7,13 @@ import * as yup from 'yup';
 import {
   useAppDispatch,
   useAppSelector,
+  useCustomerAuthorization,
   useCustomerLogin,
 } from '../../hooks/hooks';
-import { setCustomerCredentials } from '../../store/loginPageSlice';
+import {
+  removeCustomerCredentials,
+  setCustomerCredentials,
+} from '../../store/loginPageSlice';
 import { useNavigate } from 'react-router-dom';
 
 const schema = yup
@@ -37,41 +41,64 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { userType } = useAppSelector((state) => {
     return state.auth;
   });
-
-  // Just foolproof
-  if (userType !== 'anonymous') navigate('/');
-
   const { email, password } = useAppSelector((state) => {
     return state.loginPage;
   });
 
-  const { data } = useCustomerLogin(
-    { email, password },
-    { skip: (!email || !password) && userType !== 'anonymous' },
-  );
-
-  if (data) console.log(`Query Data: ${JSON.stringify(data)}`);
-
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
-    // reset,
+    resetField,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
-    // reset();
-    console.log(data);
     dispatch(setCustomerCredentials(data));
   };
+
+  const { data, error: serverError } = useCustomerLogin(
+    { email, password },
+    {
+      skip:
+        !email ||
+        !password ||
+        userType === 'customer' ||
+        !!errors.root?.serverError,
+    },
+  );
+
+  if (serverError) {
+    const msg =
+      'data' in serverError &&
+      serverError.data &&
+      typeof serverError.data === 'object' &&
+      'message' in serverError.data &&
+      serverError.data.message &&
+      typeof serverError.data.message === 'string'
+        ? serverError.data.message
+        : 'Can`t connect to server. Try later, please...';
+
+    dispatch(removeCustomerCredentials());
+    setError('root.serverError', { message: msg });
+    // resetField('email');
+    resetField('password');
+  }
+
+  const isAuthorizationSuccess = useCustomerAuthorization(data).isApplied;
+
+  if (isAuthorizationSuccess) {
+    dispatch(removeCustomerCredentials());
+    navigate('/');
+  }
 
   const [passwordType, setPasswordType] = useState('password');
 
@@ -111,6 +138,7 @@ const Login: FC = () => {
         </div>
 
         <button type='submit'>Submit</button>
+        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>
   );

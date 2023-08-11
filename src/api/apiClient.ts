@@ -15,7 +15,7 @@ const baseQueryFn: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const { endpoint, dispatch } = api;
+  const { dispatch } = api;
   const baseUrl = '/';
 
   const makeQuery = fetchBaseQuery({
@@ -60,10 +60,6 @@ const baseQueryFn: BaseQueryFn<
       // TODO Change error handling - return Error Authorization
       console.error('Can`t get correct authorization token');
     }
-  }
-  // TODO Decide if it should effect here or at another place???
-  if (!result.error && result.data) {
-    applyResponseEffects(endpoint, result.data, dispatch);
   }
 
   return result;

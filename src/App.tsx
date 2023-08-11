@@ -4,7 +4,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Header } from 'components';
 import { Login, Main, Page404, SignUp } from 'pages';
 import { useGetAnonymousTokenQuery } from './api/authApi';
-import { useAppDispatch, useAppSelector } from './hooks/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCustomerAuthorization,
+} from './hooks/hooks';
 import { receiveCustomerFromLocalStorage } from './store/authSlice';
 
 function App() {
@@ -22,9 +26,11 @@ function App() {
 
   // Fetch anonymous token if no customerId saved and after setting data from storage
   const { data: authData } = useGetAnonymousTokenQuery(undefined, {
-    skip: !!customerId || !isDataLoaded,
+    skip: !!customerId || !isDataLoaded, // TODO remove true
   });
-  console.log(authData);
+
+  // Set customer authorization data
+  useCustomerAuthorization(authData);
 
   return (
     <BrowserRouter>
