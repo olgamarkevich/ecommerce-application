@@ -1,6 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 import { NavLink } from 'react-router-dom';
+import { ReactComponent as Logo } from '../../logo.svg';
 
 import style from './Header.module.css';
 
@@ -9,7 +10,10 @@ const Header: FC = () => {
     <header className={style.header}>
       <div className={style.logo}>
         {' '}
-        <NavLink to='/'>Logo</NavLink>
+        <NavLink to='/'>
+          <Logo />
+          ECOmmerce
+        </NavLink>
       </div>
       <div className={style.haeder__left}>
         <nav className={style.nav}>
