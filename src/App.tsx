@@ -13,7 +13,7 @@ import { receiveCustomerFromLocalStorage } from './store/authSlice';
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isDataLoaded, customerId } = useAppSelector((state) => {
+  const { isDataLoaded, customerId, userType } = useAppSelector((state) => {
     return state.auth;
   });
 
@@ -35,7 +35,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className='App'>
-        <Header />
+        <Header isLogin={userType === 'customer'} />
         <div className='wrapper'>
           <Routes>
             <Route path='/' index element={<Main />} />
