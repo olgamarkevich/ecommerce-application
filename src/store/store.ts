@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './authSlice';
-import loginPageReducer from './loginPageSlice';
+import customerReducer from './customerSlice';
 import { apiClient } from '../api/apiClient';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    loginPage: loginPageReducer,
+    customer: customerReducer,
     [apiClient.reducerPath]: apiClient.reducer,
   },
   middleware: (getDefaultMiddleware) => {

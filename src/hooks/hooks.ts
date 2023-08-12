@@ -4,18 +4,35 @@ import {
   type TypedUseSelectorHook,
 } from 'react-redux';
 import type { RootState, RootDispatch } from '../store/store';
-import { useGetCustomerTokenQuery } from '../api/authApi';
 import type { getCustomerTokenResponse } from '../types/apiTypes';
 import {
+  getCustomerFromLocalStorage,
   getCustomerIdFromScopes,
   saveCustomerToLocalStorage,
 } from '../helpers/appHelpers';
 import { setUserAuthorization } from '../store/authSlice';
+import { setCustomerData } from '../store/customerSlice';
+import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
 
 export const useAppDispatch = () => {
   return useDispatch<RootDispatch>();
 };
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+export const useSavedToken = (
+  isDataLoaded: boolean,
+): { isApplied: boolean } => {
+  const dispatch = useAppDispatch();
+
+  if (!isDataLoaded) {
+    const savedCustomer = getCustomerFromLocalStorage();
+    dispatch(setUserAuthorization(savedCustomer));
+
+    return { isApplied: true };
+  }
+
+  return { isApplied: false };
+};
 
 export const useCustomerAuthorization = (
   data: getCustomerTokenResponse | undefined,
@@ -48,4 +65,35 @@ export const useCustomerAuthorization = (
   return { isApplied: false };
 };
 
-export const useCustomerLogin = useGetCustomerTokenQuery;
+export const useCustomerData = (
+  data: CustomerSignInResult | undefined,
+): { isApplied: boolean } => {
+  const dispatch = useAppDispatch();
+
+  if (data && data.customer && data.customer.id) {
+    const {
+      id,
+      firstName = '',
+      lastName = '',
+      middleName = '',
+      addresses = [],
+      billingAddressIds = [],
+      shippingAddressIds = [],
+    } = data.customer;
+    dispatch(
+      setCustomerData({
+        id,
+        firstName,
+        lastName,
+        middleName,
+        addresses,
+        billingAddressIds,
+        shippingAddressIds,
+      }),
+    );
+
+    return { isApplied: true };
+  }
+
+  return { isApplied: false };
+};

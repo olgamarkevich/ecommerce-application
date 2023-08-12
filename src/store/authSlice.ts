@@ -62,11 +62,13 @@ export const authSlice = createSlice({
     ) => {
       return {
         ...state,
+        isDataLoaded: true,
         ...action.payload,
       };
     },
-    removeUserAuthorization: () => {
+    removeUserAuthorization: (state) => {
       return {
+        ...state,
         isDataLoaded: false,
         userType: null,
         customerId: null,
@@ -79,14 +81,14 @@ export const authSlice = createSlice({
     builder.addCase(
       receiveCustomerFromLocalStorage.fulfilled,
       (state, action) => {
-        return { isDataLoaded: true, ...action.payload };
+        return { ...state, isDataLoaded: true, ...action.payload };
       },
     );
     builder.addCase(setCustomer.fulfilled, (state, action) => {
-      return { isDataLoaded: true, ...action.payload };
+      return { ...state, isDataLoaded: true, ...action.payload };
     });
     builder.addCase(logoutCustomer.fulfilled, (state, action) => {
-      return { isDataLoaded: true, ...action.payload };
+      return { ...state, isDataLoaded: true, ...action.payload };
     });
   },
 });

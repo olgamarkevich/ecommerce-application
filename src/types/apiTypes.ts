@@ -11,11 +11,6 @@ export interface getCustomerTokenResponse extends getAccessTokenResponse {
   refresh_token: string;
 }
 
-export interface CustomerCredentials {
-  email: string;
-  password: string;
-}
-
 interface IntrospectTokenFailureResponse {
   active: boolean;
 }

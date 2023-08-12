@@ -8,12 +8,14 @@ import {
   useAppDispatch,
   useAppSelector,
   useCustomerAuthorization,
-  useCustomerLogin,
+  useCustomerData,
 } from '../../hooks/hooks';
 import {
   removeCustomerCredentials,
   setCustomerCredentials,
-} from '../../store/loginPageSlice';
+} from '../../store/customerSlice';
+import { useLoginCustomerQuery } from '../../api/customerApi';
+import { useGetCustomerTokenQuery } from '../../api/authApi';
 
 const schema = yup
   .object({
@@ -25,15 +27,15 @@ const schema = yup
     password: yup
       .string()
       .required()
-      .trim('Password cannot include leading and trailing spaces')
-      .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
+      .trim('Password cannot include leading and trailing spaces'),
+    /*.matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
       .matches(/^(?=.*[A-Z])/, 'Must Contain One Uppercase Character')
       .matches(/^(?=.*[0-9])/, 'Must Contain One Number Character')
       .matches(
         /^(?=.*[!@#\$%\^&\*])/,
         'Must Contain  One Special Case Character',
       )
-      .min(8),
+      .min(8), */
   })
   .required();
 
@@ -49,10 +51,10 @@ const Login: FC = () => {
   // Clear entered credentials in state
   useEffect(() => {
     dispatch(removeCustomerCredentials());
-  }, [dispatch, userType]);
+  }, [dispatch]);
 
-  const { email, password } = useAppSelector((state) => {
-    return state.loginPage;
+  const { email, password, id } = useAppSelector((state) => {
+    return state.customer;
   });
 
   const {
@@ -70,8 +72,8 @@ const Login: FC = () => {
     reset(undefined, { keepErrors: true });
   };
 
-  // Making api request
-  const { data, error: serverError } = useCustomerLogin(
+  // Making token api request
+  const { data: tokenData, error: serverError } = useGetCustomerTokenQuery(
     { email, password },
     {
       skip:
@@ -82,8 +84,17 @@ const Login: FC = () => {
     },
   );
 
-  // Set customer to state
-  useCustomerAuthorization(data);
+  // Making customer data api request
+  const { data: customerData } = useLoginCustomerQuery(
+    { email, password },
+    { skip: !email || !password || userType !== 'customer' || !!id },
+  );
+
+  // Set token to state
+  useCustomerAuthorization(tokenData);
+
+  // Set customer data to state
+  useCustomerData(customerData);
 
   // Set errors on submit
   if (serverError) {
