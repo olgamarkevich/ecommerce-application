@@ -6,7 +6,6 @@ import type { AuthState } from '../types/storeTypes';
 
 test('should return the initial state', () => {
   expect(reducer(undefined, { type: undefined })).toEqual({
-    isDataLoaded: false,
     userType: null,
     customerId: null,
     accessToken: '',
@@ -16,7 +15,6 @@ test('should return the initial state', () => {
 
 test('should set new User', () => {
   const previousState: AuthState = {
-    isDataLoaded: true,
     userType: null,
     customerId: null,
     accessToken: '',
@@ -31,7 +29,6 @@ test('should set new User', () => {
   };
 
   expect(reducer(previousState, setUserAuthorization(newUser))).toEqual({
-    isDataLoaded: true,
     userType: 'anonymous',
     customerId: 'someinterestingstringwithcustomerid',
     accessToken: 'token',
@@ -41,7 +38,6 @@ test('should set new User', () => {
 
 test('should change User', () => {
   const previousState: AuthState = {
-    isDataLoaded: true,
     userType: 'customer',
     customerId: 'somenotinterestingcustomerid',
     accessToken: 'token',
@@ -56,7 +52,6 @@ test('should change User', () => {
   };
 
   expect(reducer(previousState, setUserAuthorization(newUser))).toEqual({
-    isDataLoaded: true,
     userType: 'anonymous',
     customerId: 'someinterestingstringwithcustomerid',
     accessToken: 'new token',
@@ -66,7 +61,6 @@ test('should change User', () => {
 
 test('should remove User data with removeUserAuthorization', () => {
   const previousState: AuthState = {
-    isDataLoaded: true,
     userType: 'customer',
     customerId: 'somenotinterestingcustomerid',
     accessToken: 'token',
@@ -74,7 +68,6 @@ test('should remove User data with removeUserAuthorization', () => {
   };
 
   expect(reducer(previousState, removeUserAuthorization())).toEqual({
-    isDataLoaded: false,
     userType: null,
     customerId: null,
     accessToken: '',

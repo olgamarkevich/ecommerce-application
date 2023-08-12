@@ -10,15 +10,15 @@ import {
 import type { AuthState } from '../types/storeTypes';
 import type { CustomerId, UserType } from '../types/storeTypes';
 
-export const receiveCustomerFromLocalStorage = createAsyncThunk(
+export const loadCustomerFromLocalStorage = createAsyncThunk(
   'auth/receiveCustomerFromLocalStorage',
   () => {
     return getCustomerFromLocalStorage();
   },
 );
 
-export const setCustomer = createAsyncThunk(
-  'auth/setCustomer',
+export const setCustomerToken = createAsyncThunk(
+  'auth/setCustomerToken',
   (customer: {
     userType: UserType;
     customerId: CustomerId;
@@ -45,7 +45,6 @@ export const logoutCustomer = createAsyncThunk('auth/logoutCustomer', () => {
 });
 
 const initialState: AuthState = {
-  isDataLoaded: false,
   userType: null,
   customerId: null,
   accessToken: '',
@@ -56,20 +55,15 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUserAuthorization: (
-      state,
-      action: PayloadAction<Omit<AuthState, 'isDataLoaded'>>,
-    ) => {
+    setUserAuthorization: (state, action: PayloadAction<AuthState>) => {
       return {
         ...state,
-        isDataLoaded: true,
         ...action.payload,
       };
     },
     removeUserAuthorization: (state) => {
       return {
         ...state,
-        isDataLoaded: false,
         userType: null,
         customerId: null,
         accessToken: '',
@@ -78,17 +72,14 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      receiveCustomerFromLocalStorage.fulfilled,
-      (state, action) => {
-        return { ...state, isDataLoaded: true, ...action.payload };
-      },
-    );
-    builder.addCase(setCustomer.fulfilled, (state, action) => {
-      return { ...state, isDataLoaded: true, ...action.payload };
+    builder.addCase(loadCustomerFromLocalStorage.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
+    });
+    builder.addCase(setCustomerToken.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
     });
     builder.addCase(logoutCustomer.fulfilled, (state, action) => {
-      return { ...state, isDataLoaded: true, ...action.payload };
+      return { ...state, ...action.payload };
     });
   },
 });

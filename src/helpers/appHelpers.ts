@@ -1,4 +1,5 @@
-import type { CustomerId, UserType } from '../types/storeTypes';
+import type { CustomerId, UserType, AuthState } from '../types/storeTypes';
+import type { getCustomerTokenResponse } from '../types/apiTypes';
 
 export const saveCustomerToLocalStorage = ({
   userType,
@@ -57,4 +58,25 @@ export const getCustomerIdFromScopes = (
   }
 
   return null;
+};
+
+export const getCustomerFromApiResponse = (
+  responseData: getCustomerTokenResponse,
+): AuthState => {
+  const customerData = getCustomerIdFromScopes(responseData.scope);
+
+  if (customerData) {
+    return {
+      ...customerData,
+      accessToken: responseData.access_token,
+      refreshToken: responseData.refresh_token,
+    };
+  }
+
+  return {
+    userType: null,
+    customerId: null,
+    accessToken: '',
+    refreshToken: '',
+  };
 };

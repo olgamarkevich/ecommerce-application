@@ -1,10 +1,15 @@
-import { Address } from '@commercetools/platform-sdk';
+import type { Address } from '@commercetools/platform-sdk';
 
 export type UserType = 'anonymous' | 'customer' | null;
 export type CustomerId = string | null;
 
+export interface AppState {
+  isInitialized: boolean;
+  isAuthorized: boolean;
+  canRerender: boolean;
+}
+
 export interface AuthState {
-  isDataLoaded: boolean;
   userType: UserType;
   customerId: CustomerId;
   accessToken: string;

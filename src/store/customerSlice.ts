@@ -42,11 +42,6 @@ export const customerSlice = createSlice({
         addresses: [],
         billingAddressIds: [],
         shippingAddressIds: [],
-      };
-    },
-    removeCustomerCredentials: (state) => {
-      return {
-        ...state,
         email: '',
         password: '',
       };
@@ -54,11 +49,7 @@ export const customerSlice = createSlice({
   },
 });
 
-export const {
-  setCustomerData,
-  setCustomerCredentials,
-  removeCustomer,
-  removeCustomerCredentials,
-} = customerSlice.actions;
+export const { setCustomerData, setCustomerCredentials, removeCustomer } =
+  customerSlice.actions;
 
 export default customerSlice.reducer;

@@ -4,18 +4,17 @@ import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {
-  useAppDispatch,
-  useAppSelector,
-  useCustomerAuthorization,
-  useCustomerData,
-} from '../../hooks/hooks';
-import {
-  removeCustomerCredentials,
   setCustomerCredentials,
+  setCustomerData,
 } from '../../store/customerSlice';
 import { useLoginCustomerQuery } from '../../api/customerApi';
 import { useGetCustomerTokenQuery } from '../../api/authApi';
+import { getCustomerFromApiResponse } from '../../helpers/appHelpers';
+import { setCustomerToken } from '../../store/authSlice';
+import { setAuthorizationState } from '../../store/appSlice';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup
   .object({
@@ -27,15 +26,15 @@ const schema = yup
     password: yup
       .string()
       .required()
-      .trim('Password cannot include leading and trailing spaces'),
-    /*.matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
+      .trim('Password cannot include leading and trailing spaces')
+      .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
       .matches(/^(?=.*[A-Z])/, 'Must Contain One Uppercase Character')
       .matches(/^(?=.*[0-9])/, 'Must Contain One Number Character')
       .matches(
         /^(?=.*[!@#\$%\^&\*])/,
         'Must Contain  One Special Case Character',
       )
-      .min(8), */
+      .min(8),
   })
   .required();
 
@@ -43,20 +42,8 @@ type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
   const dispatch = useAppDispatch();
-
-  const { userType } = useAppSelector((state) => {
-    return state.auth;
-  });
-
-  // Clear entered credentials in state
-  useEffect(() => {
-    dispatch(removeCustomerCredentials());
-  }, [dispatch]);
-
-  const { email, password, id } = useAppSelector((state) => {
-    return state.customer;
-  });
-
+  const navigate = useNavigate();
+  const [passwordType, setPasswordType] = useState('password');
   const {
     register,
     handleSubmit,
@@ -67,9 +54,23 @@ const Login: FC = () => {
     resolver: yupResolver(schema),
   });
 
+  const { email, password, id } = useAppSelector((state) => {
+    return state.customer;
+  });
+
+  const { userType } = useAppSelector((state) => {
+    return state.auth;
+  });
+
   const onSubmit = (data: FormData) => {
     dispatch(setCustomerCredentials(data));
     reset(undefined, { keepErrors: true });
+  };
+
+  const togglePassword = () => {
+    if (passwordType === 'password') {
+      setPasswordType('text');
+    } else setPasswordType('password');
   };
 
   // Making token api request
@@ -87,37 +88,66 @@ const Login: FC = () => {
   // Making customer data api request
   const { data: customerData } = useLoginCustomerQuery(
     { email, password },
-    { skip: !email || !password || userType !== 'customer' || !!id },
+    {
+      skip:
+        !email || !password || !tokenData || userType !== 'customer' || !!id,
+    },
   );
 
-  // Set token to state
-  useCustomerAuthorization(tokenData);
+  // Set error after unsuccessful response
+  useEffect(() => {
+    if (serverError) {
+      const message =
+        'data' in serverError &&
+        serverError.data &&
+        typeof serverError.data === 'object' &&
+        'message' in serverError.data &&
+        serverError.data.message &&
+        typeof serverError.data.message === 'string'
+          ? serverError.data.message
+          : 'Can`t connect to server. Try later, please...';
 
-  // Set customer data to state
-  useCustomerData(customerData);
+      setError('root.serverError', { message });
+    }
+  }, [setError, serverError]);
 
-  // Set errors on submit
-  if (serverError) {
-    const msg =
-      'data' in serverError &&
-      serverError.data &&
-      typeof serverError.data === 'object' &&
-      'message' in serverError.data &&
-      serverError.data.message &&
-      typeof serverError.data.message === 'string'
-        ? serverError.data.message
-        : 'Can`t connect to server. Try later, please...';
+  // Set customer token
+  useEffect(() => {
+    if (tokenData) {
+      const customer = getCustomerFromApiResponse(tokenData);
 
-    setError('root.serverError', { message: msg });
-  }
+      dispatch(setCustomerToken(customer)).then(() => {
+        dispatch(setAuthorizationState(true));
+      });
+    }
+  }, [dispatch, tokenData]);
 
-  const [passwordType, setPasswordType] = useState('password');
-
-  const togglePassword = () => {
-    if (passwordType === 'password') {
-      setPasswordType('text');
-    } else setPasswordType('password');
-  };
+  // Set customer data
+  useEffect(() => {
+    if (customerData && customerData.customer && customerData.customer.id) {
+      const {
+        id,
+        firstName = '',
+        lastName = '',
+        middleName = '',
+        addresses = [],
+        billingAddressIds = [],
+        shippingAddressIds = [],
+      } = customerData.customer;
+      dispatch(
+        setCustomerData({
+          id,
+          firstName,
+          lastName,
+          middleName,
+          addresses,
+          billingAddressIds,
+          shippingAddressIds,
+        }),
+      );
+      navigate('/');
+    }
+  }, [dispatch, navigate, customerData]);
 
   return (
     <>
