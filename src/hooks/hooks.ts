@@ -38,8 +38,8 @@ export const useCustomerAuthorization = (
         refreshToken: data.refresh_token,
       };
 
-      dispatch(setUserAuthorization(customerData));
       saveCustomerToLocalStorage(customerData);
+      dispatch(setUserAuthorization(customerData));
 
       return { isApplied: true };
     }

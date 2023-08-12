@@ -26,7 +26,7 @@ function App() {
 
   // Fetch anonymous token if no customerId saved and after setting data from storage
   const { data: authData } = useGetAnonymousTokenQuery(undefined, {
-    skip: !!customerId || !isDataLoaded, // TODO remove true
+    skip: !!customerId || !isDataLoaded,
   });
 
   // Set customer authorization data

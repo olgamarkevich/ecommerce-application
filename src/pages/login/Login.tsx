@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
@@ -14,7 +14,6 @@ import {
   removeCustomerCredentials,
   setCustomerCredentials,
 } from '../../store/loginPageSlice';
-import { useNavigate } from 'react-router-dom';
 
 const schema = yup
   .object({
@@ -26,15 +25,15 @@ const schema = yup
     password: yup
       .string()
       .required()
-      .trim('Password cannot include leading and trailing spaces'),
-    /* .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
+      .trim('Password cannot include leading and trailing spaces')
+      .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
       .matches(/^(?=.*[A-Z])/, 'Must Contain One Uppercase Character')
       .matches(/^(?=.*[0-9])/, 'Must Contain One Number Character')
       .matches(
         /^(?=.*[!@#\$%\^&\*])/,
         'Must Contain  One Special Case Character',
       )
-      .min(8) */
+      .min(8),
   })
   .required();
 
@@ -42,11 +41,16 @@ type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const { userType } = useAppSelector((state) => {
     return state.auth;
   });
+
+  // Clear entered credentials in state
+  useEffect(() => {
+    dispatch(removeCustomerCredentials());
+  }, [dispatch, userType]);
+
   const { email, password } = useAppSelector((state) => {
     return state.loginPage;
   });
@@ -56,15 +60,17 @@ const Login: FC = () => {
     handleSubmit,
     setError,
     formState: { errors },
-    resetField,
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
     dispatch(setCustomerCredentials(data));
+    reset(undefined, { keepErrors: true });
   };
 
+  // Making api request
   const { data, error: serverError } = useCustomerLogin(
     { email, password },
     {
@@ -76,6 +82,10 @@ const Login: FC = () => {
     },
   );
 
+  // Set customer to state
+  useCustomerAuthorization(data);
+
+  // Set errors on submit
   if (serverError) {
     const msg =
       'data' in serverError &&
@@ -87,17 +97,7 @@ const Login: FC = () => {
         ? serverError.data.message
         : 'Can`t connect to server. Try later, please...';
 
-    dispatch(removeCustomerCredentials());
     setError('root.serverError', { message: msg });
-    // resetField('email');
-    resetField('password');
-  }
-
-  const isAuthorizationSuccess = useCustomerAuthorization(data).isApplied;
-
-  if (isAuthorizationSuccess) {
-    dispatch(removeCustomerCredentials());
-    navigate('/');
   }
 
   const [passwordType, setPasswordType] = useState('password');
