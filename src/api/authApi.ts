@@ -13,9 +13,7 @@ const authApi = apiClient.injectEndpoints({
       getAnonymousToken: build.query<getCustomerTokenResponse, void>({
         query: () => {
           const method = 'POST';
-          const url = encodeURI(
-            `${process.env.REACT_APP_AUTH_URL}/oauth/${process.env.REACT_APP_PROJECT_KEY}/anonymous/token?grant_type=client_credentials&scope=${process.env.REACT_APP_SCOPES}`,
-          );
+          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/${process.env.REACT_APP_PROJECT_KEY}/anonymous/token?grant_type=client_credentials&scope=${process.env.REACT_APP_SCOPES}`;
 
           return { url, method };
         },
@@ -26,9 +24,13 @@ const authApi = apiClient.injectEndpoints({
       >({
         query: ({ email, password }) => {
           const method = 'POST';
-          const url = encodeURI(
-            `${process.env.REACT_APP_AUTH_URL}/oauth/${process.env.REACT_APP_PROJECT_KEY}/customers/token?grant_type=password&username=${email}&password=${password}&scope=${process.env.REACT_APP_SCOPES}`,
-          );
+          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/${
+            process.env.REACT_APP_PROJECT_KEY
+          }/customers/token?grant_type=password&username=${encodeURIComponent(
+            email,
+          )}&password=${encodeURIComponent(password)}&scope=${
+            process.env.REACT_APP_SCOPES
+          }`;
 
           return { url, method };
         },
@@ -36,9 +38,7 @@ const authApi = apiClient.injectEndpoints({
       getAccessToken: build.query<getAccessTokenResponse, void>({
         query: () => {
           const method = 'POST';
-          const url = encodeURI(
-            `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=client_credentials&scope=${process.env.REACT_APP_SCOPES}`,
-          );
+          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=client_credentials&scope=${process.env.REACT_APP_SCOPES}`;
 
           return { url, method };
         },
@@ -46,9 +46,7 @@ const authApi = apiClient.injectEndpoints({
       introspectToken: build.query<IntrospectTokenResponse, string>({
         query: (token) => {
           const method = 'POST';
-          const url = encodeURI(
-            `${process.env.REACT_APP_AUTH_URL}/oauth/introspect?token=${token}`,
-          );
+          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/introspect?token=${token}`;
 
           return { url, method };
         },
@@ -56,9 +54,7 @@ const authApi = apiClient.injectEndpoints({
       refreshToken: build.query<getAccessTokenResponse, string>({
         query: (refreshToken) => {
           const method = 'POST';
-          const url = encodeURI(
-            `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=refresh_token&refresh_token=${refreshToken}`,
-          );
+          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/token?grant_type=refresh_token&refresh_token=${refreshToken}`;
 
           return { url, method };
         },

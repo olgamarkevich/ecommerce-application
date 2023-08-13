@@ -1,5 +1,6 @@
 import { apiClient } from './apiClient';
 import type {
+  Customer,
   CustomerSignin,
   CustomerSignInResult,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer';
@@ -7,12 +8,18 @@ import type {
 const customerApi = apiClient.injectEndpoints({
   endpoints: (build) => {
     return {
-      loginCustomer: build.query<CustomerSignInResult, CustomerSignin>({
+      getCustomer: build.query<Customer, string>({
+        query: (id) => {
+          const method = 'GET';
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/customers/${id}`;
+
+          return { method, url };
+        },
+      }),
+      signInCustomer: build.query<CustomerSignInResult, CustomerSignin>({
         query: (body) => {
           const method = 'POST';
-          const url = encodeURI(
-            `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/login`,
-          );
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/login`;
 
           return { method, url, body };
         },
@@ -21,4 +28,4 @@ const customerApi = apiClient.injectEndpoints({
   },
 });
 
-export const { useLoginCustomerQuery } = customerApi;
+export const { useGetCustomerQuery, useSignInCustomerQuery } = customerApi;

@@ -17,11 +17,9 @@ const productApi = apiClient.injectEndpoints({
           const pathParams = Object.keys(params).length
             ? getPathParams(params)
             : '';
-          const url = encodeURI(
-            `${process.env.REACT_APP_API_URL}/${
-              process.env.REACT_APP_PROJECT_KEY
-            }/product-projections${pathParams.length ? '?' : ''}${pathParams}`,
-          );
+          const url = `${process.env.REACT_APP_API_URL}/${
+            process.env.REACT_APP_PROJECT_KEY
+          }/product-projections${pathParams.length ? '?' : ''}${pathParams}`;
 
           return { url, method };
         },

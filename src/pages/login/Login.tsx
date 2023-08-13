@@ -9,7 +9,7 @@ import {
   setCustomerCredentials,
   setCustomerData,
 } from '../../store/customerSlice';
-import { useLoginCustomerQuery } from '../../api/customerApi';
+import { useSignInCustomerQuery } from '../../api/customerApi';
 import { useGetCustomerTokenQuery } from '../../api/authApi';
 import { getCustomerFromApiResponse } from '../../helpers/appHelpers';
 import { setCustomerToken } from '../../store/authSlice';
@@ -86,7 +86,7 @@ const Login: FC = () => {
   );
 
   // Making customer data api request
-  const { data: customerData } = useLoginCustomerQuery(
+  const { data: customerData } = useSignInCustomerQuery(
     { email, password },
     {
       skip:
