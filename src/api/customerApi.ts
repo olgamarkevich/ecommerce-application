@@ -8,10 +8,10 @@ import type {
 const customerApi = apiClient.injectEndpoints({
   endpoints: (build) => {
     return {
-      getCustomer: build.query<Customer, string>({
-        query: (id) => {
+      getCustomer: build.query<Customer, void>({
+        query: () => {
           const method = 'GET';
-          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/customers/${id}`;
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/me`;
 
           return { method, url };
         },
@@ -19,7 +19,7 @@ const customerApi = apiClient.injectEndpoints({
       signInCustomer: build.query<CustomerSignInResult, CustomerSignin>({
         query: (body) => {
           const method = 'POST';
-          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/login`;
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/me/login`;
 
           return { method, url, body };
         },

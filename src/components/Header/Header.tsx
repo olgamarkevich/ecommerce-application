@@ -16,9 +16,9 @@ const Header: FC = () => {
 
   const logoutHandler: MouseEventHandler = async (e) => {
     e.preventDefault();
-    dispatch(removeCustomer());
     dispatch(setAuthorizationState(false));
     await dispatch(logoutCustomer());
+    dispatch(removeCustomer());
     navigate('/');
   };
 

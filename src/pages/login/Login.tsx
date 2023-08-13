@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {
-  setCustomerCredentials,
-  setCustomerData,
-} from '../../store/customerSlice';
-import { useSignInCustomerQuery } from '../../api/customerApi';
-import { useGetCustomerTokenQuery } from '../../api/authApi';
-import { getCustomerFromApiResponse } from '../../helpers/appHelpers';
-import { setCustomerToken } from '../../store/authSlice';
-import { setAuthorizationState } from '../../store/appSlice';
-import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
+import { setCustomerCredentials } from '../../store/customerSlice';
 
 const schema = yup
   .object({
@@ -42,8 +33,9 @@ type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+
   const [passwordType, setPasswordType] = useState('password');
+
   const {
     register,
     handleSubmit,
@@ -54,18 +46,7 @@ const Login: FC = () => {
     resolver: yupResolver(schema),
   });
 
-  const { email, password, id } = useAppSelector((state) => {
-    return state.customer;
-  });
-
-  const { userType } = useAppSelector((state) => {
-    return state.auth;
-  });
-
-  const onSubmit = (data: FormData) => {
-    dispatch(setCustomerCredentials(data));
-    reset(undefined, { keepErrors: true });
-  };
+  useCustomerSignIn(errors, setError);
 
   const togglePassword = () => {
     if (passwordType === 'password') {
@@ -73,81 +54,10 @@ const Login: FC = () => {
     } else setPasswordType('password');
   };
 
-  // Making token api request
-  const { data: tokenData, error: serverError } = useGetCustomerTokenQuery(
-    { email, password },
-    {
-      skip:
-        !email ||
-        !password ||
-        userType === 'customer' ||
-        !!errors.root?.serverError,
-    },
-  );
-
-  // Making customer data api request
-  const { data: customerData } = useSignInCustomerQuery(
-    { email, password },
-    {
-      skip:
-        !email || !password || !tokenData || userType !== 'customer' || !!id,
-    },
-  );
-
-  // Set error after unsuccessful response
-  useEffect(() => {
-    if (serverError) {
-      const message =
-        'data' in serverError &&
-        serverError.data &&
-        typeof serverError.data === 'object' &&
-        'message' in serverError.data &&
-        serverError.data.message &&
-        typeof serverError.data.message === 'string'
-          ? serverError.data.message
-          : 'Can`t connect to server. Try later, please...';
-
-      setError('root.serverError', { message });
-    }
-  }, [setError, serverError]);
-
-  // Set customer token
-  useEffect(() => {
-    if (tokenData) {
-      const customer = getCustomerFromApiResponse(tokenData);
-
-      dispatch(setCustomerToken(customer)).then(() => {
-        dispatch(setAuthorizationState(true));
-      });
-    }
-  }, [dispatch, tokenData]);
-
-  // Set customer data
-  useEffect(() => {
-    if (customerData && customerData.customer && customerData.customer.id) {
-      const {
-        id,
-        firstName = '',
-        lastName = '',
-        middleName = '',
-        addresses = [],
-        billingAddressIds = [],
-        shippingAddressIds = [],
-      } = customerData.customer;
-      dispatch(
-        setCustomerData({
-          id,
-          firstName,
-          lastName,
-          middleName,
-          addresses,
-          billingAddressIds,
-          shippingAddressIds,
-        }),
-      );
-      navigate('/');
-    }
-  }, [dispatch, navigate, customerData]);
+  const onSubmit = (data: FormData) => {
+    dispatch(setCustomerCredentials(data));
+    reset(undefined, { keepErrors: true });
+  };
 
   return (
     <>
