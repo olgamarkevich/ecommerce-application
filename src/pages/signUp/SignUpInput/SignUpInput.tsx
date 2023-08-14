@@ -2,19 +2,19 @@ import React from 'react';
 import type { FC } from 'react';
 
 import style from './SignUpInput.module.css';
-import type { UseFormReturn } from 'react-hook-form';
+import type { UseFormRegister } from 'react-hook-form';
 import type { FormData } from 'pages/signUp/SignUp';
 
 interface InputProps {
-  fieldI: keyof FormData;
+  fieldId: keyof FormData;
   label: string;
-  register: UseFormReturn<FormData>['register'];
+  register: UseFormRegister<FormData>;
   invalid: boolean;
   errorText?: string;
 }
 
 const SignUpInput: FC<InputProps> = ({
-  fieldI,
+  fieldId,
   label,
   register,
   invalid,
@@ -23,7 +23,7 @@ const SignUpInput: FC<InputProps> = ({
   return (
     <div className={style.form_line}>
       <label className='label'>{label}</label>
-      <input {...register(fieldI)} className='input' aria-invalid={invalid} />
+      <input {...register(fieldId)} className='input' aria-invalid={invalid} />
       <p>{errorText}</p>
     </div>
   );

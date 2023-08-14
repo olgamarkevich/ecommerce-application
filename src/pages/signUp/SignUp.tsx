@@ -4,7 +4,9 @@ import { useForm } from 'react-hook-form';
 import style from './SignUp.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { SignUpInput } from 'components';
+
+import type { RequiredKeepUndefined } from 'helpers/typesHelpers';
+import SignUpInput from './SignUpInput/SignUpInput';
 
 interface CountryZipData {
   countryName: string;
@@ -43,16 +45,23 @@ const schema = yup
     firstname: yup
       .string()
       .required()
-      .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field ')
+      .matches(
+        /^[zA-Zа-яёА-ЯЁ\s]+$/,
+        'only alphabets are allowed for this field ',
+      )
       .min(1),
     lastname: yup
       .string()
       .required()
-      .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field ')
+      .matches(
+        /^[zA-Zа-яёА-ЯЁ\s]+$/,
+        'only alphabets are allowed for this field ',
+      )
       .min(1),
     dateOfBirth: yup
       .date()
-      .required('Date of Birth is required')
+      .nullable()
+      .typeError('date of birth is required')
       .max(
         new Date(Date.now() - 567648000000),
         'you must be at least 18 years',
@@ -61,7 +70,10 @@ const schema = yup
     city: yup
       .string()
       .required()
-      .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field ')
+      .matches(
+        /^[zA-Zа-яёА-ЯЁ\s]+$/,
+        'only alphabets are allowed for this field ',
+      )
       .min(1),
     postalCode: yup
       .string()
@@ -81,23 +93,29 @@ const schema = yup
       .min(1),
     cityBilling: yup
       .string()
-      .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field '),
+      .matches(
+        /^[zA-Zа-яёА-ЯЁ\s]*$/,
+        'only alphabets are allowed for this field ',
+      ),
     streetBilling: yup.string(),
+    countryBilling: yup.string(),
     postalCodeBilling: yup
       .string()
-      .when('countryBilling', ([country], schema) => {
+      .when('countryBilling', ([countryBilling], schema) => {
         const zipRegExp =
           countryZipItems.find((item) => {
-            return item.countryCode === country;
+            return item.countryCode === countryBilling;
           })?.zipRegExp || new RegExp(/.*/);
 
-        return schema.matches(zipRegExp, `invalid postalCode for ${country}`);
+        return schema.matches(
+          zipRegExp,
+          `invalid postalCode for ${countryBilling}`,
+        );
       }),
-    countryBilling: yup.string(),
   })
   .required();
 
-type FormData = yup.InferType<typeof schema>;
+export type FormData = RequiredKeepUndefined<yup.InferType<typeof schema>>;
 
 const SignUp: FC = () => {
   const {
@@ -105,19 +123,26 @@ const SignUp: FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: FormData) => {
-    reset();
     console.log(data);
-    console.log(isBillingAddres);
+    console.log('isBillingAddres', isBillingAddres);
+    console.log('defaultShippindAddres', defaultShippindAddres);
+    console.log('defaultBillingdAddres', defaultBillingdAddres);
+    reset();
+    setIsBillingAddres(false);
+    setDefaultBillingdAddres(false);
+    setDefaultShippindAddres(false);
   };
 
   const [passwordType, setPasswordType] = useState('password');
 
   const [isBillingAddres, setIsBillingAddres] = useState(false);
+  const [defaultShippindAddres, setDefaultShippindAddres] = useState(false);
+  const [defaultBillingdAddres, setDefaultBillingdAddres] = useState(false);
 
   const tooglePassword = () => {
     if (passwordType === 'password') {
@@ -130,7 +155,7 @@ const SignUp: FC = () => {
 
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <SignUpInput
-          fieldI='email'
+          fieldId='email'
           label='Email'
           register={register}
           invalid={!!errors.email}
@@ -161,14 +186,14 @@ const SignUp: FC = () => {
         </div>
 
         <SignUpInput
-          fieldI='firstname'
+          fieldId='firstname'
           label='First name*'
           register={register}
           invalid={!!errors.firstname}
           errorText={errors.firstname?.message}
         />
         <SignUpInput
-          fieldI='lastname'
+          fieldId='lastname'
           label='Last name'
           register={register}
           invalid={!!errors.lastname}
@@ -191,7 +216,7 @@ const SignUp: FC = () => {
 
           <div className='columns-2'>
             <SignUpInput
-              fieldI='street'
+              fieldId='street'
               label='Street'
               register={register}
               invalid={!!errors.street}
@@ -199,7 +224,7 @@ const SignUp: FC = () => {
             />
 
             <SignUpInput
-              fieldI='city'
+              fieldId='city'
               label='City'
               register={register}
               invalid={!!errors.city}
@@ -219,11 +244,7 @@ const SignUp: FC = () => {
 
                 {countryZipItems.map((item) => {
                   return (
-                    <option
-                      value={item.countryCode}
-                      // data-postCodeCountry={item.zipRegExp}
-                      key={item.countryCode}
-                    >
+                    <option value={item.countryCode} key={item.countryCode}>
                       {item.countryName}
                     </option>
                   );
@@ -233,7 +254,7 @@ const SignUp: FC = () => {
               <p>{errors.country?.message}</p>
             </div>
             <SignUpInput
-              fieldI='postalCode'
+              fieldId='postalCode'
               label='Postal code'
               register={register}
               invalid={!!errors.postalCode}
@@ -243,11 +264,17 @@ const SignUp: FC = () => {
 
           <div className='flex checkbox-line'>
             <input
-              id='default-checkbox1'
+              id='defaultShippindAddres'
               type='checkbox'
               className='checkbox'
+              checked={defaultShippindAddres}
+              onChange={() => {
+                return defaultShippindAddres
+                  ? setDefaultShippindAddres(false)
+                  : setDefaultShippindAddres(true);
+              }}
             />
-            <label htmlFor='default-checkbox1'>
+            <label htmlFor='defaultShippindAddres'>
               Set as default shipping address
             </label>
           </div>
@@ -275,7 +302,7 @@ const SignUp: FC = () => {
             <h4>Billing addres</h4>
             <div className='columns-2'>
               <SignUpInput
-                fieldI='streetBilling'
+                fieldId='streetBilling'
                 label='Street'
                 register={register}
                 invalid={!!errors.streetBilling}
@@ -283,7 +310,7 @@ const SignUp: FC = () => {
               />
 
               <SignUpInput
-                fieldI='cityBilling'
+                fieldId='cityBilling'
                 label='City'
                 register={register}
                 invalid={!!errors.cityBilling}
@@ -303,21 +330,18 @@ const SignUp: FC = () => {
 
                   {countryZipItems.map((item) => {
                     return (
-                      <option
-                        value={item.countryCode}
-                        // data-postCodeCountry={item.zipRegExp}
-                        key={item.countryCode}
-                      >
+                      <option value={item.countryCode} key={item.countryCode}>
                         {item.countryName}
                       </option>
                     );
                   })}
                 </select>
 
-                <p>{errors.country?.message}</p>
+                <p>{errors.countryBilling?.message}</p>
               </div>
+
               <SignUpInput
-                fieldI='postalCodeBilling'
+                fieldId='postalCodeBilling'
                 label='Postal code'
                 register={register}
                 invalid={!!errors.postalCodeBilling}
@@ -327,11 +351,17 @@ const SignUp: FC = () => {
 
             <div className='flex checkbox-line'>
               <input
-                id='default-checkbox3'
+                id='defaultBillingdAddres'
                 type='checkbox'
                 className='checkbox'
+                checked={defaultBillingdAddres}
+                onChange={() => {
+                  return defaultBillingdAddres
+                    ? setDefaultBillingdAddres(false)
+                    : setDefaultBillingdAddres(true);
+                }}
               />
-              <label htmlFor='default-checkbox3'>
+              <label htmlFor='defaultBillingdAddres'>
                 Set as default billing address
               </label>
             </div>
@@ -345,5 +375,5 @@ const SignUp: FC = () => {
     </>
   );
 };
-export type { FormData };
+
 export default SignUp;
