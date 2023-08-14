@@ -1,6 +1,7 @@
 import React, { type MouseEventHandler } from 'react';
 import type { FC } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { ReactComponent as Logo } from '../../logo.svg';
 import style from './Header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { removeCustomer } from '../../store/customerSlice';
@@ -26,7 +27,10 @@ const Header: FC = () => {
     <header className={style.header}>
       <div className={style.logo}>
         {' '}
-        <NavLink to='/'>Logo</NavLink>
+        <NavLink to='/'>
+          <Logo />
+          ECOmmerce
+        </NavLink>
       </div>
       <div className={style.header__left}>
         <nav className={style.nav}>
