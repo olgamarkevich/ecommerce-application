@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@hookform/resolvers": "^3.2.0",
     "@commercetools/platform-sdk": "^4.11.0",
     "@commercetools/sdk-client-v2": "^2.2.0",
+    "@hookform/resolvers": "^3.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -14,6 +14,7 @@
     "@types/node": "^16.18.39",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
+    "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
@@ -46,14 +47,12 @@
     ]
   },
   "devDependencies": {
-    "@types/react-lottie": "^1.2.6",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-autofix": "^1.1.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",
     "jest": "^27.5.1",
     "prettier": "^3.0.0",
-    "react-lottie": "^1.2.3",
     "react-router-dom": "^6.14.2",
     "tailwindcss": "^3.3.3"
   }
