@@ -55,14 +55,23 @@ const Login: FC = () => {
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={style.form_line}>
           <label>Email</label>
-          <input {...register('email')} />
+          <input
+            {...register('email')}
+            className='input'
+            aria-invalid={errors.email ? 'true' : 'false'}
+          />
           <p>{errors.email?.message}</p>
         </div>
 
         <div className={style.form_line}>
           <label>Password</label>
           <div className={style.passwordHide_line}>
-            <input type={passwordType} {...register('password')} />
+            <input
+              type={passwordType}
+              {...register('password')}
+              className='input'
+              aria-invalid={errors.password ? 'true' : 'false'}
+            />
             <span
               className={[
                 style.hidePassword,
@@ -77,7 +86,12 @@ const Login: FC = () => {
           <p>{errors.password?.message}</p>
         </div>
 
-        <button type='submit'>Submit</button>
+        <button
+          type='submit'
+          className='text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+        >
+          Submit
+        </button>
       </form>
     </>
   );
