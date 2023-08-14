@@ -5,11 +5,11 @@
 }
 
 .form_line {
-  margin-bottom: 10px;
+  margin-bottom: 35px;
 }
 
 .form {
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
 }
 
@@ -45,4 +45,21 @@
 .text {
   background: url(./img/hide-icon.svg) center center no-repeat;
   background-size: 20px;
+}
+
+.addres {
+  text-align: left;
+}
+
+.addres + .addres {
+  border-bottom: none;
+}
+
+.addres h4 {
+  text-align: left;
+  margin: 30px 0 10px 0;
+}
+
+.form .flex {
+  margin-bottom: 30px;
 }

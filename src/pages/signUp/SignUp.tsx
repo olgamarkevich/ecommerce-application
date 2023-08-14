@@ -63,7 +63,6 @@ const schema = yup
       .required()
       .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field ')
       .min(1),
-
     postalCode: yup
       .string()
       .when('country', ([country], schema) => {
@@ -80,6 +79,21 @@ const schema = yup
       .oneOf(countryCodes, 'country is a required field')
       .required()
       .min(1),
+    cityBilling: yup
+      .string()
+      .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field '),
+    streetBilling: yup.string(),
+    postalCodeBilling: yup
+      .string()
+      .when('countryBilling', ([country], schema) => {
+        const zipRegExp =
+          countryZipItems.find((item) => {
+            return item.countryCode === country;
+          })?.zipRegExp || new RegExp(/.*/);
+
+        return schema.matches(zipRegExp, `invalid postalCode for ${country}`);
+      }),
+    countryBilling: yup.string(),
   })
   .required();
 
@@ -98,9 +112,12 @@ const SignUp: FC = () => {
   const onSubmit = (data: FormData) => {
     reset();
     console.log(data);
+    console.log(isBillingAddres);
   };
 
   const [passwordType, setPasswordType] = useState('password');
+
+  const [isBillingAddres, setIsBillingAddres] = useState(false);
 
   const tooglePassword = () => {
     if (passwordType === 'password') {
@@ -119,6 +136,7 @@ const SignUp: FC = () => {
           invalid={!!errors.email}
           errorText={errors.email?.message}
         />
+
         <div className={style.form_line}>
           <label className='label'>Password</label>
           <div className={style.passwordHide_line}>
@@ -141,9 +159,10 @@ const SignUp: FC = () => {
 
           <p>{errors.password?.message}</p>
         </div>
+
         <SignUpInput
           fieldI='firstname'
-          label='First name'
+          label='First name*'
           register={register}
           invalid={!!errors.firstname}
           errorText={errors.firstname?.message}
@@ -155,6 +174,7 @@ const SignUp: FC = () => {
           invalid={!!errors.lastname}
           errorText={errors.lastname?.message}
         />
+
         <div className={style.form_line}>
           <label className='label'>Date of birth</label>
           <input
@@ -165,52 +185,158 @@ const SignUp: FC = () => {
           />
           <p>{errors.dateOfBirth?.message}</p>
         </div>
-        <SignUpInput
-          fieldI='street'
-          label='Street'
-          register={register}
-          invalid={!!errors.street}
-          errorText={errors.street?.message}
-        />
-        <SignUpInput
-          fieldI='city'
-          label='City'
-          register={register}
-          invalid={!!errors.city}
-          errorText={errors.city?.message}
-        />
-        <SignUpInput
-          fieldI='postalCode'
-          label='Postal code'
-          register={register}
-          invalid={!!errors.postalCode}
-          errorText={errors.postalCode?.message}
-        />
 
-        <div className={style.form_line}>
-          <label className='label'>Country</label>
-          <select
-            {...register('country')}
-            className='select'
-            aria-invalid={errors.country ? 'true' : 'false'}
-          >
-            <option defaultValue=''>Choose a country</option>
+        <div className={style.addres}>
+          <h4>Shipping addres</h4>
 
-            {countryZipItems.map((item) => {
-              return (
-                <option
-                  value={item.countryCode}
-                  data-postCodeCountry={item.zipRegExp}
-                  key={item.countryCode}
-                >
-                  {item.countryName}
-                </option>
-              );
-            })}
-          </select>
+          <div className='columns-2'>
+            <SignUpInput
+              fieldI='street'
+              label='Street'
+              register={register}
+              invalid={!!errors.street}
+              errorText={errors.street?.message}
+            />
 
-          <p>{errors.country?.message}</p>
+            <SignUpInput
+              fieldI='city'
+              label='City'
+              register={register}
+              invalid={!!errors.city}
+              errorText={errors.city?.message}
+            />
+          </div>
+
+          <div className='columns-2'>
+            <div className={style.form_line}>
+              <label className='label'>Country</label>
+              <select
+                {...register('country')}
+                className='select'
+                aria-invalid={errors.country ? 'true' : 'false'}
+              >
+                <option defaultValue=''>Choose a country</option>
+
+                {countryZipItems.map((item) => {
+                  return (
+                    <option
+                      value={item.countryCode}
+                      // data-postCodeCountry={item.zipRegExp}
+                      key={item.countryCode}
+                    >
+                      {item.countryName}
+                    </option>
+                  );
+                })}
+              </select>
+
+              <p>{errors.country?.message}</p>
+            </div>
+            <SignUpInput
+              fieldI='postalCode'
+              label='Postal code'
+              register={register}
+              invalid={!!errors.postalCode}
+              errorText={errors.postalCode?.message}
+            />
+          </div>
+
+          <div className='flex checkbox-line'>
+            <input
+              id='default-checkbox1'
+              type='checkbox'
+              className='checkbox'
+            />
+            <label htmlFor='default-checkbox1'>
+              Set as default shipping address
+            </label>
+          </div>
+
+          <div className={style.form_line}>
+            <div className='flex checkbox-line'>
+              <input
+                id='default-checkbox'
+                type='checkbox'
+                checked={isBillingAddres}
+                className='checkbox'
+                onChange={() => {
+                  return isBillingAddres
+                    ? setIsBillingAddres(false)
+                    : setIsBillingAddres(true);
+                }}
+              />
+              <label htmlFor='default-checkbox'>Set as billing address</label>
+            </div>
+          </div>
         </div>
+
+        {!isBillingAddres && (
+          <div className={style.addres}>
+            <h4>Billing addres</h4>
+            <div className='columns-2'>
+              <SignUpInput
+                fieldI='streetBilling'
+                label='Street'
+                register={register}
+                invalid={!!errors.streetBilling}
+                errorText={errors.streetBilling?.message}
+              />
+
+              <SignUpInput
+                fieldI='cityBilling'
+                label='City'
+                register={register}
+                invalid={!!errors.cityBilling}
+                errorText={errors.cityBilling?.message}
+              />
+            </div>
+
+            <div className='columns-2'>
+              <div className={style.form_line}>
+                <label className='label'>Country</label>
+                <select
+                  {...register('countryBilling')}
+                  className='select'
+                  aria-invalid={errors.countryBilling ? 'true' : 'false'}
+                >
+                  <option defaultValue=''>Choose a country</option>
+
+                  {countryZipItems.map((item) => {
+                    return (
+                      <option
+                        value={item.countryCode}
+                        // data-postCodeCountry={item.zipRegExp}
+                        key={item.countryCode}
+                      >
+                        {item.countryName}
+                      </option>
+                    );
+                  })}
+                </select>
+
+                <p>{errors.country?.message}</p>
+              </div>
+              <SignUpInput
+                fieldI='postalCodeBilling'
+                label='Postal code'
+                register={register}
+                invalid={!!errors.postalCodeBilling}
+                errorText={errors.postalCodeBilling?.message}
+              />
+            </div>
+
+            <div className='flex checkbox-line'>
+              <input
+                id='default-checkbox3'
+                type='checkbox'
+                className='checkbox'
+              />
+              <label htmlFor='default-checkbox3'>
+                Set as default billing address
+              </label>
+            </div>
+          </div>
+        )}
 
         <button type='submit' className='btn'>
           Submit
