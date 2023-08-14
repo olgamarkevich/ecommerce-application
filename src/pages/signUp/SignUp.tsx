@@ -4,21 +4,42 @@ import { useForm } from 'react-hook-form';
 import style from './SignUp.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { SignUpInput } from 'components';
 
-const zipRegexes = {
-  US: /^\d{5}(?:-?\d{4})?$/,
-  DE: /^(?:[1-9]\d{3}|\d{5})$/,
-};
+interface CountryZipData {
+  countryName: string;
+  countryCode: string;
+  zipRegExp: RegExp;
+}
+
+const countryZipItems: CountryZipData[] = [
+  {
+    countryName: 'United States',
+    countryCode: 'US',
+    zipRegExp: /^\d{5}(?:-?\d{4})?$/,
+  },
+  {
+    countryName: 'Germany',
+    countryCode: 'DE',
+    zipRegExp: /^(?:[1-9]\d{3}|\d{5})$/,
+  },
+];
+
+const countryCodes = countryZipItems.map((item) => {
+  return item.countryCode;
+});
 
 const schema = yup
   .object({
     email: yup.string().email().required(),
-    password: yup.string().required(),
-    // .trim('password cannot include leading and trailing spaces')
-    // .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
-    // .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
-    // .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
-    // .min(8)
+    password: yup
+      .string()
+      .required()
+      .trim('password cannot include leading and trailing spaces')
+      .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
+      .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
+      .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
+      .min(8),
     firstname: yup
       .string()
       .required()
@@ -29,29 +50,34 @@ const schema = yup
       .required()
       .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field ')
       .min(1),
-    dateOfBirth: yup.date().required('Date of Birth is required'),
-    // .max(
-    //   new Date(Date.now() - 567648000000),
-    //   'you must be at least 18 years',
-    // ),
+    dateOfBirth: yup
+      .date()
+      .required('Date of Birth is required')
+      .max(
+        new Date(Date.now() - 567648000000),
+        'you must be at least 18 years',
+      ),
     street: yup.string().required().min(1),
     city: yup
       .string()
       .required()
       .matches(/^[aA-zZ\s]+$/, 'only alphabets are allowed for this field ')
       .min(1),
+
     postalCode: yup
       .string()
-      .when(['country'], (country, schema) => {
-        return schema.matches(
-          zipRegexes[country],
-          `invalid postalCode for ${country}`,
-        );
+      .when('country', ([country], schema) => {
+        const zipRegExp =
+          countryZipItems.find((item) => {
+            return item.countryCode === country;
+          })?.zipRegExp || new RegExp(/.*/);
+
+        return schema.matches(zipRegExp, `invalid postalCode for ${country}`);
       })
       .required(),
     country: yup
       .string()
-      .oneOf(['US', 'DE'], 'country is a required field')
+      .oneOf(countryCodes, 'country is a required field')
       .required()
       .min(1),
   })
@@ -76,8 +102,6 @@ const SignUp: FC = () => {
 
   const [passwordType, setPasswordType] = useState('password');
 
-  const [contryCode, setContryCode] = useState('');
-
   const tooglePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
@@ -88,18 +112,15 @@ const SignUp: FC = () => {
       <div className='title'>SignUp</div>
 
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+        <SignUpInput
+          fieldI='email'
+          label='Email'
+          register={register}
+          invalid={!!errors.email}
+          errorText={errors.email?.message}
+        />
         <div className={style.form_line}>
-          <label className='label'>Email</label>
-          <input
-            {...register('email')}
-            className='input'
-            aria-invalid={errors.email ? 'true' : 'false'}
-          />
-          <p>{errors.email?.message}</p>
-        </div>
-
-        <div className={style.form_line}>
-          <label>Password</label>
+          <label className='label'>Password</label>
           <div className={style.passwordHide_line}>
             <input
               type={passwordType}
@@ -120,27 +141,20 @@ const SignUp: FC = () => {
 
           <p>{errors.password?.message}</p>
         </div>
-
-        <div className={style.form_line}>
-          <label className='label'>First name</label>
-          <input
-            {...register('firstname')}
-            className='input'
-            aria-invalid={errors.firstname ? 'true' : 'false'}
-          />
-          <p>{errors.firstname?.message}</p>
-        </div>
-
-        <div className={style.form_line}>
-          <label className='label'>Last name</label>
-          <input
-            {...register('lastname')}
-            className='input'
-            aria-invalid={errors.lastname ? 'true' : 'false'}
-          />
-          <p>{errors.lastname?.message}</p>
-        </div>
-
+        <SignUpInput
+          fieldI='firstname'
+          label='First name'
+          register={register}
+          invalid={!!errors.firstname}
+          errorText={errors.firstname?.message}
+        />
+        <SignUpInput
+          fieldI='lastname'
+          label='Last name'
+          register={register}
+          invalid={!!errors.lastname}
+          errorText={errors.lastname?.message}
+        />
         <div className={style.form_line}>
           <label className='label'>Date of birth</label>
           <input
@@ -151,36 +165,27 @@ const SignUp: FC = () => {
           />
           <p>{errors.dateOfBirth?.message}</p>
         </div>
-
-        <div className={style.form_line}>
-          <label className='label'>Street</label>
-          <input
-            {...register('street')}
-            className='input'
-            aria-invalid={errors.street ? 'true' : 'false'}
-          />
-          <p>{errors.street?.message}</p>
-        </div>
-
-        <div className={style.form_line}>
-          <label className='label'>City</label>
-          <input
-            {...register('city')}
-            className='input'
-            aria-invalid={errors.city ? 'true' : 'false'}
-          />
-          <p>{errors.city?.message}</p>
-        </div>
-
-        <div className={style.form_line}>
-          <label className='label'>Postal code</label>
-          <input
-            {...register('postalCode')}
-            className='input'
-            aria-invalid={errors.postalCode ? 'true' : 'false'}
-          />
-          <p>{errors.postalCode?.message}</p>
-        </div>
+        <SignUpInput
+          fieldI='street'
+          label='Street'
+          register={register}
+          invalid={!!errors.street}
+          errorText={errors.street?.message}
+        />
+        <SignUpInput
+          fieldI='city'
+          label='City'
+          register={register}
+          invalid={!!errors.city}
+          errorText={errors.city?.message}
+        />
+        <SignUpInput
+          fieldI='postalCode'
+          label='Postal code'
+          register={register}
+          invalid={!!errors.postalCode}
+          errorText={errors.postalCode?.message}
+        />
 
         <div className={style.form_line}>
           <label className='label'>Country</label>
@@ -188,21 +193,20 @@ const SignUp: FC = () => {
             {...register('country')}
             className='select'
             aria-invalid={errors.country ? 'true' : 'false'}
-            onChange={(e) => {
-              return setContryCode(e.target.value);
-            }}
           >
             <option defaultValue=''>Choose a country</option>
-            <option value='US' data-postCodeCountry='^\d{5}([\-]?\d{4})?$'>
-              United States
-            </option>
 
-            <option
-              value='DE'
-              data-postCodeCountry='\b((?:0[1-46-9]\d{3})|(?:[1-357-9]\d{4})|(?:[4][0-24-9]\d{3})|(?:[6][013-9]\d{3}))\b'
-            >
-              Germany
-            </option>
+            {countryZipItems.map((item) => {
+              return (
+                <option
+                  value={item.countryCode}
+                  data-postCodeCountry={item.zipRegExp}
+                  key={item.countryCode}
+                >
+                  {item.countryName}
+                </option>
+              );
+            })}
           </select>
 
           <p>{errors.country?.message}</p>
@@ -215,5 +219,5 @@ const SignUp: FC = () => {
     </>
   );
 };
-
+export type { FormData };
 export default SignUp;
