@@ -22,14 +22,3 @@
   text-decoration: none;
   color: #222;
 }
-
-.logo a{
-  display: flex;
-  justify-content: center;
-  background: linear-gradient(to right,#ff8800, #fb3859);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-decoration: none;
-  font-size: 1.5em;
-}

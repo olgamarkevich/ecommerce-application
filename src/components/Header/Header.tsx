@@ -1,19 +1,16 @@
 import React from 'react';
 import type { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { ReactComponent as Logo } from '../../logo.svg';
 
 import style from './Header.module.css';
+import LogoLink from 'components/Logo/Logo';
 
 const Header: FC = () => {
   return (
     <header className={style.header}>
-      <div className={style.logo}>
+      <div>
         {' '}
-        <NavLink to='/'>
-          <Logo />
-          ECOmmerce
-        </NavLink>
+        <LogoLink to='/' />
       </div>
       <div className={style.haeder__left}>
         <nav className={style.nav}>
