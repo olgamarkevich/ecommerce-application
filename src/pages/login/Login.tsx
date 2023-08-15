@@ -15,10 +15,6 @@ const schema = yup
       .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
       .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
       .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
-      .matches(
-        /^(?=.*[!@#\$%\^&\*])/,
-        'must Contain  One Special Case Character',
-      )
       .min(8),
   })
   .required();
@@ -54,7 +50,7 @@ const Login: FC = () => {
 
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={style.form_line}>
-          <label>Email</label>
+          <label>Email*</label>
           <input
             {...register('email')}
             className='input'
@@ -64,13 +60,14 @@ const Login: FC = () => {
         </div>
 
         <div className={style.form_line}>
-          <label>Password</label>
+          <label>Password*</label>
           <div className={style.passwordHide_line}>
             <input
               type={passwordType}
               {...register('password')}
               className='input'
-              aria-invalid={errors.password ? 'true' : 'false'}
+              aria-invalid={!!errors.password}
+              autoComplete='password'
             />
             <span
               className={[
