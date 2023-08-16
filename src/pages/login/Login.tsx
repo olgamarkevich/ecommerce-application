@@ -5,7 +5,8 @@ import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { email, password } from 'helpers/settingSchema';
-import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
+import useCustomerSignIn from '../../hooks/useCustomerSignIn';
 import { setCustomerCredentials } from '../../store/customerSlice';
 
 const schema = yup
