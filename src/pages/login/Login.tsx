@@ -5,6 +5,8 @@ import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { email, password } from 'helpers/settingSchema';
+import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
+import { setCustomerCredentials } from '../../store/customerSlice';
 
 const schema = yup
   .object({
@@ -16,26 +18,31 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const [passwordType, setPasswordType] = useState('password');
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    reset();
-    console.log(data);
-  };
-
-  const [passwordType, setPasswordType] = useState('password');
+  useCustomerSignIn(errors, setError);
 
   const changePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
     } else setPasswordType('password');
+  };
+
+  const onSubmit = (data: FormData) => {
+    dispatch(setCustomerCredentials(data));
+    reset(undefined, { keepErrors: true });
   };
 
   return (
@@ -76,13 +83,13 @@ const Login: FC = () => {
 
           <p>{errors.password?.message}</p>
         </div>
-
         <button
           type='submit'
           className='text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
         >
           Submit
         </button>
+        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>
   );
