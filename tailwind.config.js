@@ -6,6 +6,7 @@ module.exports = {
       colors: {
         'c-orange': '#ff8800',
         'c-pink-red': '#fb3859',
+        'c-pail-ember': '#fcb5c3',
       },
     },
   },

@@ -2,7 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 import type { ILinkItem } from 'types/componentTypes';
 import { NavLink } from 'react-router-dom';
-import { ReactComponent as Logo } from './logo.svg';
+import { ReactComponent as Logo } from '../../assets/logo.svg';
 
 const LogoLink: FC<Pick<ILinkItem, 'to'>> = ({ to }) => {
   const logoSvgSettings = {
