@@ -3,18 +3,48 @@ import {
   createSlice,
   type PayloadAction,
 } from '@reduxjs/toolkit';
-import { getCustomerFromLocalStorage } from '../helpers/appHelpers';
+import {
+  getCustomerFromLocalStorage,
+  saveCustomerToLocalStorage,
+} from '../helpers/appHelpers';
 import type { AuthState } from '../types/storeTypes';
+import type { CustomerId, UserType } from '../types/storeTypes';
 
-export const receiveCustomerFromLocalStorage = createAsyncThunk(
+export const loadCustomerFromLocalStorage = createAsyncThunk(
   'auth/receiveCustomerFromLocalStorage',
   () => {
     return getCustomerFromLocalStorage();
   },
 );
 
+export const setCustomerToken = createAsyncThunk(
+  'auth/setCustomerToken',
+  (customer: {
+    userType: UserType;
+    customerId: CustomerId;
+    accessToken: string;
+    refreshToken: string;
+  }) => {
+    saveCustomerToLocalStorage(customer);
+
+    return customer;
+  },
+);
+
+export const logoutCustomer = createAsyncThunk('auth/logoutCustomer', () => {
+  const customer = {
+    userType: null,
+    customerId: null,
+    accessToken: '',
+    refreshToken: '',
+  };
+
+  saveCustomerToLocalStorage(customer);
+
+  return customer;
+});
+
 const initialState: AuthState = {
-  isDataLoaded: false,
   userType: null,
   customerId: null,
   accessToken: '',
@@ -25,18 +55,15 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUserAuthorization: (
-      state,
-      action: PayloadAction<Omit<AuthState, 'isDataLoaded'>>,
-    ) => {
+    setUserAuthorization: (state, action: PayloadAction<AuthState>) => {
       return {
         ...state,
         ...action.payload,
       };
     },
-    removeUserAuthorization: () => {
+    removeUserAuthorization: (state) => {
       return {
-        isDataLoaded: false,
+        ...state,
         userType: null,
         customerId: null,
         accessToken: '',
@@ -45,12 +72,15 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      receiveCustomerFromLocalStorage.fulfilled,
-      (state, action) => {
-        return { isDataLoaded: true, ...action.payload };
-      },
-    );
+    builder.addCase(loadCustomerFromLocalStorage.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
+    });
+    builder.addCase(setCustomerToken.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
+    });
+    builder.addCase(logoutCustomer.fulfilled, (state, action) => {
+      return { ...state, ...action.payload };
+    });
   },
 });
 

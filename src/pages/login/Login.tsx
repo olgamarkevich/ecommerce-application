@@ -4,6 +4,8 @@ import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
+import { setCustomerCredentials } from '../../store/customerSlice';
 
 const schema = yup
   .object({
@@ -30,26 +32,31 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const [passwordType, setPasswordType] = useState('password');
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    reset();
-    console.log(data);
-  };
+  useCustomerSignIn(errors, setError);
 
-  const [passwordType, setPasswordType] = useState('password');
-
-  const tooglePassword = () => {
+  const togglePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
     } else setPasswordType('password');
+  };
+
+  const onSubmit = (data: FormData) => {
+    dispatch(setCustomerCredentials(data));
+    reset(undefined, { keepErrors: true });
   };
 
   return (
@@ -73,7 +80,7 @@ const Login: FC = () => {
                 passwordType === 'password' ? style.password : style.text,
               ].join(' ')}
               onClick={() => {
-                return tooglePassword();
+                return togglePassword();
               }}
             />
           </div>
@@ -82,6 +89,7 @@ const Login: FC = () => {
         </div>
 
         <button type='submit'>Submit</button>
+        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>
   );
