@@ -40,7 +40,7 @@ export const applyResponseEffects = (
   dispatch: RootDispatch,
 ): void => {
   if (
-    endpoint.endsWith('Token') &&
+    endpoint === 'refreshToken' &&
     data &&
     typeof data === 'object' &&
     'access_token' in data &&
@@ -51,6 +51,7 @@ export const applyResponseEffects = (
     typeof data.scope === 'string'
   ) {
     const customer = getCustomerIdFromScopes(data.scope);
+
     if (customer) {
       const customerData = {
         ...customer,
