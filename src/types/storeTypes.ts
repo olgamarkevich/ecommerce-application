@@ -30,7 +30,7 @@ export interface Customer {
 export type CustomerCredentials = Pick<Customer, 'email' | 'password'>;
 
 export interface RegistrationAddress {
-  country: 'US' | 'DE';
+  country: 'US' | 'DE' | '';
   firstName: string;
   lastName: string;
   streetName: string;
@@ -38,7 +38,7 @@ export interface RegistrationAddress {
   city: string;
 }
 
-export interface CustomerSignup {
+export interface CustomerSignUp {
   email: string;
   password: string;
   firstName: string;

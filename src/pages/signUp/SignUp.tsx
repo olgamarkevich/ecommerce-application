@@ -22,6 +22,8 @@ import {
   street,
   streetBilling,
 } from 'helpers/settingSchema';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setCustomerSignUpData } from '../../store/customerSignUpSlice';
 
 const schema = yup
   .object({
@@ -44,6 +46,8 @@ const schema = yup
 export type FormData = RequiredKeepUndefined<yup.InferType<typeof schema>>;
 
 const SignUp: FC = () => {
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -54,10 +58,45 @@ const SignUp: FC = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    console.log('isBillingAddress', isBillingAddress);
-    console.log('defaultShippingAddress', defaultShippingAddress);
-    console.log('defaultBillingAddress', defaultBillingAddress);
+    dispatch(
+      setCustomerSignUpData({
+        email: data.email,
+        password: data.password,
+        firstName: data.firstname,
+        lastName: data.lastname,
+        dateOfBirth: data.dateOfBirth as Date,
+        addresses: [
+          {
+            country: data.country as 'US' | 'DE',
+            firstName: data.firstname,
+            lastName: data.lastname,
+            streetName: data.street,
+            postalCode: data.postalCode,
+            city: data.city,
+          },
+          {
+            country: (isBillingAddress
+              ? data.country
+              : data.countryBilling ?? '') as 'US' | 'DE' | '',
+            firstName: data.firstname,
+            lastName: data.lastname,
+            streetName: isBillingAddress
+              ? data.street
+              : data.streetBilling ?? '',
+            postalCode: isBillingAddress
+              ? data.postalCode
+              : data.postalCodeBilling ?? '',
+            city: isBillingAddress ? data.city : data.cityBilling ?? '',
+          },
+        ],
+        defaultShippingAddress: null,
+        defaultBillingAddress: null,
+        isBillingTheSame: isBillingAddress,
+        isShippingDefault: defaultShippingAddress,
+        isBillingDefault: defaultBillingAddress,
+      }),
+    );
+
     reset();
     setIsBillingAddress(false);
     setDefaultBillingAddress(false);
@@ -298,6 +337,7 @@ const SignUp: FC = () => {
         <button type='submit' className='btn'>
           Submit
         </button>
+        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>
   );
