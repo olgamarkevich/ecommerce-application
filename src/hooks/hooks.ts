@@ -181,7 +181,7 @@ export const useCustomerSignIn = (
           dispatch(setAuthorizationState(true));
         })
         .then(() => {
-          navigate('/');
+          navigate('/', { replace: true });
         });
     }
   }, [dispatch, navigate, tokenData]);
