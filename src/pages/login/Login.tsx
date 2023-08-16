@@ -4,18 +4,12 @@ import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { email, password } from 'helpers/settingSchema';
 
 const schema = yup
   .object({
-    email: yup.string().email().required(),
-    password: yup
-      .string()
-      .required()
-      .trim('password cannot include leading and trailing spaces')
-      .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
-      .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
-      .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
-      .min(8),
+    ...email,
+    ...password,
   })
   .required();
 
@@ -38,7 +32,7 @@ const Login: FC = () => {
 
   const [passwordType, setPasswordType] = useState('password');
 
-  const tooglePassword = () => {
+  const changePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
     } else setPasswordType('password');
@@ -54,7 +48,7 @@ const Login: FC = () => {
           <input
             {...register('email')}
             className='input'
-            aria-invalid={errors.email ? 'true' : 'false'}
+            aria-invalid={!!errors.email}
           />
           <p>{errors.email?.message}</p>
         </div>
@@ -75,7 +69,7 @@ const Login: FC = () => {
                 passwordType === 'password' ? style.password : style.text,
               ].join(' ')}
               onClick={() => {
-                return tooglePassword();
+                return changePassword();
               }}
             />
           </div>
