@@ -1,11 +1,10 @@
-import type { Customer, CustomerCredentials } from '../types/storeTypes';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import type { Customer, CustomerCredentials } from '../types/storeTypes';
 
 const initialState: Customer = {
   id: '',
   firstName: '',
   lastName: '',
-  middleName: '',
   addresses: [],
   billingAddressIds: [],
   shippingAddressIds: [],
@@ -38,7 +37,6 @@ export const customerSlice = createSlice({
         id: '',
         firstName: '',
         lastName: '',
-        middleName: '',
         addresses: [],
         billingAddressIds: [],
         shippingAddressIds: [],

@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import appReducer from './appSlice';
 import authReducer from './authSlice';
 import customerReducer from './customerSlice';
+import customerSignupReducer from './customerSignupSlice';
 import { apiClient } from '../api/apiClient';
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     app: appReducer,
     auth: authReducer,
     customer: customerReducer,
+    customerSignup: customerSignupReducer,
     [apiClient.reducerPath]: apiClient.reducer,
   },
   middleware: (getDefaultMiddleware) => {
