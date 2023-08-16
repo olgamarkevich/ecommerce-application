@@ -1,7 +1,7 @@
-import type { CustomerSignup } from '../types/storeTypes';
+import type { CustomerSignUp } from '../types/storeTypes';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: CustomerSignup = {
+const initialState: CustomerSignUp = {
   email: '',
   password: '',
   firstName: '',
@@ -15,17 +15,17 @@ const initialState: CustomerSignup = {
   isBillingDefault: false,
 };
 
-export const customerSignupSlice = createSlice({
+export const customerSignUpSlice = createSlice({
   name: 'customerSignup',
   initialState,
   reducers: {
-    setCustomerSignupData: (state, action: PayloadAction<CustomerSignup>) => {
+    setCustomerSignUpData: (state, action: PayloadAction<CustomerSignUp>) => {
       return {
         ...state,
         ...action.payload,
       };
     },
-    clearCustomerSignupData: (state) => {
+    clearCustomerSignUpData: (state) => {
       return {
         ...state,
         email: '',
@@ -44,7 +44,7 @@ export const customerSignupSlice = createSlice({
   },
 });
 
-export const { setCustomerSignupData, clearCustomerSignupData } =
-  customerSignupSlice.actions;
+export const { setCustomerSignUpData, clearCustomerSignUpData } =
+  customerSignUpSlice.actions;
 
-export default customerSignupSlice.reducer;
+export default customerSignUpSlice.reducer;
