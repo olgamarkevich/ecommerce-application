@@ -7,7 +7,7 @@ import LinkItem from 'components/LinkItem/LinkItem';
 
 const Header: FC = () => {
   return (
-    <header className={`bg-sky-100 ${style.header}`}>
+    <header className={`bg-sky-100 shadow-md ${style.header}`}>
       <div>
         {' '}
         <LogoLink to='/' />

@@ -7,6 +7,8 @@ module.exports = {
         'c-orange': '#ff8800',
         'c-pink-red': '#fb3859',
         'c-pail-ember': '#fcb5c3',
+        'c-sky': '#e0f2fe',
+        'c-sky-green': '#bbe6cb',
       },
     },
   },
