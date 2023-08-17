@@ -17,10 +17,10 @@ const Page404: FC = () => {
   return (
     <div className={style.notFoundImg}>
       <Lottie options={defaultOptions} height='max-content' />
-      <span className=' font-bold text-2xl text-stone-800'>Page not found</span>
+      <span className=' font-bold text-2xl text-cyan-900'>Page not found</span>
       <TextInfo
-        text="Sorry, the page you're looking for doesn't exist. Please check the URL
-        or return to the homepage."
+        text="Sorry, the page you're looking for doesn't exist. Please check the URL or return to the homepage."
+        className='font-light text-xs text-cyan-800'
       />
     </div>
   );
