@@ -9,6 +9,7 @@ module.exports = {
         'c-pail-ember': '#fcb5c3',
         'c-sky': '#e0f2fe',
         'c-sky-green': '#bbe6cb',
+        'c-grass': '#df6c4f',
       },
     },
   },
