@@ -3,9 +3,9 @@ import type {
   getAccessTokenResponse,
   getCustomerTokenResponse,
   IntrospectTokenResponse,
-  CustomerCredentials,
 } from '../types/apiTypes';
 import type { RootState } from '../store/store';
+import type { CustomerCredentials } from '../types/storeTypes';
 
 const authApi = apiClient.injectEndpoints({
   endpoints: (build) => {
@@ -24,7 +24,13 @@ const authApi = apiClient.injectEndpoints({
       >({
         query: ({ email, password }) => {
           const method = 'POST';
-          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/${process.env.REACT_APP_PROJECT_KEY}/customers/token?grant_type=password&username=${email}&password=${password}&scope=${process.env.REACT_APP_SCOPES}`;
+          const url = `${process.env.REACT_APP_AUTH_URL}/oauth/${
+            process.env.REACT_APP_PROJECT_KEY
+          }/customers/token?grant_type=password&username=${encodeURIComponent(
+            email,
+          )}&password=${encodeURIComponent(password)}&scope=${
+            process.env.REACT_APP_SCOPES
+          }`;
 
           return { url, method };
         },

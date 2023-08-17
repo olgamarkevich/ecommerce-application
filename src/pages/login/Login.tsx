@@ -4,52 +4,45 @@ import { useForm } from 'react-hook-form';
 import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { email, password } from 'helpers/settingSchema';
+import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
+import { setCustomerCredentials } from '../../store/customerSlice';
 
 const schema = yup
   .object({
-    email: yup
-      .string()
-      .email()
-      .min(3, 'must be at least 3 characters long')
-      .required(),
-    password: yup
-      .string()
-      .required()
-      .trim('Password cannot include leading and trailing spaces')
-      .matches(/^(?=.*[a-z])/, 'Must Contain One Lowercase Character')
-      .matches(/^(?=.*[A-Z])/, 'Must Contain One Uppercase Character')
-      .matches(/^(?=.*[0-9])/, 'Must Contain One Number Character')
-      .matches(
-        /^(?=.*[!@#\$%\^&\*])/,
-        'Must Contain  One Special Case Character',
-      )
-      .min(8),
+    ...email,
+    ...password,
   })
   .required();
 
 type FormData = yup.InferType<typeof schema>;
 
 const Login: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const [passwordType, setPasswordType] = useState('password');
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
-    reset();
-    console.log(data);
-  };
+  useCustomerSignIn(errors, setError);
 
-  const [passwordType, setPasswordType] = useState('password');
-
-  const tooglePassword = () => {
+  const changePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
     } else setPasswordType('password');
+  };
+
+  const onSubmit = (data: FormData) => {
+    dispatch(setCustomerCredentials(data));
+    reset(undefined, { keepErrors: true });
   };
 
   return (
@@ -58,22 +51,32 @@ const Login: FC = () => {
 
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={style.form_line}>
-          <label>Email</label>
-          <input {...register('email')} />
+          <label>Email*</label>
+          <input
+            {...register('email')}
+            className='input'
+            aria-invalid={!!errors.email}
+          />
           <p>{errors.email?.message}</p>
         </div>
 
         <div className={style.form_line}>
-          <label>Password</label>
+          <label>Password*</label>
           <div className={style.passwordHide_line}>
-            <input type={passwordType} {...register('password')} />
+            <input
+              type={passwordType}
+              {...register('password')}
+              className='input'
+              aria-invalid={!!errors.password}
+              autoComplete='password'
+            />
             <span
               className={[
                 style.hidePassword,
                 passwordType === 'password' ? style.password : style.text,
               ].join(' ')}
               onClick={() => {
-                return tooglePassword();
+                return changePassword();
               }}
             />
           </div>
@@ -81,7 +84,13 @@ const Login: FC = () => {
           <p>{errors.password?.message}</p>
         </div>
 
-        <button type='submit'>Submit</button>
+        <button
+          type='submit'
+          className='text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+        >
+          Submit
+        </button>
+        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>
   );
