@@ -3,6 +3,7 @@ import type { FC } from 'react';
 import Lottie from 'react-lottie';
 import loader from './loader404.json';
 import style from './Page404.module.css';
+import TextInfo from 'components/TextInfo/TextInfo';
 
 const Page404: FC = () => {
   const defaultOptions = {
@@ -16,6 +17,11 @@ const Page404: FC = () => {
   return (
     <div className={style.notFoundImg}>
       <Lottie options={defaultOptions} height='max-content' />
+      <span className=' font-bold text-2xl text-stone-800'>Page not found</span>
+      <TextInfo
+        text="Sorry, the page you're looking for doesn't exist. Please check the URL
+        or return to the homepage."
+      />
     </div>
   );
 };

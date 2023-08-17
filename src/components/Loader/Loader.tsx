@@ -1,6 +1,6 @@
 import React from 'react';
 import type { FC } from 'react';
-import { ReactComponent as LoaderSVG } from '../../assets/loader.svg';
+import { ReactComponent as LoaderSVG } from '../../assets/svg/loader.svg';
 
 const Loader: FC = () => {
   return (
