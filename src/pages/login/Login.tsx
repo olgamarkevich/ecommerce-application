@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { email, password } from 'helpers/settingSchema';
 import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
 import { setCustomerCredentials } from '../../store/customerSlice';
+import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 
 const schema = yup
   .object({
@@ -84,12 +85,7 @@ const Login: FC = () => {
           <p>{errors.password?.message}</p>
         </div>
 
-        <button
-          type='submit'
-          className='text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-        >
-          Submit
-        </button>
+        <ButtonSubmit text='Submit' />
         {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>

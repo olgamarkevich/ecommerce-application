@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import type { RequiredKeepUndefined } from 'helpers/typesHelpers';
 import SignUpInput from './SignUpInput/SignUpInput';
+import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import {
   city,
   cityBilling,
@@ -87,7 +88,6 @@ const SignUp: FC = () => {
           invalid={!!errors.email}
           errorText={errors.email?.message}
         />
-
         <div className={style.form_line}>
           <label className='label'>Password*</label>
           <div className={style.passwordHide_line}>
@@ -111,7 +111,6 @@ const SignUp: FC = () => {
 
           <p>{errors.password?.message}</p>
         </div>
-
         <SignUpInput
           fieldId='firstname'
           label='First name*'
@@ -126,7 +125,6 @@ const SignUp: FC = () => {
           invalid={!!errors.lastname}
           errorText={errors.lastname?.message}
         />
-
         <div className={style.form_line}>
           <label className='label'>Date of birth*</label>
           <input
@@ -137,7 +135,6 @@ const SignUp: FC = () => {
           />
           <p>{errors.dateOfBirth?.message}</p>
         </div>
-
         <div className={style.address}>
           <h4>Shipping address</h4>
 
@@ -223,7 +220,6 @@ const SignUp: FC = () => {
             </div>
           </div>
         </div>
-
         {!isBillingAddress && (
           <div className={style.address}>
             <h4>Billing address</h4>
@@ -294,10 +290,7 @@ const SignUp: FC = () => {
             </div>
           </div>
         )}
-
-        <button type='submit' className='btn'>
-          Submit
-        </button>
+        <ButtonSubmit text='Submit' />
       </form>
     </>
   );

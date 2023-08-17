@@ -12,11 +12,9 @@ const Page404: FC = () => {
     animationData: loader,
   };
   const { View } = useLottie(options);
-
-  return <div className={style.notFoundImg}>{View}</div>;
   return (
     <div className={style.notFoundImg}>
-      <Lottie options={defaultOptions} height='max-content' />
+      {View}
       <span className=' font-bold text-2xl text-cyan-900'>Page not found</span>
       <TextInfo
         text="Sorry, the page you're looking for doesn't exist. Please check the URL or return to the homepage."

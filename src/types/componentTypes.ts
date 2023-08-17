@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { MouseEventHandler } from 'react';
 
 export interface IText {
   text: string;
@@ -7,6 +8,7 @@ export interface IText {
 export interface ILinkItem {
   to: string;
   children: React.ReactNode;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 export interface IButton {

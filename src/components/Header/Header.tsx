@@ -1,7 +1,7 @@
 import React, { type MouseEventHandler } from 'react';
 import type { FC } from 'react';
 
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import style from './Header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { removeCustomer } from '../../store/customerSlice';
@@ -46,9 +46,9 @@ const Header: FC = () => {
             )}
             {!!id && (
               <li className={style.nav__link}>
-                <NavLink to='/' onClick={logoutHandler}>
+                <LinkItem to='/' onClick={logoutHandler}>
                   Log out
-                </NavLink>
+                </LinkItem>
               </li>
             )}
           </ul>
