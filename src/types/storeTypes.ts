@@ -3,10 +3,16 @@ import type { Address } from '@commercetools/platform-sdk';
 export type UserType = 'anonymous' | 'customer' | null;
 export type CustomerId = string | null;
 
+export interface TextInfoState {
+  msgText: string;
+  isOnView: boolean;
+}
+
 export interface AppState {
   isInitialized: boolean;
   isAuthorized: boolean;
   isCustomerLogged: boolean;
+  textInfo: TextInfoState | null;
 }
 
 export interface AuthState {
