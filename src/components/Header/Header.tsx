@@ -1,18 +1,18 @@
 import React, { type MouseEventHandler } from 'react';
 import type { FC } from 'react';
-
-import { useNavigate } from 'react-router-dom';
 import style from './Header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { removeCustomer } from '../../store/customerSlice';
 import { logoutCustomer } from '../../store/authSlice';
-import { setAuthorizationState } from '../../store/appSlice';
 import LogoLink from 'components/Logo/Logo';
 import LinkItem from 'components/LinkItem/LinkItem';
+import {
+  setAuthorizationState,
+  setCustomerLoggedState,
+} from '../../store/appSlice';
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { id } = useAppSelector((state) => {
     return state.customer;
   });
@@ -22,7 +22,7 @@ const Header: FC = () => {
     dispatch(setAuthorizationState(false));
     await dispatch(logoutCustomer());
     dispatch(removeCustomer());
-    navigate('/');
+    dispatch(setCustomerLoggedState(false));
   };
 
   return (
