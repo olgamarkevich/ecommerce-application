@@ -1,13 +1,15 @@
 import type { FieldErrors } from 'react-hook-form/dist/types/errors';
 import type { UseFormSetError } from 'react-hook-form/dist/types/form';
-import { useNavigate } from 'react-router-dom';
 import { useSignInCustomerQuery } from '../api/customerApi';
 import { useGetCustomerTokenQuery } from '../api/authApi';
 import { useEffect } from 'react';
 import { setCustomerData } from '../store/customerSlice';
 import { getCustomerFromApiResponse } from '../helpers/appHelpers';
 import { setCustomerToken } from '../store/authSlice';
-import { setAuthorizationState } from '../store/appSlice';
+import {
+  setAuthorizationState,
+  setCustomerLoggedState,
+} from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
 
 const useCustomerSignIn = (
@@ -15,7 +17,6 @@ const useCustomerSignIn = (
   setError: UseFormSetError<{ email: string; password: string }>,
 ) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const { email, password, id } = useAppSelector((state) => {
     return state.customer;
@@ -51,11 +52,13 @@ const useCustomerSignIn = (
 
   // Set customer data
   useEffect(() => {
-    if (customerData && customerData.customer && customerData.customer.id) {
+    if (customerData && customerData.customer) {
       const {
         id,
+        version,
         firstName = '',
         lastName = '',
+        dateOfBirth = '',
         addresses = [],
         billingAddressIds = [],
         shippingAddressIds = [],
@@ -63,8 +66,10 @@ const useCustomerSignIn = (
       dispatch(
         setCustomerData({
           id,
+          version,
           firstName,
           lastName,
+          dateOfBirth,
           addresses,
           billingAddressIds,
           shippingAddressIds,
@@ -78,15 +83,12 @@ const useCustomerSignIn = (
     if (tokenData) {
       const customer = getCustomerFromApiResponse(tokenData);
 
-      dispatch(setCustomerToken(customer))
-        .then(() => {
-          dispatch(setAuthorizationState(true));
-        })
-        .then(() => {
-          navigate('/', { replace: true });
-        });
+      dispatch(setCustomerToken(customer)).then(() => {
+        dispatch(setAuthorizationState(true));
+        dispatch(setCustomerLoggedState(true));
+      });
     }
-  }, [dispatch, navigate, tokenData]);
+  }, [dispatch, tokenData]);
 };
 
 export default useCustomerSignIn;

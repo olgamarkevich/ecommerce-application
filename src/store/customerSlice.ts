@@ -3,8 +3,10 @@ import type { Customer, CustomerCredentials } from '../types/storeTypes';
 
 const initialState: Customer = {
   id: '',
+  version: null,
   firstName: '',
   lastName: '',
+  dateOfBirth: '',
   addresses: [],
   billingAddressIds: [],
   shippingAddressIds: [],
@@ -35,8 +37,10 @@ export const customerSlice = createSlice({
       return {
         ...state,
         id: '',
+        version: null,
         firstName: '',
         lastName: '',
+        dateOfBirth: '',
         addresses: [],
         billingAddressIds: [],
         shippingAddressIds: [],
