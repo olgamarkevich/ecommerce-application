@@ -6,6 +6,9 @@ module.exports = {
       boxShadow: {
         'custom-inner': 'inset 0 0 0 2em #df6c4f',
       },
+      maxWidth: {
+        '100vh': '100vh',
+      },
       colors: {
         'c-orange': '#ff8800',
         'c-pink-red': '#fb3859',
