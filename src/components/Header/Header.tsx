@@ -26,7 +26,7 @@ const Header: FC = () => {
   };
 
   return (
-    <header className={`bg-sky-100 shadow-md ${style.header}`}>
+    <header className={`bg-sky-200 shadow-md ${style.header}`}>
       <div>
         {' '}
         <LogoLink to='/' />

@@ -13,7 +13,7 @@ body {
   font-family: 'Epilogue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: theme('colors.c-sky');
+  @apply bg-sky-50;
 }
 
 code {
