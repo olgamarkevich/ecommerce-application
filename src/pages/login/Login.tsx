@@ -8,6 +8,7 @@ import { email, password } from 'helpers/settingSchema';
 import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
 import { setCustomerCredentials } from '../../store/customerSlice';
 import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
+import Title from 'components/Title/Title';
 
 const schema = yup
   .object({
@@ -48,8 +49,7 @@ const Login: FC = () => {
 
   return (
     <>
-      <div className='title'>Login</div>
-
+      <Title text='LOGIN' size={'large'} />
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <div className={style.form_line}>
           <label>Email*</label>

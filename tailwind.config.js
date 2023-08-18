@@ -9,6 +9,10 @@ module.exports = {
       maxWidth: {
         '100vh': '100vh',
       },
+      fontFamily: {
+        'f-rubik': ['Rubik', 'sans-serif'],
+        'f-open-sans': ['Open-Sans', 'sans-serif'],
+      },
       colors: {
         'c-orange': '#ff8800',
         'c-pink-red': '#fb3859',

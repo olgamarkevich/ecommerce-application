@@ -3,14 +3,18 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Epilogue';
-  src: local('Epilogue') url(./assets/fonts/Epilogue-Regular.ttf)
-    format(trueType);
+  font-family: 'Open-Sans';
+  src: url('./assets/fonts/OpenSans-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/Rubik-Regular.ttf') format('trueType');
 }
 
 body {
   margin: 0;
-  font-family: 'Epilogue', sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @apply bg-sky-50;
