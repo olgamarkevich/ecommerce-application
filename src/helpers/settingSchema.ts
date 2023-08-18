@@ -25,6 +25,8 @@ export const countryCodes = countryZipItems.map((item) => {
 
 export const email = { email: yup.string().email().required() };
 
+export const isBillingTheSame = { isBillingTheSame: yup.boolean() };
+
 export const password = {
   password: yup
     .string()
@@ -112,15 +114,28 @@ export const cityBilling = {
     .matches(
       /^[a-zA-ZäöüßÄÖÜ\s-]*$/,
       'only alphabets are allowed for this field ',
-    ),
+    )
+    .when('isBillingTheSame', (isBillingTheSame, schema) => {
+      return isBillingTheSame[0] ? schema : schema.required();
+    }),
 };
 
 export const streetBilling = {
-  streetBilling: yup.string(),
+  streetBilling: yup
+    .string()
+    .when('isBillingTheSame', (isBillingTheSame, schema) => {
+      return isBillingTheSame[0] ? schema : schema.required();
+    }),
 };
 
 export const countryBilling = {
-  countryBilling: yup.string(),
+  countryBilling: yup
+    .string()
+    .when('isBillingTheSame', (isBillingTheSame, schema) => {
+      return isBillingTheSame[0]
+        ? schema
+        : schema.required().oneOf(countryCodes, 'country is a required field');
+    }),
 };
 
 export const postalCodeBilling = {
@@ -136,5 +151,8 @@ export const postalCodeBilling = {
         zipRegExp,
         `invalid postalCode for ${countryBilling}`,
       );
+    })
+    .when('isBillingTheSame', (isBillingTheSame, schema) => {
+      return isBillingTheSame[0] ? schema : schema.required();
     }),
 };
