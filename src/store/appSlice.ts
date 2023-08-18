@@ -4,7 +4,7 @@ import type { AppState } from '../types/storeTypes';
 const initialState: AppState = {
   isInitialized: false,
   isAuthorized: false,
-  canRerender: true,
+  isCustomerLogged: false,
 };
 
 export const appSlice = createSlice({
@@ -15,10 +15,10 @@ export const appSlice = createSlice({
       return { ...state, isInitialized: action.payload };
     },
     setAuthorizationState: (state, action: PayloadAction<boolean>) => {
-      return { ...state, isInitialized: action.payload };
+      return { ...state, isAuthorized: action.payload };
     },
-    setRerenderAbility: (state, action: PayloadAction<boolean>) => {
-      return { ...state, canRerender: action.payload };
+    setCustomerLoggedState: (state, action: PayloadAction<boolean>) => {
+      return { ...state, isCustomerLogged: action.payload };
     },
   },
 });
@@ -26,7 +26,7 @@ export const appSlice = createSlice({
 export const {
   setInitializationState,
   setAuthorizationState,
-  setRerenderAbility,
+  setCustomerLoggedState,
 } = appSlice.actions;
 
 export default appSlice.reducer;

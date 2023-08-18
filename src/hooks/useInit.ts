@@ -7,6 +7,7 @@ import {
 } from '../store/authSlice';
 import {
   setAuthorizationState,
+  setCustomerLoggedState,
   setInitializationState,
 } from '../store/appSlice';
 import { getCustomerFromApiResponse } from '../helpers/appHelpers';
@@ -24,6 +25,9 @@ const useInit = () => {
   const { id } = useAppSelector((state) => {
     return state.customer;
   });
+  const { email } = useAppSelector((state) => {
+    return state.customerSignUp;
+  });
 
   // Fetch anonymous token if no customerId saved and after setting data from storage
   const { data: authData } = useGetAnonymousTokenQuery(undefined, {
@@ -32,7 +36,7 @@ const useInit = () => {
 
   // Fetch customer data if customer saved
   const { data: customerData } = useGetCustomerQuery(undefined, {
-    skip: !customerId || userType !== 'customer' || !!id,
+    skip: !customerId || userType !== 'customer' || !!id || !!email,
   });
 
   // Load customer data from local storage when start App
@@ -60,8 +64,10 @@ const useInit = () => {
     if (customerData) {
       const {
         id,
+        version,
         firstName = '',
         lastName = '',
+        dateOfBirth = '',
         addresses = [],
         billingAddressIds = [],
         shippingAddressIds = [],
@@ -69,13 +75,16 @@ const useInit = () => {
       dispatch(
         setCustomerData({
           id,
+          version,
           firstName,
           lastName,
+          dateOfBirth,
           addresses,
           billingAddressIds,
           shippingAddressIds,
         }),
       );
+      dispatch(setCustomerLoggedState(true));
     }
   }, [dispatch, customerData]);
 };

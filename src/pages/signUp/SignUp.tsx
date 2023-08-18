@@ -24,6 +24,7 @@ import {
 } from 'helpers/settingSchema';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setCustomerSignUpData } from '../../store/customerSignUpSlice';
+import useCustomerSignUp from '../../hooks/useCustomerSignUp';
 
 const schema = yup
   .object({
@@ -53,51 +54,62 @@ const SignUp: FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  useCustomerSignUp(errors, setError);
+
   const onSubmit = (data: FormData) => {
+    const dateOfBirth: string = data.dateOfBirth
+      ? `${String(data.dateOfBirth.getUTCFullYear())}-${String(
+          data.dateOfBirth.getUTCMonth() + 1,
+        )}-${String(data.dateOfBirth.getUTCDate())}`
+      : '';
+
     dispatch(
       setCustomerSignUpData({
-        email: data.email,
+        email: data.email.trim(),
         password: data.password,
-        firstName: data.firstname,
-        lastName: data.lastname,
-        dateOfBirth: data.dateOfBirth as Date,
+        firstName: data.firstname.trim(),
+        lastName: data.lastname.trim(),
+        dateOfBirth,
         addresses: [
           {
             country: data.country as 'US' | 'DE',
-            firstName: data.firstname,
-            lastName: data.lastname,
-            streetName: data.street,
+            firstName: data.firstname.trim(),
+            lastName: data.lastname.trim(),
+            streetName: data.street.trim(),
             postalCode: data.postalCode,
-            city: data.city,
+            city: data.city.trim(),
           },
           {
             country: (isBillingAddress
               ? data.country
               : data.countryBilling ?? '') as 'US' | 'DE' | '',
-            firstName: data.firstname,
-            lastName: data.lastname,
-            streetName: isBillingAddress
+            firstName: data.firstname.trim(),
+            lastName: data.lastname.trim(),
+            streetName: (isBillingAddress
               ? data.street
-              : data.streetBilling ?? '',
+              : data.streetBilling ?? ''
+            ).trim(),
             postalCode: isBillingAddress
               ? data.postalCode
               : data.postalCodeBilling ?? '',
-            city: isBillingAddress ? data.city : data.cityBilling ?? '',
+            city: (isBillingAddress
+              ? data.city
+              : data.cityBilling ?? ''
+            ).trim(),
           },
         ],
-        defaultShippingAddress: null,
-        defaultBillingAddress: null,
         isBillingTheSame: isBillingAddress,
         isShippingDefault: defaultShippingAddress,
         isBillingDefault: defaultBillingAddress,
       }),
     );
 
-    reset();
+    reset(undefined, { keepErrors: true });
     setIsBillingAddress(false);
     setDefaultBillingAddress(false);
     setDefaultShippingAddress(false);
@@ -114,6 +126,7 @@ const SignUp: FC = () => {
       setPasswordType('text');
     } else setPasswordType('password');
   };
+
   return (
     <>
       <div className='title'>SignUp</div>
