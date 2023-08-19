@@ -10,10 +10,10 @@ const LogoLink: FC<Pick<ILinkItem, 'to'>> = ({ to }) => {
       to={to}
       className={`flex justify-center items-center 
       bg-gradient-to-r from-blue-800 to-c-pink-red
-      bg-clip-text text-transparent`}
+      bg-clip-text text-transparent text-xl`}
     >
       <Logo />
-      <span className='font-extrabold text-xl '>ECO</span>mmerce
+      <span className='font-bold text-2xl tracking-widest'>ECO</span>mmerce
     </NavLink>
   );
 };
