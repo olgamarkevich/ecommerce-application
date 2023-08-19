@@ -8,10 +8,18 @@ module.exports = {
       },
       maxWidth: {
         '100vh': '100vh',
+        '100vw': '100vw',
       },
       fontFamily: {
         'f-rubik': ['Rubik', 'sans-serif'],
         'f-open-sans': ['Open-Sans', 'sans-serif'],
+      },
+      transformOrigin: {
+        'one-origin': '1px',
+      },
+      screens: {
+        md: { max: '767px' },
+        'md-min': { min: '768px' },
       },
       colors: {
         'c-orange': '#ff8800',

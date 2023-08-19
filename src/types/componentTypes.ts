@@ -20,6 +20,7 @@ export interface IButton {
 }
 
 export type TitleSizes = 'small' | 'medium' | 'large';
+
 export interface ITitle {
   text: string;
   size: TitleSizes;

@@ -1,0 +1,17 @@
+ul li:not(:last-child) {
+  margin-right: 15px;
+}
+
+.ul {
+  @apply flex items-center p-0 m-0;
+}
+
+@media (max-width: 768px) {
+  .ul {
+    @apply fixed items-start top-0 right-0 h-screen w-60 pt-16 bg-stone-500 bg-opacity-75 z-10 transition-transform duration-300;
+  }
+
+  .nav__link {
+    @apply mx-auto;
+  }
+}
