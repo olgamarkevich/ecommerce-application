@@ -9,6 +9,7 @@ import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
 import { setCustomerCredentials } from '../../store/customerSlice';
 import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import Title from 'components/Title/Title';
+import TextInfo from 'components/TextInfo/TextInfo';
 
 const schema = yup
   .object({
@@ -51,18 +52,22 @@ const Login: FC = () => {
     <>
       <Title text='LOGIN' size={'large'} />
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+        {errors.root?.serverError && (
+          <TextInfo text={errors.root.serverError.message} type='warn' />
+        )}
         <div className={style.form_line}>
-          <label>Email*</label>
+          <label>Email</label>
           <input
             {...register('email')}
             className='input'
             aria-invalid={!!errors.email}
+            placeholder='Email'
           />
           <p>{errors.email?.message}</p>
         </div>
 
         <div className={style.form_line}>
-          <label>Password*</label>
+          <label>Password</label>
           <div className={style.passwordHide_line}>
             <input
               type={passwordType}
@@ -70,6 +75,7 @@ const Login: FC = () => {
               className='input'
               aria-invalid={!!errors.password}
               autoComplete='password'
+              placeholder='Password'
             />
             <span
               className={[
@@ -86,7 +92,6 @@ const Login: FC = () => {
         </div>
 
         <ButtonSubmit text='Submit' />
-        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
     </>
   );

@@ -24,6 +24,7 @@ module.exports = {
         'c-kiwi': '#cccccc',
         'c-green-meadow': '#6d9654',
         'c-grass': '#df6c4f',
+        'c-dry-sand': '#ffe0da',
         'c-alice-blue': '#f0f8ff',
         'c-shadow': '#2c2a2a',
       },

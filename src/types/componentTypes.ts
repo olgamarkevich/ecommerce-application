@@ -1,8 +1,10 @@
 import type React from 'react';
 import type { MouseEventHandler } from 'react';
 
+export type TextType = 'warn' | 'text';
 export interface IText {
-  text: string;
+  text: string | undefined;
+  type?: TextType;
   className?: string;
 }
 
@@ -18,7 +20,6 @@ export interface IButton {
 }
 
 export type TitleSizes = 'small' | 'medium' | 'large';
-
 export interface ITitle {
   text: string;
   size: TitleSizes;
