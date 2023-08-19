@@ -22,6 +22,7 @@ import {
   postalCodeBilling,
   street,
   streetBilling,
+  isBillingTheSame,
 } from 'helpers/settingSchema';
 import { useAppDispatch } from '../../hooks/hooks';
 import { setCustomerSignUpData } from '../../store/customerSignUpSlice';
@@ -42,6 +43,7 @@ const schema = yup
     ...streetBilling,
     ...countryBilling,
     ...postalCodeBilling,
+    ...isBillingTheSame,
   })
   .required();
 
@@ -110,7 +112,7 @@ const SignUp: FC = () => {
       }),
     );
 
-    reset(undefined, { keepErrors: true });
+    reset();
     setIsBillingAddress(false);
     setDefaultBillingAddress(false);
     setDefaultShippingAddress(false);
@@ -262,6 +264,7 @@ const SignUp: FC = () => {
                 type='checkbox'
                 checked={isBillingAddress}
                 className='checkbox'
+                {...register('isBillingTheSame')}
                 onChange={() => {
                   return isBillingAddress
                     ? setIsBillingAddress(false)
