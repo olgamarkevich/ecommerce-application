@@ -9,6 +9,7 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
+  setLoadingStatus,
   showTextInfo,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
@@ -24,7 +25,11 @@ const useCustomerSignIn = (
   });
 
   // Making customer data api request
-  const { data: customerData, error: serverError } = useSignInCustomerQuery(
+  const {
+    data: customerData,
+    error: serverError,
+    isLoading: isSignInLoading,
+  } = useSignInCustomerQuery(
     { email, password },
     {
       skip: !email || !password || !!id || !!errors.root?.serverError,
@@ -32,12 +37,19 @@ const useCustomerSignIn = (
   );
 
   // Making token api request
-  const { data: tokenData } = useGetCustomerTokenQuery(
-    { email, password },
-    {
-      skip: !email || !password || !customerData || !!errors.root?.serverError,
-    },
-  );
+  const { data: tokenData, isLoading: isTokenLoading } =
+    useGetCustomerTokenQuery(
+      { email, password },
+      {
+        skip:
+          !email || !password || !customerData || !!errors.root?.serverError,
+      },
+    );
+
+  // Set loading status
+  useEffect(() => {
+    dispatch(setLoadingStatus(isSignInLoading || isTokenLoading));
+  }, [dispatch, isSignInLoading, isTokenLoading]);
 
   // Set error after unsuccessful response
   useEffect(() => {

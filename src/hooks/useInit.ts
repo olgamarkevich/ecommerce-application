@@ -9,6 +9,7 @@ import {
   setAuthorizationState,
   setCustomerLoggedState,
   setInitializationState,
+  setLoadingStatus,
 } from '../store/appSlice';
 import { getCustomerFromApiResponse } from '../helpers/appHelpers';
 import { setCustomerData } from '../store/customerSlice';
@@ -16,9 +17,11 @@ import { useAppDispatch, useAppSelector } from './hooks';
 
 const useInit = () => {
   const dispatch = useAppDispatch();
-  const { isInitialized } = useAppSelector((state) => {
-    return state.app;
-  });
+  const { isInitialized, isAuthorized, isCustomerLogged } = useAppSelector(
+    (state) => {
+      return state.app;
+    },
+  );
   const { customerId, userType } = useAppSelector((state) => {
     return state.auth;
   });
@@ -30,14 +33,27 @@ const useInit = () => {
   });
 
   // Fetch anonymous token if no customerId saved and after setting data from storage
-  const { data: authData } = useGetAnonymousTokenQuery(undefined, {
-    skip: !!customerId || !isInitialized,
-  });
+  const { data: authData, isLoading: isTokenLoading } =
+    useGetAnonymousTokenQuery(undefined, {
+      skip: !!customerId || !isInitialized || isAuthorized || isCustomerLogged,
+    });
 
   // Fetch customer data if customer saved
-  const { data: customerData } = useGetCustomerQuery(undefined, {
-    skip: !customerId || userType !== 'customer' || !!id || !!email,
-  });
+  const { data: customerData, isLoading: isCustomerLoading } =
+    useGetCustomerQuery(undefined, {
+      skip:
+        !customerId ||
+        userType !== 'customer' ||
+        !!id ||
+        !!email ||
+        isAuthorized ||
+        isCustomerLogged,
+    });
+
+  // Set loading status
+  useEffect(() => {
+    dispatch(setLoadingStatus(isTokenLoading || isCustomerLoading));
+  }, [dispatch, isTokenLoading, isCustomerLoading]);
 
   // Load customer data from local storage when start App
   useEffect(() => {
