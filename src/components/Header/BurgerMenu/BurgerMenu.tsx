@@ -6,7 +6,7 @@ const BurgerMenu: FC = () => {
   const [isOpen, setOpen] = useState(false);
   const childStyle = `
    w-8 h-1 bg-black rounded-xl transform 
-   origin-one-origin transition-transform duration-300 
+   origin-one-origin transition-all duration-300 
    ${isOpen ? 'bg-sky-100' : 'bg-blue-900'}`;
 
   return (
