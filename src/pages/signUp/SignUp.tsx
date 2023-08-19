@@ -23,6 +23,7 @@ import {
   street,
   streetBilling,
 } from 'helpers/settingSchema';
+import Title from 'components/Title/Title';
 
 const schema = yup
   .object({
@@ -78,8 +79,7 @@ const SignUp: FC = () => {
   };
   return (
     <>
-      <div className='title'>SignUp</div>
-
+      <Title text='SIGN UP' size={'large'} />
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
         <SignUpInput
           fieldId='email'
