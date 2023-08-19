@@ -43,7 +43,7 @@ const Login: FC = () => {
 
   const onSubmit = (data: FormData) => {
     dispatch(setCustomerCredentials(data));
-    reset(undefined, { keepErrors: true });
+    reset();
   };
 
   return (
