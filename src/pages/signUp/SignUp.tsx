@@ -113,7 +113,7 @@ const SignUp: FC = () => {
       }),
     );
 
-    reset(undefined, { keepErrors: true });
+    reset();
     setIsBillingAddress(false);
     setDefaultBillingAddress(false);
     setDefaultShippingAddress(false);
