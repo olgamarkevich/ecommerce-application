@@ -9,6 +9,7 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
+  showTextInfo,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
 
@@ -18,7 +19,7 @@ const useCustomerSignIn = (
 ) => {
   const dispatch = useAppDispatch();
 
-  const { email, password, id } = useAppSelector((state) => {
+  const { email, password, id, firstName } = useAppSelector((state) => {
     return state.customer;
   });
 
@@ -86,9 +87,10 @@ const useCustomerSignIn = (
       dispatch(setCustomerToken(customer)).then(() => {
         dispatch(setAuthorizationState(true));
         dispatch(setCustomerLoggedState(true));
+        dispatch(showTextInfo(`You are welcome, ${firstName || 'customer'}!`));
       });
     }
-  }, [dispatch, tokenData]);
+  }, [dispatch, tokenData, firstName]);
 };
 
 export default useCustomerSignIn;

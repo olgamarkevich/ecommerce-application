@@ -7,6 +7,7 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
+  showTextInfo,
 } from '../store/appSlice';
 import { clearCustomerSignUpData } from '../store/customerSignUpSlice';
 import { getCustomerFromApiResponse } from '../helpers/appHelpers';
@@ -51,7 +52,7 @@ const useCustomerSignUp = (
     return state.auth;
   });
 
-  const { id } = useAppSelector((state) => {
+  const { id, firstName: customerFirstName } = useAppSelector((state) => {
     return state.customer;
   });
 
@@ -148,9 +149,12 @@ const useCustomerSignUp = (
         dispatch(setAuthorizationState(true));
         dispatch(clearCustomerSignUpData());
         dispatch(setCustomerLoggedState(true));
+        dispatch(
+          showTextInfo(`You are welcome, ${customerFirstName || 'customer'}!`),
+        );
       });
     }
-  }, [dispatch, tokenData]);
+  }, [dispatch, tokenData, customerFirstName]);
 };
 
 export default useCustomerSignUp;
