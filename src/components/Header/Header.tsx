@@ -44,7 +44,7 @@ const Header: FC = () => {
             )}
             {!id && (
               <li className={style.nav__link}>
-                <NavLink to='/signup'>sigh up</NavLink>
+                <NavLink to='/signup'>sign up</NavLink>
               </li>
             )}
             {!!id && (
