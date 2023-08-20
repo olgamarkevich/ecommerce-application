@@ -26,6 +26,7 @@ import {
 import { useAppDispatch } from '../../hooks/hooks';
 import { setCustomerSignUpData } from '../../store/customerSignUpSlice';
 import useCustomerSignUp from '../../hooks/useCustomerSignUp';
+import { NavLink } from 'react-router-dom';
 
 const schema = yup
   .object({
@@ -59,6 +60,7 @@ const SignUp: FC = () => {
     setError,
   } = useForm({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   });
 
   useCustomerSignUp(errors, setError);
@@ -188,6 +190,7 @@ const SignUp: FC = () => {
             type='date'
             className='input'
             aria-invalid={!!errors.dateOfBirth}
+            placeholder=';;;sd'
           />
           <p>{errors.dateOfBirth?.message}</p>
         </div>
@@ -355,6 +358,9 @@ const SignUp: FC = () => {
         </button>
         {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
+      <div className='form_links'>
+        Already registered? <NavLink to='/login'>Log in</NavLink>
+      </div>
     </>
   );
 };

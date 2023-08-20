@@ -8,6 +8,7 @@ import { email, password } from 'helpers/settingSchema';
 import { useAppDispatch } from '../../hooks/hooks';
 import useCustomerSignIn from '../../hooks/useCustomerSignIn';
 import { setCustomerCredentials } from '../../store/customerSlice';
+import { NavLink } from 'react-router-dom';
 
 const schema = yup
   .object({
@@ -31,6 +32,7 @@ const Login: FC = () => {
     reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   });
 
   useCustomerSignIn(errors, setError);
@@ -93,6 +95,9 @@ const Login: FC = () => {
         </button>
         {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
       </form>
+      <div className='form_links'>
+        Haven&apos;t registered yet? <NavLink to='/signup'>Sign up</NavLink>
+      </div>
     </>
   );
 };
