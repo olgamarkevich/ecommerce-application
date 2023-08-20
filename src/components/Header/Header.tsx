@@ -1,16 +1,18 @@
 import React, { type MouseEventHandler } from 'react';
 import type { FC } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { ReactComponent as Logo } from '../../logo.svg';
 import style from './Header.module.css';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { removeCustomer } from '../../store/customerSlice';
 import { logoutCustomer } from '../../store/authSlice';
-import { setAuthorizationState } from '../../store/appSlice';
+import LogoLink from 'components/Logo/Logo';
+import LinkItem from 'components/LinkItem/LinkItem';
+import {
+  setAuthorizationState,
+  setCustomerLoggedState,
+} from '../../store/appSlice';
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const { id } = useAppSelector((state) => {
     return state.customer;
   });
@@ -20,36 +22,33 @@ const Header: FC = () => {
     dispatch(setAuthorizationState(false));
     await dispatch(logoutCustomer());
     dispatch(removeCustomer());
-    navigate('/');
+    dispatch(setCustomerLoggedState(false));
   };
 
   return (
-    <header className={style.header}>
-      <div className={style.logo}>
+    <header className={`bg-sky-100 shadow-md ${style.header}`}>
+      <div>
         {' '}
-        <NavLink to='/'>
-          <Logo />
-          ECOmmerce
-        </NavLink>
+        <LogoLink to='/' />
       </div>
       <div className={style.header__left}>
         <nav className={style.nav}>
           <ul>
             {!id && (
               <li className={style.nav__link}>
-                <NavLink to='/login'>log in</NavLink>
+                <LinkItem to='/login'>log in</LinkItem>
               </li>
             )}
             {!id && (
               <li className={style.nav__link}>
-                <NavLink to='/signup'>sigh up</NavLink>
+                <LinkItem to='/signup'>sigh up</LinkItem>
               </li>
             )}
             {!!id && (
               <li className={style.nav__link}>
-                <NavLink to='/' onClick={logoutHandler}>
+                <LinkItem to='/' onClick={logoutHandler}>
                   Log out
-                </NavLink>
+                </LinkItem>
               </li>
             )}
           </ul>
