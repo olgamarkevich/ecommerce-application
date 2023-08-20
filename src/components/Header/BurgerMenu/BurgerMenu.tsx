@@ -16,7 +16,7 @@ const BurgerMenu: FC = () => {
       }}
     >
       <div
-        className={`hidden fixed w-8 h-8 top-2 right-4 z-20 justify-around flex-col flex-nowrap cursor-pointer md:flex`}
+        className={`hidden absolute w-8 h-8 top-2 right-4 z-20 justify-around flex-col flex-nowrap cursor-pointer md:flex`}
       >
         <div
           className={`
@@ -38,7 +38,11 @@ const BurgerMenu: FC = () => {
         />
       </div>
       <div
-        className={`${isOpen ? 'md:absolute top-0 left-0 h-full w-full' : ''}`}
+        className={`${
+          isOpen
+            ? 'md:absolute top-0 left-0 h-full w-full bg-blend-difference'
+            : ''
+        }`}
       >
         <RightNav isOpen={isOpen} />
       </div>

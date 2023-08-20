@@ -7,7 +7,7 @@ const ButtonSubmit: FC<IButton> = ({ text, onClick }) => {
     <button
       className='
       py-1 px-4 min-w-[100px]
-    bg-c-green-meadow
+      bg-c-light-blue
       rounded-md
       font-medium text-c-alice-blue
       transition duration-500 ease-in-out

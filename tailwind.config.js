@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        'custom-inner': 'inset 0 0 0 2em #1e40af',
+        'custom-inner': 'inset 0 0 0 2em green',
       },
       maxWidth: {
         '100vh': '100vh',
@@ -26,6 +26,7 @@ module.exports = {
         'c-pink-red': '#fb3859',
         'c-pail-ember': '#fcb5c3',
         'c-sky': '#e0f2fe',
+        'c-light-blue': '#5d77c7',
         'c-sky-green': '#bbe6cb',
         'c-sage': '#8f916b',
         'c-leafs': '#759f4f',

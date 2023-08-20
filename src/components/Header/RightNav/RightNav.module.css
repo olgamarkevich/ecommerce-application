@@ -8,7 +8,7 @@ ul li:not(:last-child) {
 
 @media (max-width: 768px) {
   .ul {
-    @apply fixed items-start top-0 right-0 h-screen w-60 pt-16 bg-c-green-meadow bg-opacity-95 z-10 transition-transform duration-300;
+    @apply fixed items-start top-0 right-0 h-screen w-60 pt-16 bg-violet-400 bg-opacity-95 z-10 transition-transform duration-300;
   }
 
   .nav__link {
