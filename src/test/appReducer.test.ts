@@ -7,7 +7,6 @@ import reducer, {
   showTextInfo,
 } from '../store/appSlice';
 import type { AppState } from '../types/storeTypes';
-import { loadCustomerFromLocalStorage } from '../store/authSlice';
 
 const nullState: AppState = {
   isInitialized: false,
