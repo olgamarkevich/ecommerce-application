@@ -1,35 +1,6 @@
 .header {
-  background: #f0f0f0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 10px 15px;
-}
-
-.nav ul {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav ul li:not(:last-child) {
-  margin-right: 15px;
-}
-
-.nav ul a {
-  text-decoration: none;
-  color: #222;
-}
-
-.logo a{
-  display: flex;
-  justify-content: center;
-  background: linear-gradient(to right,#ff8800, #fb3859);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-decoration: none;
-  font-size: 1.5em;
 }

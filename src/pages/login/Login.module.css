@@ -2,6 +2,7 @@
   display: block;
   text-align: left;
   margin-bottom: 5px;
+  @apply text-blue-950
 }
 
 .form_line {
