@@ -63,7 +63,7 @@ const Login: FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         onChange={handleChange}
       >
-        {errors.root?.serverError && (
+        {errors.root?.serverError && errors.root.serverError.message !== '' && (
           <TextInfo text={errors.root.serverError.message} type='warn' />
         )}
         <div className={style.form_line}>
