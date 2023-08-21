@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import dayjs from 'dayjs';
 
 interface CountryZipData {
   countryName: string;
@@ -31,7 +32,7 @@ export const password = {
   password: yup
     .string()
     .required()
-    .trim('password cannot include leading and trailing spaces')
+    .matches(/^\S.*\S$/, 'must not Contain leading or trailing whitespace')
     .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
     .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
     .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
@@ -43,7 +44,7 @@ export const firstname = {
     .string()
     .required()
     .matches(
-      /^[a-zA-ZäöüßÄÖÜ\s-]+$/,
+      /^[А-Яа-я-a-zA-ZäöüßÄÖÜ\s-]+$/,
       'only alphabets are allowed for this field ',
     )
     .min(1),
@@ -54,7 +55,7 @@ export const lastname = {
     .string()
     .required()
     .matches(
-      /^[a-zA-ZäöüßÄÖÜ\s-]+$/,
+      /^[А-Яа-я-a-zA-ZäöüßÄÖÜ\s-]+$/,
       'only alphabets are allowed for this field ',
     )
     .min(1),
@@ -65,10 +66,9 @@ export const dateOfBirth = {
     .date()
     .nullable()
     .typeError('date of birth is required')
-    .max(
-      new Date(Date.now() - 18 * 365 * 24 * 60 * 60 * 1000),
-      'you must be at least 18 years',
-    ),
+    .test('DOB', 'you must be at least 13 years', (value) => {
+      return dayjs().diff(dayjs(value), 'years') >= 13;
+    }),
 };
 
 export const street = {
@@ -80,7 +80,7 @@ export const city = {
     .string()
     .required()
     .matches(
-      /^[a-zA-ZäöüßÄÖÜ\s-]+$/,
+      /^[А-Яа-я-a-zA-ZäöüßÄÖÜ\s-]+$/,
       'only alphabets are allowed for this field ',
     )
     .min(1),
@@ -112,7 +112,7 @@ export const cityBilling = {
   cityBilling: yup
     .string()
     .matches(
-      /^[a-zA-ZäöüßÄÖÜ\s-]*$/,
+      /^[А-Яа-я-a-zA-ZäöüßÄÖÜ\s-]*$/,
       'only alphabets are allowed for this field ',
     )
     .when('isBillingTheSame', (isBillingTheSame, schema) => {
