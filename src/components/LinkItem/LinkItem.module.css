@@ -1,0 +1,5 @@
+@media (max-width: 768px) {
+  .link_media {
+    @apply bg-sky-100;
+  }
+}

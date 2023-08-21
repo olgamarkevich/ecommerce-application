@@ -6,10 +6,14 @@ export interface IPopUp {
   isOnView?: boolean;
 }
 
+export type TextType = 'warn' | 'text';
+
 export interface IText {
-  text: string;
+  text: string | undefined;
+  type?: TextType;
   className?: string;
 }
+
 export interface ILinkItem {
   to: string;
   children: React.ReactNode;
@@ -19,4 +23,11 @@ export interface ILinkItem {
 export interface IButton {
   text: string;
   onClick?: () => void;
+}
+
+export type TitleSizes = 'small' | 'medium' | 'large';
+
+export interface ITitle {
+  text: string;
+  size: TitleSizes;
 }

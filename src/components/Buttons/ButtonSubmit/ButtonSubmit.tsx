@@ -7,11 +7,11 @@ const ButtonSubmit: FC<IButton> = ({ text, onClick }) => {
     <button
       className='
       py-1 px-4 min-w-[100px]
-      bg-sky-100
-      border border-solid rounded-md border-purple-950
-      font-medium text-stone-700
+      bg-c-light-blue
+      rounded-md
+      font-medium text-c-alice-blue
       transition duration-500 ease-in-out
-      hover:shadow-custom-inner hover:text-c-alice-blue
+      hover:shadow-custom-inner hover:text-sky-100
       '
       type='submit'
       onClick={onClick}

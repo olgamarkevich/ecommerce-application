@@ -4,15 +4,3 @@
   justify-content: space-between;
   padding: 10px 15px;
 }
-
-.nav ul {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav ul li:not(:last-child) {
-  margin-right: 15px;
-}
