@@ -358,7 +358,6 @@ const SignUp: FC = () => {
           </div>
         )}
         <ButtonSubmit text='Submit' />
-
         {errors.root?.serverError && errors.root.serverError.message !== '' && (
           <TextInfo text={errors.root.serverError.message} type='warn' />
         )}

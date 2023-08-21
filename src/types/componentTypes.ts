@@ -1,7 +1,13 @@
 import type React from 'react';
 import type { MouseEventHandler } from 'react';
 
+export interface IPopUp {
+  text: string;
+  isOnView?: boolean;
+}
+
 export type TextType = 'warn' | 'text';
+
 export interface IText {
   text: string | undefined;
   type?: TextType;

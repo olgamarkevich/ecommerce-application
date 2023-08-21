@@ -7,6 +7,8 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
+  setLoadingStatus,
+  showTextInfo,
 } from '../store/appSlice';
 import { clearCustomerSignUpData } from '../store/customerSignUpSlice';
 import { getCustomerFromApiResponse } from '../helpers/appHelpers';
@@ -51,7 +53,7 @@ const useCustomerSignUp = (
     return state.auth;
   });
 
-  const { id } = useAppSelector((state) => {
+  const { id, firstName: customerFirstName } = useAppSelector((state) => {
     return state.customer;
   });
 
@@ -81,23 +83,32 @@ const useCustomerSignUp = (
   }
 
   // Making customer signup api request
-  const { data: signUpResult, error: serverError } = useSignUpCustomerQuery(
-    signUpRequestBody,
-    { skip: !email || !password || userType === 'customer' || !!id },
-  );
+  const {
+    data: signUpResult,
+    error: serverError,
+    isLoading: isSignUpLoading,
+  } = useSignUpCustomerQuery(signUpRequestBody, {
+    skip: !email || !password || userType === 'customer' || !!id,
+  });
 
   // Making token api request
-  const { data: tokenData } = useGetCustomerTokenQuery(
-    { email, password },
-    {
-      skip:
-        !email ||
-        !password ||
-        !signUpResult ||
-        !!errors.root?.serverError ||
-        userType === 'customer',
-    },
-  );
+  const { data: tokenData, isLoading: isTokenLoading } =
+    useGetCustomerTokenQuery(
+      { email, password },
+      {
+        skip:
+          !email ||
+          !password ||
+          !signUpResult ||
+          !!errors.root?.serverError ||
+          userType === 'customer',
+      },
+    );
+
+  // Set loading status
+  useEffect(() => {
+    dispatch(setLoadingStatus(isSignUpLoading || isTokenLoading));
+  }, [dispatch, isSignUpLoading, isTokenLoading]);
 
   // Set error after unsuccessful response
   useEffect(() => {
@@ -148,9 +159,12 @@ const useCustomerSignUp = (
         dispatch(setAuthorizationState(true));
         dispatch(clearCustomerSignUpData());
         dispatch(setCustomerLoggedState(true));
+        dispatch(
+          showTextInfo(`You are welcome, ${customerFirstName || 'customer'}!`),
+        );
       });
     }
-  }, [dispatch, tokenData]);
+  }, [dispatch, tokenData, customerFirstName]);
 };
 
 export default useCustomerSignUp;

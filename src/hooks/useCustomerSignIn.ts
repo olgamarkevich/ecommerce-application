@@ -9,6 +9,8 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
+  setLoadingStatus,
+  showTextInfo,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
 
@@ -18,12 +20,16 @@ const useCustomerSignIn = (
 ) => {
   const dispatch = useAppDispatch();
 
-  const { email, password, id } = useAppSelector((state) => {
+  const { email, password, id, firstName } = useAppSelector((state) => {
     return state.customer;
   });
 
   // Making customer data api request
-  const { data: customerData, error: serverError } = useSignInCustomerQuery(
+  const {
+    data: customerData,
+    error: serverError,
+    isLoading: isSignInLoading,
+  } = useSignInCustomerQuery(
     { email, password },
     {
       skip: !email || !password || !!id || !!errors.root?.serverError,
@@ -31,12 +37,19 @@ const useCustomerSignIn = (
   );
 
   // Making token api request
-  const { data: tokenData } = useGetCustomerTokenQuery(
-    { email, password },
-    {
-      skip: !email || !password || !customerData || !!errors.root?.serverError,
-    },
-  );
+  const { data: tokenData, isLoading: isTokenLoading } =
+    useGetCustomerTokenQuery(
+      { email, password },
+      {
+        skip:
+          !email || !password || !customerData || !!errors.root?.serverError,
+      },
+    );
+
+  // Set loading status
+  useEffect(() => {
+    dispatch(setLoadingStatus(isSignInLoading || isTokenLoading));
+  }, [dispatch, isSignInLoading, isTokenLoading]);
 
   // Set error after unsuccessful response
   useEffect(() => {
@@ -86,9 +99,10 @@ const useCustomerSignIn = (
       dispatch(setCustomerToken(customer)).then(() => {
         dispatch(setAuthorizationState(true));
         dispatch(setCustomerLoggedState(true));
+        dispatch(showTextInfo(`You are welcome, ${firstName || 'customer'}!`));
       });
     }
-  }, [dispatch, tokenData]);
+  }, [dispatch, tokenData, firstName]);
 };
 
 export default useCustomerSignIn;
