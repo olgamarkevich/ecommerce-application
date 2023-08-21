@@ -5,8 +5,10 @@ import style from './Login.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { email, password } from 'helpers/settingSchema';
-import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
+import { useAppDispatch } from '../../hooks/hooks';
+import useCustomerSignIn from '../../hooks/useCustomerSignIn';
 import { setCustomerCredentials } from '../../store/customerSlice';
+import { NavLink } from 'react-router-dom';
 import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import Title from 'components/Title/Title';
 import TextInfo from 'components/TextInfo/TextInfo';
@@ -30,9 +32,10 @@ const Login: FC = () => {
     handleSubmit,
     setError,
     formState: { errors },
-    reset,
+    resetField,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   });
 
   useCustomerSignIn(errors, setError);
@@ -45,14 +48,22 @@ const Login: FC = () => {
 
   const onSubmit = (data: FormData) => {
     dispatch(setCustomerCredentials(data));
-    reset(undefined, { keepErrors: true });
+    resetField('password');
+  };
+
+  const handleChange = () => {
+    setError('root.serverError', { message: '' });
   };
 
   return (
     <>
       <Title text='LOGIN' size={'large'} />
-      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
-        {errors.root?.serverError && (
+      <form
+        className={style.form}
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={handleChange}
+      >
+        {errors.root?.serverError && errors.root.serverError.message !== '' && (
           <TextInfo text={errors.root.serverError.message} type='warn' />
         )}
         <div className={style.form_line}>
@@ -90,9 +101,11 @@ const Login: FC = () => {
 
           <p>{errors.password?.message}</p>
         </div>
-
         <ButtonSubmit text='Submit' />
       </form>
+      <div className='form_links'>
+        Haven&apos;t registered yet? <NavLink to='/signup'>Sign up</NavLink>
+      </div>
     </>
   );
 };

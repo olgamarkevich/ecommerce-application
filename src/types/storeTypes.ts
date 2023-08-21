@@ -6,7 +6,7 @@ export type CustomerId = string | null;
 export interface AppState {
   isInitialized: boolean;
   isAuthorized: boolean;
-  canRerender: boolean;
+  isCustomerLogged: boolean;
 }
 
 export interface AuthState {
@@ -18,9 +18,10 @@ export interface AuthState {
 
 export interface Customer {
   id: string;
+  version: number | null;
   firstName: string;
   lastName: string;
-  middleName: string;
+  dateOfBirth: string;
   addresses: Address[];
   billingAddressIds: string[];
   shippingAddressIds: string[];
@@ -29,3 +30,24 @@ export interface Customer {
 }
 
 export type CustomerCredentials = Pick<Customer, 'email' | 'password'>;
+
+export interface RegistrationAddress {
+  country: 'US' | 'DE' | '';
+  firstName: string;
+  lastName: string;
+  streetName: string;
+  postalCode: string;
+  city: string;
+}
+
+export interface CustomerSignUp {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string | null;
+  addresses: RegistrationAddress[];
+  isBillingTheSame: boolean;
+  isShippingDefault: boolean;
+  isBillingDefault: boolean;
+}

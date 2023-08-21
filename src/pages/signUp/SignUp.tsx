@@ -22,8 +22,14 @@ import {
   postalCodeBilling,
   street,
   streetBilling,
+  isBillingTheSame,
 } from 'helpers/settingSchema';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setCustomerSignUpData } from '../../store/customerSignUpSlice';
+import useCustomerSignUp from '../../hooks/useCustomerSignUp';
+import { NavLink } from 'react-router-dom';
 import Title from 'components/Title/Title';
+import TextInfo from 'components/TextInfo/TextInfo';
 
 const schema = yup
   .object({
@@ -40,27 +46,77 @@ const schema = yup
     ...streetBilling,
     ...countryBilling,
     ...postalCodeBilling,
+    ...isBillingTheSame,
   })
   .required();
 
 export type FormData = RequiredKeepUndefined<yup.InferType<typeof schema>>;
 
 const SignUp: FC = () => {
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    resetField,
+    setError,
   } = useForm({
     resolver: yupResolver(schema),
+    mode: 'onChange',
   });
 
+  useCustomerSignUp(errors, setError);
+
   const onSubmit = (data: FormData) => {
-    console.log(data);
-    console.log('isBillingAddress', isBillingAddress);
-    console.log('defaultShippingAddress', defaultShippingAddress);
-    console.log('defaultBillingAddress', defaultBillingAddress);
-    reset();
+    const dateOfBirth: string = data.dateOfBirth
+      ? `${String(data.dateOfBirth.getUTCFullYear())}-${String(
+          data.dateOfBirth.getUTCMonth() + 1,
+        )}-${String(data.dateOfBirth.getUTCDate())}`
+      : '';
+
+    dispatch(
+      setCustomerSignUpData({
+        email: data.email.trim(),
+        password: data.password,
+        firstName: data.firstname.trim(),
+        lastName: data.lastname.trim(),
+        dateOfBirth,
+        addresses: [
+          {
+            country: data.country as 'US' | 'DE',
+            firstName: data.firstname.trim(),
+            lastName: data.lastname.trim(),
+            streetName: data.street.trim(),
+            postalCode: data.postalCode,
+            city: data.city.trim(),
+          },
+          {
+            country: (isBillingAddress
+              ? data.country
+              : data.countryBilling ?? '') as 'US' | 'DE' | '',
+            firstName: data.firstname.trim(),
+            lastName: data.lastname.trim(),
+            streetName: (isBillingAddress
+              ? data.street
+              : data.streetBilling ?? ''
+            ).trim(),
+            postalCode: isBillingAddress
+              ? data.postalCode
+              : data.postalCodeBilling ?? '',
+            city: (isBillingAddress
+              ? data.city
+              : data.cityBilling ?? ''
+            ).trim(),
+          },
+        ],
+        isBillingTheSame: isBillingAddress,
+        isShippingDefault: defaultShippingAddress,
+        isBillingDefault: defaultBillingAddress,
+      }),
+    );
+
+    resetField('password');
     setIsBillingAddress(false);
     setDefaultBillingAddress(false);
     setDefaultShippingAddress(false);
@@ -72,15 +128,24 @@ const SignUp: FC = () => {
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
 
+  const handleChange = () => {
+    setError('root.serverError', { message: '' });
+  };
+
   const changePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
     } else setPasswordType('password');
   };
+
   return (
     <>
       <Title text='SIGN UP' size={'large'} />
-      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={style.form}
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={handleChange}
+      >
         <SignUpInput
           fieldId='email'
           label='Email*'
@@ -132,6 +197,7 @@ const SignUp: FC = () => {
             type='date'
             className='input'
             aria-invalid={!!errors.dateOfBirth}
+            placeholder=';;;sd'
           />
           <p>{errors.dateOfBirth?.message}</p>
         </div>
@@ -210,6 +276,7 @@ const SignUp: FC = () => {
                 type='checkbox'
                 checked={isBillingAddress}
                 className='checkbox'
+                {...register('isBillingTheSame')}
                 onChange={() => {
                   return isBillingAddress
                     ? setIsBillingAddress(false)
@@ -291,7 +358,14 @@ const SignUp: FC = () => {
           </div>
         )}
         <ButtonSubmit text='Submit' />
+
+        {errors.root?.serverError && errors.root.serverError.message !== '' && (
+          <TextInfo text={errors.root.serverError.message} type='warn' />
+        )}
       </form>
+      <div className='form_links'>
+        Already registered? <NavLink to='/login'>Log in</NavLink>
+      </div>
     </>
   );
 };

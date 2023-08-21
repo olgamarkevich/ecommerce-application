@@ -1,19 +1,20 @@
 import React, { type MouseEventHandler } from 'react';
 import type { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { removeCustomer } from '../../../store/customerSlice';
 import { logoutCustomer } from '../../../store/authSlice';
-import { setAuthorizationState } from '../../../store/appSlice';
+import {
+  setAuthorizationState,
+  setCustomerLoggedState,
+} from '../../../store/appSlice';
 
 import LinkItem from 'components/LinkItem/LinkItem';
 import style from './RightNav.module.css';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { id } = useAppSelector((state) => {
-    return state.customer;
+  const { isCustomerLogged } = useAppSelector((state) => {
+    return state.app;
   });
 
   const logoutHandler: MouseEventHandler = async (e) => {
@@ -21,7 +22,7 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
     dispatch(setAuthorizationState(false));
     await dispatch(logoutCustomer());
     dispatch(removeCustomer());
-    navigate('/');
+    dispatch(setCustomerLoggedState(false));
   };
 
   return (
@@ -35,20 +36,20 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         }
       }}
     >
-      {!id && (
+      {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/login'>log in</LinkItem>
         </li>
       )}
-      {!id && (
+      {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/signup'>sign up</LinkItem>
         </li>
       )}
-      {!!id && (
+      {isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/' onClick={logoutHandler}>
-            Log out
+            log out
           </LinkItem>
         </li>
       )}

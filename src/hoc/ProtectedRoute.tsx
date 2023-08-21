@@ -7,11 +7,11 @@ const ProtectedRoute = ({
 }: {
   children: ReactElement;
 }): ReactElement => {
-  const { userType } = useAppSelector((state) => {
-    return state.auth;
+  const { isCustomerLogged } = useAppSelector((state) => {
+    return state.app;
   });
 
-  if (userType === 'customer') {
+  if (isCustomerLogged) {
     return <Navigate to={'/'} replace={true} />;
   }
 

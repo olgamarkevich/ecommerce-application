@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Login, Main, Page404, SignUp } from 'pages';
 import Layout from './components/Layout/Layout';
 import ProtectedRoute from './hoc/ProtectedRoute';
-import { useInit } from './hooks/hooks';
+import useInit from './hooks/useInit';
 import './App.css';
 
 function App() {

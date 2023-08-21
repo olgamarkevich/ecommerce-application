@@ -1,6 +1,5 @@
 import React from 'react';
 import type { FC } from 'react';
-
 import LogoLink from 'components/Logo/Logo';
 import BurgerMenu from 'components/Header/BurgerMenu/BurgerMenu';
 import style from './Header.module.css';
