@@ -56,7 +56,7 @@ const SignUp: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    resetField,
     setError,
   } = useForm({
     resolver: yupResolver(schema),
@@ -113,7 +113,7 @@ const SignUp: FC = () => {
       }),
     );
 
-    reset();
+    resetField('password');
     setIsBillingAddress(false);
     setDefaultBillingAddress(false);
     setDefaultShippingAddress(false);
@@ -125,6 +125,10 @@ const SignUp: FC = () => {
   const [defaultShippingAddress, setDefaultShippingAddress] = useState(false);
   const [defaultBillingAddress, setDefaultBillingAddress] = useState(false);
 
+  const handleChange = () => {
+    setError('root.serverError', { message: '' });
+  };
+
   const changePassword = () => {
     if (passwordType === 'password') {
       setPasswordType('text');
@@ -135,7 +139,11 @@ const SignUp: FC = () => {
     <>
       <div className='title'>SignUp</div>
 
-      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={style.form}
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={handleChange}
+      >
         <SignUpInput
           fieldId='email'
           label='Email*'

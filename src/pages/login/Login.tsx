@@ -29,7 +29,7 @@ const Login: FC = () => {
     handleSubmit,
     setError,
     formState: { errors },
-    reset,
+    resetField,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -45,14 +45,22 @@ const Login: FC = () => {
 
   const onSubmit = (data: FormData) => {
     dispatch(setCustomerCredentials(data));
-    reset();
+    resetField('password');
+  };
+
+  const handleChange = () => {
+    setError('root.serverError', { message: '' });
   };
 
   return (
     <>
       <div className='title'>Login</div>
 
-      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={style.form}
+        onSubmit={handleSubmit(onSubmit)}
+        onChange={handleChange}
+      >
         <div className={style.form_line}>
           <label>Email*</label>
           <input
