@@ -18,10 +18,6 @@ const Layout: FC = () => {
         {textInfo && (
           <PopUp text={textInfo.msgText} isOnView={textInfo.isOnView} />
         )}
-        <PopUp
-          text={'Just sample to apply design - Remove this string after'}
-          isOnView={true}
-        />
         <Outlet />
       </div>
     </div>
