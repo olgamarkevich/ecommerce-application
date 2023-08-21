@@ -16,7 +16,9 @@ const BurgerMenu: FC = () => {
       }}
     >
       <div
-        className={`hidden absolute w-8 h-8 top-2 right-4 z-20 justify-around flex-col flex-nowrap cursor-pointer md:flex`}
+        className={`
+        ${isOpen ? 'fixed' : 'absolute'}
+        hidden w-8 h-8 top-2 right-4 z-20 justify-around flex-col flex-nowrap cursor-pointer md:flex`}
       >
         <div
           className={`
@@ -27,7 +29,7 @@ const BurgerMenu: FC = () => {
         <div
           className={`
         ${childStyle} 
-        ${isOpen ? 'translate-x-full opacity-0' : 'translate-x-0 opacity-100'}
+        ${isOpen ? '-translate-x-full opacity-0' : 'translate-x-0 opacity-100'}
         `}
         />
         <div

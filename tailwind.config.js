@@ -32,6 +32,7 @@ module.exports = {
         'c-leafs': '#759f4f',
         'c-kiwi': '#cccccc',
         'c-green-meadow': '#6d9654',
+        'c-green-by-loader': '#85c69d',
         'c-grass': '#df6c4f',
         'c-dry-sand': '#ffe0da',
         'c-alice-blue': '#f0f8ff',
