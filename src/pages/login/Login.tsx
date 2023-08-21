@@ -7,6 +7,9 @@ import * as yup from 'yup';
 import { email, password } from 'helpers/settingSchema';
 import { useAppDispatch, useCustomerSignIn } from '../../hooks/hooks';
 import { setCustomerCredentials } from '../../store/customerSlice';
+import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
+import Title from 'components/Title/Title';
+import TextInfo from 'components/TextInfo/TextInfo';
 
 const schema = yup
   .object({
@@ -47,21 +50,24 @@ const Login: FC = () => {
 
   return (
     <>
-      <div className='title'>Login</div>
-
+      <Title text='LOGIN' size={'large'} />
       <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+        {errors.root?.serverError && (
+          <TextInfo text={errors.root.serverError.message} type='warn' />
+        )}
         <div className={style.form_line}>
-          <label>Email*</label>
+          <label>Email</label>
           <input
             {...register('email')}
             className='input'
             aria-invalid={!!errors.email}
+            placeholder='Email'
           />
           <p>{errors.email?.message}</p>
         </div>
 
         <div className={style.form_line}>
-          <label>Password*</label>
+          <label>Password</label>
           <div className={style.passwordHide_line}>
             <input
               type={passwordType}
@@ -69,6 +75,7 @@ const Login: FC = () => {
               className='input'
               aria-invalid={!!errors.password}
               autoComplete='password'
+              placeholder='Password'
             />
             <span
               className={[
@@ -84,13 +91,7 @@ const Login: FC = () => {
           <p>{errors.password?.message}</p>
         </div>
 
-        <button
-          type='submit'
-          className='text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-        >
-          Submit
-        </button>
-        {errors.root?.serverError && <p>{errors.root.serverError.message}</p>}
+        <ButtonSubmit text='Submit' />
       </form>
     </>
   );
