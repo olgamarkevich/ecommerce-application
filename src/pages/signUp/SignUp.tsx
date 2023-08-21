@@ -146,6 +146,9 @@ const SignUp: FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         onChange={handleChange}
       >
+        {errors.root?.serverError && errors.root.serverError.message !== '' && (
+          <TextInfo text={errors.root.serverError.message} type='warn' />
+        )}
         <SignUpInput
           fieldId='email'
           label='Email*'
@@ -358,9 +361,6 @@ const SignUp: FC = () => {
           </div>
         )}
         <ButtonSubmit text='Submit' />
-        {errors.root?.serverError && errors.root.serverError.message !== '' && (
-          <TextInfo text={errors.root.serverError.message} type='warn' />
-        )}
       </form>
       <div className='form_links'>
         Already registered? <NavLink to='/login'>Log in</NavLink>
