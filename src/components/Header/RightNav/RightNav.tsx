@@ -36,6 +36,19 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         }
       }}
     >
+      <li className={style.nav__link}>
+        <LinkItem to='/categories'>Categories</LinkItem>
+      </li>
+      <li className={style.nav__link}>
+        <LinkItem to='/products/CategoryNameSample?param1=one&&param2=two'>
+          Catalog
+        </LinkItem>
+      </li>
+      <li className={style.nav__link}>
+        <LinkItem to='/product/gum-bag-medium-BS1900-black'>
+          Product (gum-bag-medium-BS1900-black)
+        </LinkItem>
+      </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/login'>log in</LinkItem>
@@ -44,6 +57,11 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/signup'>sign up</LinkItem>
+        </li>
+      )}
+      {isCustomerLogged && (
+        <li className={style.nav__link}>
+          <LinkItem to='/profile'>Profile</LinkItem>
         </li>
       )}
       {isCustomerLogged && (

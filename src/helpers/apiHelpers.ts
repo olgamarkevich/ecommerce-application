@@ -70,7 +70,7 @@ export const getPathParams = (
 ): string => {
   return Object.entries(params)
     .map((entry) => {
-      return `${entry[0]}=${entry[1]}`;
+      return `${encodeURIComponent(entry[0])}=${encodeURIComponent(entry[1])}`;
     })
     .join('&');
 };
