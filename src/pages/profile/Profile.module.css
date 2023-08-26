@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 .wrapper {
   display: flex;
 }
@@ -23,10 +27,14 @@
 
 .wrapper_right {
   width: calc(100% - 250px);
+}
+
+.profile_border {
   text-align: left;
   padding: 10px 40px;
   border: 1px solid #819fff;
   border-radius: 5px;
+  height: 100%;
 }
 
 .subtitle {
@@ -47,7 +55,7 @@
   position: relative;
 }
 
-.profile_line_r p {
+.profile_line p {
   font-size: 12px;
   text-align: left;
   margin-top: 5px;

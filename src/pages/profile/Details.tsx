@@ -7,6 +7,11 @@ import * as yup from 'yup';
 import { dateOfBirth, firstname, lastname } from 'helpers/settingSchema';
 import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import { useUpdateCustomerQuery } from 'api/customerApi';
+import Loader from 'components/Loader/Loader';
+import { showTextInfo } from 'store/appSlice';
+import { useAppDispatch } from 'hooks/hooks';
+import DetailsInput from './DetailsInput';
+import type { Customer } from '@commercetools/platform-sdk';
 
 const schema = yup
   .object({
@@ -16,20 +21,30 @@ const schema = yup
   })
   .required();
 
-type FormData = yup.InferType<typeof schema>;
+export type FormData = yup.InferType<typeof schema>;
 
 interface Props {
-  lastNameP: string | undefined;
-  firstNameP: string | undefined;
-  dateOfBirthP: string | undefined;
+  lastNameP: string;
+  firstNameP: string;
+  dateOfBirthP?: Date | null | undefined;
+  version: number;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer | undefined>>;
 }
 
-const Details: FC<Props> = ({ lastNameP, firstNameP, dateOfBirthP }) => {
+const Details: FC<Props> = ({
+  lastNameP,
+  firstNameP,
+  dateOfBirthP,
+  version,
+  setCustomerData,
+}) => {
   const [editMode, setEditMode] = useState(true);
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -41,25 +56,60 @@ const Details: FC<Props> = ({ lastNameP, firstNameP, dateOfBirthP }) => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-    setEditMode(false);
+  const [detailsForm, setDetailsForm] = useState({
+    first: '',
+    last: '',
+    dateOfBirth: '',
+  });
 
-    useUpdateCustomerQuery({
-      version: 2,
+  const { data, isLoading } = useUpdateCustomerQuery(
+    {
+      version: version,
       actions: [
         {
           action: 'setFirstName',
-          firstName: data.firstname,
+          firstName: detailsForm.first,
+        },
+
+        {
+          action: 'setLastName',
+          lastName: detailsForm.last,
+        },
+
+        {
+          action: 'setDateOfBirth',
+          dateOfBirth: detailsForm.dateOfBirth,
         },
       ],
+    },
+    { skip: undefined },
+  );
+
+  if (data !== undefined) {
+    setCustomerData(data);
+  }
+
+  const onSubmit = (datas: FormData) => {
+    // const dateOfBirth: string = datas.dateOfBirth
+    //   ? `${String(datas.dateOfBirth.getUTCFullYear())}-${String(
+    //       datas.dateOfBirth.getUTCMonth() + 1,
+    //     )}-${String(datas.dateOfBirth.getUTCDate())}`
+    //   : '';
+
+    setDetailsForm({
+      first: datas.firstname,
+      last: datas.lastname,
+      dateOfBirth: datas.dateOfBirth,
     });
+    setEditMode(true);
+    dispatch(showTextInfo('Personal information updated'));
   };
 
   return (
-    <>
+    <div className={style.wrapper_right}>
+      {isLoading && <Loader />}
       <div className={style.profile_title_flex}>
-        <div className={style.subtitle}>Personal info</div>
+        <div className={style.subtitle}>Personal information</div>
 
         {editMode ? (
           <button
@@ -74,6 +124,9 @@ const Details: FC<Props> = ({ lastNameP, firstNameP, dateOfBirthP }) => {
           <button
             className={style.edit}
             onClick={() => {
+              setValue('firstname', firstNameP);
+              setValue('lastname', lastNameP);
+              setValue('dateOfBirth', dateOfBirthP);
               setEditMode(true);
             }}
           >
@@ -84,57 +137,39 @@ const Details: FC<Props> = ({ lastNameP, firstNameP, dateOfBirthP }) => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className='columns-3'>
-          <div className={style.profile_line}>
-            <div className={style.profile_line_l}>
-              <div>LastName: </div>
-            </div>
+          <DetailsInput
+            label='FirstName:'
+            editMode={editMode}
+            register={register}
+            errorText={errors.firstname?.message}
+            type='text'
+            fieldId='firstname'
+          />
 
-            <div className={style.profile_line_r}>
-              <input
-                type='text'
-                {...register('lastname')}
-                disabled={editMode}
-              />
-              {!editMode && <p>{errors.lastname?.message}</p>}
-            </div>
-          </div>
+          <DetailsInput
+            label='LastName:'
+            editMode={editMode}
+            register={register}
+            errorText={errors.lastname?.message}
+            type='text'
+            fieldId='lastname'
+          />
 
-          <div className={style.profile_line}>
-            <div className={style.profile_line_l}>
-              <div>FirstName:</div>
-            </div>
-
-            <div className={style.profile_line_r}>
-              <input
-                type='text'
-                disabled={editMode}
-                {...register('firstname')}
-              />
-              {!editMode && <p>{errors.firstname?.message}</p>}
-            </div>
-          </div>
-
-          <div className={style.profile_line}>
-            <div className={style.profile_line_l}>
-              <div>Date of birth: </div>
-            </div>
-
-            <div className={style.profile_line_r}>
-              <input
-                type='date'
-                disabled={editMode}
-                {...register('dateOfBirth')}
-              />
-              {!editMode && <p>{errors.dateOfBirth?.message}</p>}
-            </div>
-          </div>
+          <DetailsInput
+            label='Date of birth:'
+            editMode={editMode}
+            register={register}
+            errorText={errors.dateOfBirth?.message}
+            type='date'
+            fieldId='dateOfBirth'
+          />
         </div>
 
         <div className='flex items-center justify-items-center'>
           {!editMode && <ButtonSubmit text='Save' />}
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
