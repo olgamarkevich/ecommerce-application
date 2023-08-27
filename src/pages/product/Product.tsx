@@ -1,14 +1,45 @@
 import React from 'react';
+import Loader from '../../components/Loader/Loader';
 import type { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useGetProductsQuery } from '../../api/productApi';
+import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
 
 const Product: FC = () => {
   const { productSlug } = useParams();
-  const { data: product } = useGetProductsQuery({
-    where: `slug(en="${productSlug}")`,
-    limit: 1,
-  });
+  const [searchParams] = useSearchParams();
+
+  const params = prepareProductAndCategoryQueryParams(
+    productSlug || '',
+    searchParams,
+  );
+
+  const {
+    data: product,
+    isError,
+    isLoading,
+  } = useGetProductsQuery(params.toString());
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return (
+      <>
+        <h3>Server error! Try later...</h3>
+      </>
+    );
+  }
+
+  if (product && !product.results.length) {
+    return (
+      <>
+        <h2 className={'mb-10'}>Product Details Page</h2>
+        <h3>No products find!</h3>
+      </>
+    );
+  }
 
   return (
     <>

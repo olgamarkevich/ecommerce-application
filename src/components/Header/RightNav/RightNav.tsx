@@ -45,9 +45,7 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         </LinkItem>
       </li>
       <li className={style.nav__link}>
-        <LinkItem to='/product/gum-bag-medium-BS1900-black'>
-          Product (gum-bag-medium-BS1900-black)
-        </LinkItem>
+        <LinkItem to='/product/toothpaste-tablets-w-fluoride'>Product</LinkItem>
       </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>
