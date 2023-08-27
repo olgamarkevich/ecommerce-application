@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import style from './Profile.module.css';
@@ -9,11 +9,13 @@ import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import { useUpdateCustomerQuery } from 'api/customerApi';
 import type { Customer } from '@commercetools/platform-sdk';
 import Loader from 'components/Loader/Loader';
+import { useAppDispatch } from 'hooks/hooks';
+import { showTextInfo } from 'store/appSlice';
+import TextInfo from 'components/TextInfo/TextInfo';
 
 interface Props {
-  emailP: string | undefined;
-  version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | undefined>>;
+  customer: Customer | null;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
 }
 
 const schema = yup
@@ -24,91 +26,111 @@ const schema = yup
 
 export type FormData = yup.InferType<typeof schema>;
 
-const Settings: FC<Props> = ({ emailP, version, setCustomerData }) => {
+const Settings: FC<Props> = ({ customer, setCustomerData }) => {
+  const dispatch = useAppDispatch();
   const [editModeEmail, setEditModeEmail] = useState(true);
 
-  const [emailForm, setEmailForm] = useState('');
+  const defaultFormData = useMemo<FormData>(() => {
+    return {
+      email: customer?.email || '',
+    };
+  }, [customer?.email]);
 
   const {
     register,
     handleSubmit,
+    setError,
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: {
-      email: emailP,
-    },
+    defaultValues: defaultFormData,
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
 
-  const onSubmit = (datas: FormData) => {
-    console.log(datas);
-    setEmailForm(datas.email);
-  };
+  const [formData, setFormData] = useState<FormData>(defaultFormData);
 
-  const { data, isLoading } = useUpdateCustomerQuery(
+  const {
+    data: customerData,
+    isLoading,
+
+    error: serverError,
+  } = useUpdateCustomerQuery(
     {
-      version: version,
+      version: customer?.version || 0,
       actions: [
         {
           action: 'changeEmail',
-          email: emailForm,
+          email: formData.email,
         },
       ],
     },
-    { skip: undefined },
+    { skip: customer === null || customer.email === formData.email },
   );
 
-  if (data !== undefined) {
-    setCustomerData(data);
-  }
+  useEffect(() => {
+    if (customerData) {
+      setCustomerData(customerData);
+    }
+  }, [customerData, setCustomerData]);
+
+  useEffect(() => {
+    if (serverError) {
+      const message =
+        'status' in serverError && serverError.status === 400
+          ? 'There is already an existing customer with the provided email'
+          : 'Server error. Please, try later...';
+
+      setError('root.serverError', { message });
+    }
+  }, [setError, serverError]);
+
+  const onSubmit = (data: FormData) => {
+    setFormData(data);
+    setEditModeEmail(true);
+    dispatch(showTextInfo('Email updated'));
+  };
 
   return (
-    <div className={style.wrapper_right}>
+    <div className={style.profile_border}>
       {isLoading && <Loader />}
+      <div className={style.profile_title_flex}>
+        <div className={style.subtitle}>Email</div>
 
-      <div className={style.profile_border}>
-        <div className={style.profile_title_flex}>
-          <div className={style.subtitle}>Email</div>
-          {editModeEmail ? (
-            <button
-              className={style.edit}
-              onClick={() => {
-                setEditModeEmail(false);
-              }}
-            >
-              Edit
-            </button>
-          ) : (
-            <button
-              className={style.edit}
-              onClick={() => {
-                setValue('email', emailP);
-                setEditModeEmail(true);
-              }}
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-        <div className={style.profile_line}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input
-              type='email'
-              disabled={editModeEmail}
-              {...register('email')}
-            />
-            {!editModeEmail && <p>{errors.email?.message}</p>}
-
-            <div className='flex items-center justify-items-center'>
-              {!editModeEmail && <ButtonSubmit text='Save' />}
-            </div>
-          </form>
-        </div>
+        {editModeEmail ? (
+          <button
+            className={style.edit}
+            onClick={() => {
+              setEditModeEmail(false);
+            }}
+          >
+            Edit
+          </button>
+        ) : (
+          <button
+            className={style.edit}
+            onClick={() => {
+              setValue('email', defaultFormData.email);
+              setEditModeEmail(true);
+            }}
+          >
+            Cancel
+          </button>
+        )}
       </div>
+      <div className={style.profile_line}>
+        {errors.root?.serverError.message && (
+          <TextInfo text={errors.root?.serverError.message} type='warn' />
+        )}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input type='email' disabled={editModeEmail} {...register('email')} />
+          {!editModeEmail && <p>{errors.email?.message}</p>}
 
-      <div className={style.profile_border}>dfgdfgdfg</div>
+          <div className='flex items-center justify-items-center'>
+            {!editModeEmail && <ButtonSubmit text='Save' />}
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

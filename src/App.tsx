@@ -11,7 +11,7 @@ import Product from './pages/product/Product';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
 import Addresses from 'pages/profile/Addresses';
-import Settings from 'pages/profile/Settings';
+// import Settings from 'pages/profile/Settings';
 
 function App() {
   useInit();
@@ -32,7 +32,7 @@ function App() {
           }
         >
           <Route path='addresses' element={<Addresses />} />
-          <Route path='settings' element={<Settings />} />
+          {/* <Route path='settings' element={<Settings />} /> */}
         </Route>
         <Route
           path='login'

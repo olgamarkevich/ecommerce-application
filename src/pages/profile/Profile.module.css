@@ -3,7 +3,8 @@
 }
 
 .wrapper {
-  display: flex;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .wrapper_nav ul {
@@ -25,16 +26,13 @@
   width: 250px;
 }
 
-.wrapper_right {
-  width: calc(100% - 250px);
-}
-
 .profile_border {
   text-align: left;
   padding: 10px 40px;
   border: 1px solid #819fff;
   border-radius: 5px;
   height: 100%;
+  margin-bottom: 20px;
 }
 
 .subtitle {
@@ -88,4 +86,15 @@
 .profile_line input:disabled {
   background: none;
   border: 1px solid transparent;
+}
+
+.flex {
+  display: flex;
+  margin: 0 -10px;
+  margin-bottom: 20px;
+}
+
+.flex .col {
+  width: 50%;
+  padding: 0 10px;
 }

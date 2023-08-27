@@ -39,6 +39,28 @@ export const password = {
     .min(8),
 };
 
+export const password2 = {
+  password2: yup
+    .string()
+    .required()
+    .matches(/^\S.*\S$/, 'must not Contain leading or trailing whitespace')
+    .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
+    .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
+    .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
+    .min(8),
+};
+
+export const password3 = {
+  password3: yup
+    .string()
+    .required()
+    .matches(/^\S.*\S$/, 'must not Contain leading or trailing whitespace')
+    .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
+    .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
+    .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
+    .min(8),
+};
+
 export const firstname = {
   firstname: yup
     .string()
@@ -63,8 +85,8 @@ export const lastname = {
 
 export const dateOfBirth = {
   dateOfBirth: yup
-    .date()
-    .nullable()
+    .string()
+    .required()
     .typeError('date of birth is required')
     .test('DOB', 'you must be at least 13 years', (value) => {
       return dayjs().diff(dayjs(value), 'years') >= 13;

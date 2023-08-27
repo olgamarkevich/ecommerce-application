@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect, useMemo } from 'react';
 import type { FC } from 'react';
-import style from './Profile.module.css';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import dayjs from 'dayjs';
 import * as yup from 'yup';
-import { dateOfBirth, firstname, lastname } from 'helpers/settingSchema';
-import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
-import { useUpdateCustomerQuery } from 'api/customerApi';
-import Loader from 'components/Loader/Loader';
-import { showTextInfo } from 'store/appSlice';
-import { useAppDispatch } from 'hooks/hooks';
-import DetailsInput from './DetailsInput';
 import type { Customer } from '@commercetools/platform-sdk';
+
+import { useUpdateCustomerQuery } from 'api/customerApi';
+import { useAppDispatch } from 'hooks/hooks';
+import { showTextInfo } from 'store/appSlice';
+import { dateOfBirth, firstname, lastname } from 'helpers/settingSchema';
+import type { RequiredKeepUndefined } from 'helpers/typesHelpers';
+
+import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
+import Loader from 'components/Loader/Loader';
+
+import DetailsInput from './DetailsInput';
+import style from './Profile.module.css';
 
 const schema = yup
   .object({
@@ -21,25 +26,25 @@ const schema = yup
   })
   .required();
 
-export type FormData = yup.InferType<typeof schema>;
+export type FormData = RequiredKeepUndefined<yup.InferType<typeof schema>>;
 
 interface Props {
-  lastNameP: string;
-  firstNameP: string;
-  dateOfBirthP?: Date | null | undefined;
-  version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | undefined>>;
+  customer: Customer | null;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
 }
 
-const Details: FC<Props> = ({
-  lastNameP,
-  firstNameP,
-  dateOfBirthP,
-  version,
-  setCustomerData,
-}) => {
-  const [editMode, setEditMode] = useState(true);
+const Details: FC<Props> = ({ customer, setCustomerData }) => {
   const dispatch = useAppDispatch();
+
+  const [editMode, setEditMode] = useState(true);
+
+  const defaultFormData = useMemo<FormData>(() => {
+    return {
+      lastname: customer?.lastName || '',
+      firstname: customer?.firstName || '',
+      dateOfBirth: customer?.dateOfBirth || dayjs().format('YYYY-MM-DD'),
+    };
+  }, [customer?.dateOfBirth, customer?.firstName, customer?.lastName]);
 
   const {
     register,
@@ -47,60 +52,50 @@ const Details: FC<Props> = ({
     setValue,
     formState: { errors },
   } = useForm<FormData>({
-    defaultValues: {
-      lastname: lastNameP,
-      firstname: firstNameP,
-      dateOfBirth: dateOfBirthP,
-    },
+    defaultValues: defaultFormData,
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
 
-  const [detailsForm, setDetailsForm] = useState({
-    first: '',
-    last: '',
-    dateOfBirth: '',
-  });
+  const [formData, setFormData] = useState<FormData>(defaultFormData);
 
-  const { data, isLoading } = useUpdateCustomerQuery(
+  const { data: customerData, isLoading } = useUpdateCustomerQuery(
     {
-      version: version,
+      version: customer?.version || 0,
       actions: [
         {
           action: 'setFirstName',
-          firstName: detailsForm.first,
+          firstName: formData.firstname,
         },
 
         {
           action: 'setLastName',
-          lastName: detailsForm.last,
+          lastName: formData.lastname,
         },
 
         {
           action: 'setDateOfBirth',
-          dateOfBirth: detailsForm.dateOfBirth,
+          dateOfBirth: dayjs(formData.dateOfBirth).format('YYYY-MM-DD'),
         },
       ],
     },
-    { skip: undefined },
+    {
+      skip:
+        customer === null ||
+        (customer.firstName === formData.firstname &&
+          customer.lastName === formData.lastname &&
+          customer.dateOfBirth === formData.dateOfBirth),
+    },
   );
 
-  if (data !== undefined) {
-    setCustomerData(data);
-  }
+  useEffect(() => {
+    if (customerData) {
+      setCustomerData(customerData);
+    }
+  }, [customerData, setCustomerData]);
 
-  const onSubmit = (datas: FormData) => {
-    // const dateOfBirth: string = datas.dateOfBirth
-    //   ? `${String(datas.dateOfBirth.getUTCFullYear())}-${String(
-    //       datas.dateOfBirth.getUTCMonth() + 1,
-    //     )}-${String(datas.dateOfBirth.getUTCDate())}`
-    //   : '';
-
-    setDetailsForm({
-      first: datas.firstname,
-      last: datas.lastname,
-      dateOfBirth: datas.dateOfBirth,
-    });
+  const onSubmit = (data: FormData) => {
+    setFormData(data);
     setEditMode(true);
     dispatch(showTextInfo('Personal information updated'));
   };
@@ -108,67 +103,69 @@ const Details: FC<Props> = ({
   return (
     <div className={style.wrapper_right}>
       {isLoading && <Loader />}
-      <div className={style.profile_title_flex}>
-        <div className={style.subtitle}>Personal information</div>
+      <div className={style.profile_border}>
+        <div className={style.profile_title_flex}>
+          <div className={style.subtitle}>Personal information</div>
 
-        {editMode ? (
-          <button
-            className={style.edit}
-            onClick={() => {
-              setEditMode(false);
-            }}
-          >
-            Edit
-          </button>
-        ) : (
-          <button
-            className={style.edit}
-            onClick={() => {
-              setValue('firstname', firstNameP);
-              setValue('lastname', lastNameP);
-              setValue('dateOfBirth', dateOfBirthP);
-              setEditMode(true);
-            }}
-          >
-            Cancel
-          </button>
-        )}
+          {editMode ? (
+            <button
+              className={style.edit}
+              onClick={() => {
+                setEditMode(false);
+              }}
+            >
+              Edit
+            </button>
+          ) : (
+            <button
+              className={style.edit}
+              onClick={() => {
+                setValue('firstname', defaultFormData.firstname);
+                setValue('lastname', defaultFormData.lastname);
+                setValue('dateOfBirth', defaultFormData.dateOfBirth);
+                setEditMode(true);
+              }}
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className='columns-3'>
+            <DetailsInput
+              label='FirstName:'
+              editMode={editMode}
+              register={register}
+              errorText={errors.firstname?.message}
+              type='text'
+              fieldId='firstname'
+            />
+
+            <DetailsInput
+              label='LastName:'
+              editMode={editMode}
+              register={register}
+              errorText={errors.lastname?.message}
+              type='text'
+              fieldId='lastname'
+            />
+
+            <DetailsInput
+              label='Date of birth:'
+              editMode={editMode}
+              register={register}
+              errorText={errors.dateOfBirth?.message}
+              type='date'
+              fieldId='dateOfBirth'
+            />
+          </div>
+
+          <div className='flex items-center justify-items-center'>
+            {!editMode && <ButtonSubmit text='Save' />}
+          </div>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='columns-3'>
-          <DetailsInput
-            label='FirstName:'
-            editMode={editMode}
-            register={register}
-            errorText={errors.firstname?.message}
-            type='text'
-            fieldId='firstname'
-          />
-
-          <DetailsInput
-            label='LastName:'
-            editMode={editMode}
-            register={register}
-            errorText={errors.lastname?.message}
-            type='text'
-            fieldId='lastname'
-          />
-
-          <DetailsInput
-            label='Date of birth:'
-            editMode={editMode}
-            register={register}
-            errorText={errors.dateOfBirth?.message}
-            type='date'
-            fieldId='dateOfBirth'
-          />
-        </div>
-
-        <div className='flex items-center justify-items-center'>
-          {!editMode && <ButtonSubmit text='Save' />}
-        </div>
-      </form>
     </div>
   );
 };

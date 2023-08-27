@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 import { useGetCustomerQuery } from '../../api/customerApi';
 import style from './Profile.module.css';
-import { NavLink, Route, Routes } from 'react-router-dom';
 import Addresses from './Addresses';
 import Settings from './Settings';
 import Details from './Details';
+import Password from './Password';
 
 const Profile: FC = () => {
-  const { data: customerData } = useGetCustomerQuery();
+  const { data: customerData } = useGetCustomerQuery(); // TODO: Check extra queries
 
-  const [customer, setCustomerData] = useState(customerData);
+  const [customer, setCustomerData] = useState(customerData || null);
 
   return (
     <>
@@ -18,45 +18,18 @@ const Profile: FC = () => {
 
       <div>{JSON.stringify(customer, null, ' ')}</div>
       <div className={style.wrapper}>
-        <div className={style.wrapper_nav}>
-          <ul>
-            <li>
-              <NavLink to='/profile'>Personal information</NavLink>
-            </li>
-            <li>
-              <NavLink to='/profile/addresses'>My addresses</NavLink>
-            </li>
-            <li>
-              <NavLink to='/profile/settings'>Account settings</NavLink>
-            </li>
-          </ul>
+        <Details customer={customer} setCustomerData={setCustomerData} />
+
+        <div className={style.flex}>
+          <div className={style.col}>
+            <Settings customer={customer} setCustomerData={setCustomerData} />
+          </div>
+          <div className={style.col}>
+            <Password customer={customer} setCustomerData={setCustomerData} />
+          </div>
         </div>
 
-        <Routes>
-          <Route
-            index
-            element={
-              <Details
-                firstName={customer?.firstName}
-                lastName={customer?.lastName}
-                dateOfBirth={customer?.dateOfBirth}
-                version={customer?.version}
-                setCustomerData={setCustomerData}
-              />
-            }
-          />
-          <Route path='/addresses' element={<Addresses />} />
-          <Route
-            path='/settings'
-            element={
-              <Settings
-                emailP={customer?.email}
-                version={customer?.version}
-                setCustomerData={setCustomerData}
-              />
-            }
-          />
-        </Routes>
+        <Addresses />
       </div>
     </>
   );
