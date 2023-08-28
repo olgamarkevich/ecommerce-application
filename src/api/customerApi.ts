@@ -50,7 +50,12 @@ const customerApi = apiClient.injectEndpoints({
 
       updatePassword: build.query<
         Customer,
-        { version: number; currentPassword: string; newPassword: string }
+        {
+          id: string | undefined;
+          version: number;
+          currentPassword: string;
+          newPassword: string;
+        }
       >({
         query: (body) => {
           const method = 'POST';
