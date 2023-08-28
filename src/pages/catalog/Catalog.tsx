@@ -7,6 +7,7 @@ import { useGetProductsQuery } from '../../api/productApi';
 import { useGetCategoriesQuery } from '../../api/categoryApi';
 import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
 import { useAppSelector } from '../../hooks/hooks';
+import ProductCard from '../../components/ProductCard/ProductCard';
 
 const Catalog: FC = () => {
   const { categorySlug } = useParams();
@@ -75,14 +76,9 @@ const Catalog: FC = () => {
       {products && <div>Offset: {products.offset}</div>}
       {products && <div>Count: {products.count}</div>}
       {products && <div>Total: {products.total}</div>}
-      {products &&
-        products.results.map((item) => {
-          return (
-            <div key={item.id} className={'my-10'}>
-              {JSON.stringify(item)}
-            </div>
-          );
-        })}
+      {products && (
+        <ProductCard products={products.results} title={'Products'} />
+      )}
     </>
   );
 };

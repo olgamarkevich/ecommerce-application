@@ -1,8 +1,6 @@
-import ProductCard from 'components/ProductCard/ProductCard';
 import React from 'react';
 import type { FC } from 'react';
 import { NavLink } from 'react-router-dom';
-import { productsList } from 'types/testData';
 
 const Main: FC = () => {
   return (
@@ -20,8 +18,6 @@ const Main: FC = () => {
           Here is a link to sign up page
         </NavLink>
       </p>
-      <ProductCard products={productsList} title='TEST DATA' />
-      <img src='../../assets/TestImg/img1.png' alt='' />
     </>
   );
 };
