@@ -19,7 +19,7 @@ function App() {
       <Route path='/' element={<Layout />}>
         <Route index element={<Main />} />
         <Route path='categories' element={<Categories />} />
-        <Route path='products/:categoryKey?' element={<Catalog />} />
+        <Route path='products/:categorySlug?' element={<Catalog />} />
         <Route path='product/:productSlug' element={<Product />} />
         <Route
           path='profile'

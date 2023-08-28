@@ -1,9 +1,12 @@
 import React from 'react';
 import type { FC } from 'react';
 import { useGetCategoriesQuery } from '../../api/categoryApi';
+import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
 
 const Categories: FC = () => {
-  const { data: categories } = useGetCategoriesQuery({ limit: 20, offset: 0 });
+  const searchParams = new URLSearchParams({ limit: '20', offset: '0' });
+  const params = prepareProductAndCategoryQueryParams('', searchParams);
+  const { data: categories } = useGetCategoriesQuery(params.toString());
 
   return (
     <>
