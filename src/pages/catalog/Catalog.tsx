@@ -6,10 +6,14 @@ import { prepareCatalogQueryParams } from '../../helpers/prepareCatalogQueryPara
 import { useGetProductsQuery } from '../../api/productApi';
 import { useGetCategoriesQuery } from '../../api/categoryApi';
 import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
+import { useAppSelector } from '../../hooks/hooks';
 
 const Catalog: FC = () => {
   const { categorySlug } = useParams();
   const [searchParams] = useSearchParams();
+  const { accessToken } = useAppSelector((state) => {
+    return state.auth;
+  });
 
   const categoryQueryParams = prepareProductAndCategoryQueryParams(
     categorySlug || 'all',
@@ -19,7 +23,9 @@ const Catalog: FC = () => {
     data: category,
     isError: isCategoryError,
     isLoading: isCategoryLoading,
-  } = useGetCategoriesQuery(categoryQueryParams.toString());
+  } = useGetCategoriesQuery(categoryQueryParams.toString(), {
+    skip: !accessToken.length,
+  });
 
   let params = new URLSearchParams();
 
@@ -47,7 +53,10 @@ const Catalog: FC = () => {
     );
   }
 
-  if (products && !products.results.length) {
+  if (
+    (products && !products.results.length) ||
+    (category && !category.results.length)
+  ) {
     return (
       <>
         <h2 className={'mb-10'}>Products Catalogs Page</h2>

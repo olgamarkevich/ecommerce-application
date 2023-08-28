@@ -4,10 +4,14 @@ import type { FC } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { useGetProductsQuery } from '../../api/productApi';
 import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
+import { useAppSelector } from '../../hooks/hooks';
 
 const Product: FC = () => {
   const { productSlug } = useParams();
   const [searchParams] = useSearchParams();
+  const { accessToken } = useAppSelector((state) => {
+    return state.auth;
+  });
 
   const params = prepareProductAndCategoryQueryParams(
     productSlug || '',
@@ -18,7 +22,7 @@ const Product: FC = () => {
     data: product,
     isError,
     isLoading,
-  } = useGetProductsQuery(params.toString());
+  } = useGetProductsQuery(params.toString(), { skip: !accessToken.length });
 
   if (isLoading) {
     return <Loader />;
