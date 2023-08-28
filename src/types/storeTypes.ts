@@ -58,15 +58,3 @@ export interface CustomerSignUp {
   isShippingDefault: boolean;
   isBillingDefault: boolean;
 }
-
-export interface IProductItem {
-  id: number;
-  name: string;
-  brand: string;
-  images: string[];
-  category: string;
-  description: string;
-  shortDescription: string;
-  price: number;
-  oldPrice: number;
-}

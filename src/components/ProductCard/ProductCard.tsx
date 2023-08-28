@@ -5,6 +5,15 @@ import type { IProductCard } from 'types/componentTypes';
 import Title from 'components/Title/Title';
 
 const ProductCard: FC<IProductCard> = ({ products, title }) => {
+  const getShortDescription = (text: string): string => {
+    const space = ' ';
+    let maxIndex = 50;
+    while (text[maxIndex] !== space) {
+      maxIndex--;
+    }
+    return `${text.slice(0, maxIndex)}...`;
+  };
+
   return (
     <section>
       <Title text={title} size='large' />
@@ -41,16 +50,22 @@ const ProductCard: FC<IProductCard> = ({ products, title }) => {
               hover:shadow-2xl hover:scale-105'
               key={product.id}
             >
-              <Link to={`/product/${product.slug?.en}`}>
+              <Link
+                to={`/product/${product.slug?.en}`}
+                className='flex flex-col'
+              >
                 <div>
                   <img src={imgSrc} alt='Product' className='rounded-2xl' />
                 </div>
 
-                <div>
+                <div className='flex flex-col flex-grow justify-between'>
                   <p className='font-bold first-letter:uppercase'>
                     {product.name?.en}
                   </p>
-                  <div className='flex justify-center'>
+                  <p className='my-2'>
+                    {getShortDescription(product.description?.en ?? '')}
+                  </p>
+                  <div>
                     <span className='font-bold text-xl mx-3'>
                       {discountedPrice}$
                     </span>
