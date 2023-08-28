@@ -17,6 +17,7 @@ import Loader from 'components/Loader/Loader';
 
 import DetailsInput from './DetailsInput';
 import style from './Profile.module.css';
+import TextInfo from 'components/TextInfo/TextInfo';
 
 const schema = yup
   .object({
@@ -58,8 +59,13 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
   });
 
   const [formData, setFormData] = useState<FormData>(defaultFormData);
+  const [serverErrorMsg, setServerErrorMsg] = useState('');
 
-  const { data: customerData, isLoading } = useUpdateCustomerQuery(
+  const {
+    data: customerData,
+    isLoading,
+    error: serverError,
+  } = useUpdateCustomerQuery(
     {
       version: customer?.version || 0,
       actions: [
@@ -82,6 +88,7 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
     {
       skip:
         customer === null ||
+        !!serverErrorMsg ||
         (customer.firstName === formData.firstname &&
           customer.lastName === formData.lastname &&
           customer.dateOfBirth === formData.dateOfBirth),
@@ -91,13 +98,25 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
   useEffect(() => {
     if (customerData) {
       setCustomerData(customerData);
+      setEditMode(true);
+      dispatch(showTextInfo('Personal information updated'));
     }
-  }, [customerData, setCustomerData]);
+  }, [customerData, dispatch, setCustomerData]);
+
+  useEffect(() => {
+    if (serverError) {
+      if (checkServerErrorMsg(serverError)) {
+        setServerErrorMsg(serverError.data.message);
+      } else {
+        setServerErrorMsg('Server error. Please, try later...');
+      }
+      setFormData(defaultFormData);
+    }
+  }, [defaultFormData, serverError]);
 
   const onSubmit = (data: FormData) => {
+    setServerErrorMsg('');
     setFormData(data);
-    setEditMode(true);
-    dispatch(showTextInfo('Personal information updated'));
   };
 
   return (
@@ -132,6 +151,7 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+          {serverErrorMsg && <TextInfo text={serverErrorMsg} type='warn' />}
           <div className='columns-3'>
             <DetailsInput
               label='FirstName:'
@@ -171,3 +191,14 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
 };
 
 export default Details;
+
+const checkServerErrorMsg = (
+  err: object,
+): err is { data: { message: string } } => {
+  return (
+    'data' in err &&
+    typeof err.data === 'object' &&
+    err.data !== null &&
+    'message' in err.data
+  );
+};

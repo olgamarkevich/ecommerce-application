@@ -26,7 +26,7 @@ const schema = yup
 
 export type FormData = yup.InferType<typeof schema>;
 
-const Settings: FC<Props> = ({ customer, setCustomerData }) => {
+const Email: FC<Props> = ({ customer, setCustomerData }) => {
   const dispatch = useAppDispatch();
   const [editModeEmail, setEditModeEmail] = useState(true);
 
@@ -39,7 +39,6 @@ const Settings: FC<Props> = ({ customer, setCustomerData }) => {
   const {
     register,
     handleSubmit,
-    setError,
     setValue,
     formState: { errors },
   } = useForm<FormData>({
@@ -49,11 +48,11 @@ const Settings: FC<Props> = ({ customer, setCustomerData }) => {
   });
 
   const [formData, setFormData] = useState<FormData>(defaultFormData);
+  const [serverErrorMsg, setServerErrorMsg] = useState('');
 
   const {
     data: customerData,
     isLoading,
-
     error: serverError,
   } = useUpdateCustomerQuery(
     {
@@ -65,30 +64,36 @@ const Settings: FC<Props> = ({ customer, setCustomerData }) => {
         },
       ],
     },
-    { skip: customer === null || customer.email === formData.email },
+    {
+      skip:
+        customer === null ||
+        !!serverErrorMsg ||
+        customer.email === formData.email,
+    },
   );
 
   useEffect(() => {
     if (customerData) {
       setCustomerData(customerData);
+      setEditModeEmail(true);
+      dispatch(showTextInfo('Email updated'));
     }
-  }, [customerData, setCustomerData]);
+  }, [customerData, dispatch, setCustomerData]);
 
   useEffect(() => {
     if (serverError) {
-      const message =
-        'status' in serverError && serverError.status === 400
-          ? 'There is already an existing customer with the provided email'
-          : 'Server error. Please, try later...';
-
-      setError('root.serverError', { message });
+      if (checkServerErrorMsg(serverError)) {
+        setServerErrorMsg(serverError.data.message);
+      } else {
+        setServerErrorMsg('Server error. Please, try later...');
+      }
+      setFormData(defaultFormData);
     }
-  }, [setError, serverError]);
+  }, [defaultFormData, serverError]);
 
   const onSubmit = (data: FormData) => {
+    setServerErrorMsg('');
     setFormData(data);
-    setEditModeEmail(true);
-    dispatch(showTextInfo('Email updated'));
   };
 
   return (
@@ -119,12 +124,17 @@ const Settings: FC<Props> = ({ customer, setCustomerData }) => {
         )}
       </div>
       <div className={style.profile_line}>
-        {errors.root?.serverError.message && (
-          <TextInfo text={errors.root?.serverError.message} type='warn' />
-        )}
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type='email' disabled={editModeEmail} {...register('email')} />
-          {!editModeEmail && <p>{errors.email?.message}</p>}
+          <div className={style.profile_line}>
+            <input
+              type='email'
+              disabled={editModeEmail}
+              {...register('email')}
+            />
+            {!editModeEmail && <p>{errors.email?.message}</p>}
+          </div>
+
+          {serverErrorMsg && <TextInfo text={serverErrorMsg} type='warn' />}
 
           <div className='flex items-center justify-items-center'>
             {!editModeEmail && <ButtonSubmit text='Save' />}
@@ -135,4 +145,15 @@ const Settings: FC<Props> = ({ customer, setCustomerData }) => {
   );
 };
 
-export default Settings;
+export default Email;
+
+const checkServerErrorMsg = (
+  err: object,
+): err is { data: { message: string } } => {
+  return (
+    'data' in err &&
+    typeof err.data === 'object' &&
+    err.data !== null &&
+    'message' in err.data
+  );
+};

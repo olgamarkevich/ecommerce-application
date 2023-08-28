@@ -22,18 +22,16 @@ const DetailsInput: FC<InputProps> = ({
   type,
 }) => {
   return (
-    <>
-      <div className={style.profile_line}>
-        <div className={style.profile_line_l}>
-          <div>{label}</div>
-        </div>
-
-        <div className={style.profile_line_r}>
-          <input type={type} disabled={editMode} {...register(fieldId)} />
-          {!editMode && <p>{errorText}</p>}
-        </div>
+    <div className={style.profile_line}>
+      <div className={style.profile_line_l}>
+        <div>{label}</div>
       </div>
-    </>
+
+      <div className={style.profile_line_r}>
+        <input type={type} disabled={editMode} {...register(fieldId)} />
+        {!editMode && <p>{errorText}</p>}
+      </div>
+    </div>
   );
 };
 
