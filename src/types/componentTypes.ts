@@ -33,7 +33,14 @@ export interface ITitle {
   size: TitleSizes;
 }
 
-export interface IProductCard {
+export interface IProductCardList {
   products: Partial<ProductProjection>[];
   title: string;
+}
+
+export interface IProductCard {
+  product: Partial<ProductProjection>;
+  imgSrc: string;
+  price: string;
+  discountedPrice: string;
 }
