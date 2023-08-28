@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { MouseEventHandler } from 'react';
+import type { IProductItem } from './storeTypes';
 
 export interface IPopUp {
   text: string;
@@ -30,4 +31,9 @@ export type TitleSizes = 'small' | 'medium' | 'large';
 export interface ITitle {
   text: string;
   size: TitleSizes;
+}
+
+export interface IProductCard {
+  products: IProductItem[];
+  title: string;
 }
