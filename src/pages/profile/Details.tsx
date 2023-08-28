@@ -137,7 +137,7 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
             </button>
           ) : (
             <button
-              className={style.edit}
+              className={style.cancel}
               onClick={() => {
                 setValue('firstname', defaultFormData.firstname);
                 setValue('lastname', defaultFormData.lastname);

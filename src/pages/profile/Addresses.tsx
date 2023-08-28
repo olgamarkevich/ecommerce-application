@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 import style from './Profile.module.css';
 import type { Customer } from '@commercetools/platform-sdk';
+import AddressBilling from './AddressBilling';
+import AddressShipping from './AddressShipping';
+import AddressDefaultBilling from './AddressDefaultBilling';
+import AddressDefaultShipping from './AddressDefaultShipping';
 import AddressCard from './AddressCard';
-import { useUpdateCustomerQuery } from 'api/customerApi';
-import Loader from 'components/Loader/Loader';
-
-import TextInfo from 'components/TextInfo/TextInfo';
-import { showTextInfo } from 'store/appSlice';
-import { useAppDispatch } from 'hooks/hooks';
 
 interface Props {
   customer: Customer | null;
@@ -16,89 +14,48 @@ interface Props {
 }
 
 const Addresses: FC<Props> = ({ customer, setCustomerData }) => {
-  const [addressItem, setAddressItem] = useState({});
-  const [serverErrorMsg, setServerErrorMsg] = useState('');
-  const dispatch = useAppDispatch();
-
-  const {
-    data: customerData,
-    isLoading,
-    error: serverError,
-  } = useUpdateCustomerQuery(
-    {
-      version: customer?.version || 0,
-      actions: [
-        {
-          action: 'changeAddress',
-          addressId: addressItem.id,
-          address: {
-            streetName: addressItem.street,
-            postalCode: addressItem.postalCode,
-            city: addressItem.city,
-            country: addressItem.country,
-          },
-        },
-      ],
-    },
-    {
-      skip: customer === null || addressItem.country == '',
-    },
-  );
-
-  useEffect(() => {
-    if (customerData) {
-      setCustomerData(customerData);
-      dispatch(showTextInfo('Personal information updated'));
-    }
-  }, [customerData, dispatch, setCustomerData]);
-
-  useEffect(() => {
-    console.log(addressItem);
-  }, [addressItem]);
-
-  useEffect(() => {
-    if (serverError) {
-      if (checkServerErrorMsg(serverError)) {
-        setServerErrorMsg(serverError.data.message);
-      } else {
-        setServerErrorMsg('Server error. Please, try later...');
-      }
-      setAddressItem(addressItem);
-    }
-    console.log(addressItem);
-  }, [addressItem, serverError]);
-
+  console.log(setCustomerData);
   return (
     <div className={style.profile_border}>
-      {isLoading && <Loader />}
       <div className={style.subtitle}>Addresses</div>
-      {serverErrorMsg && <TextInfo text={serverErrorMsg} type='warn' />}
+
       <div className={style.addresses_list}>
-        <div className='columns-2'>
-          {customer?.addresses.map((address) => {
-            return (
+        {customer?.addresses.map((address) => {
+          return (
+            <div key={address.id}>
+              <div className={style.address_item}>
+                <div className={style.address_title}>
+                  {address.country}, {address.postalCode}, {address.city},{' '}
+                  {address.streetName}
+                </div>
+                <div className={style.addressBS_col}>
+                  <AddressBilling />
+                </div>
+                <div className={style.addressBS_col}>
+                  <AddressShipping />
+                </div>
+                <div className={style.addressBS_col}>
+                  <AddressDefaultBilling />
+                </div>
+                <div className={style.addressBS_col}>
+                  <AddressDefaultShipping />
+                </div>
+                <div className={style.address_btn}>
+                  <button className={style.edit} />
+                  <button className={style.cancel} />
+                  <button className={style.delete} />
+                </div>
+              </div>
               <AddressCard
-                key={address.id}
                 address={address}
-                setAddressItem={setAddressItem}
+                setCustomerData={setCustomerData}
               />
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
 export default Addresses;
-
-const checkServerErrorMsg = (
-  err: object,
-): err is { data: { message: string } } => {
-  return (
-    'data' in err &&
-    typeof err.data === 'object' &&
-    err.data !== null &&
-    'message' in err.data
-  );
-};

@@ -111,7 +111,7 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
           </button>
         ) : (
           <button
-            className={style.edit}
+            className={style.cancel}
             onClick={() => {
               setEditModePassword(true);
               reset();

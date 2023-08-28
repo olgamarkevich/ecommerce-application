@@ -113,7 +113,7 @@ const Email: FC<Props> = ({ customer, setCustomerData }) => {
           </button>
         ) : (
           <button
-            className={style.edit}
+            className={style.cancel}
             onClick={() => {
               setValue('email', defaultFormData.email);
               setEditModeEmail(true);
