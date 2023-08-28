@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import { useGetCustomerQuery } from '../../api/customerApi';
 import style from './Profile.module.css';
 import Addresses from './Addresses';
-import Settings from './Settings';
+import Email from './Email';
 import Details from './Details';
 import Password from './Password';
 
@@ -20,16 +20,16 @@ const Profile: FC = () => {
       <div className={style.wrapper}>
         <Details customer={customer} setCustomerData={setCustomerData} />
 
+        <Addresses customer={customer} setCustomerData={setCustomerData} />
+
         <div className={style.flex}>
           <div className={style.col}>
-            <Settings customer={customer} setCustomerData={setCustomerData} />
+            <Email customer={customer} setCustomerData={setCustomerData} />
           </div>
           <div className={style.col}>
             <Password customer={customer} setCustomerData={setCustomerData} />
           </div>
         </div>
-
-        <Addresses />
       </div>
     </>
   );
