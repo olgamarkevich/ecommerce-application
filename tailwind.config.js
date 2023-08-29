@@ -7,12 +7,19 @@ module.exports = {
         'custom-inner': 'inset 0 0 0 2em green',
       },
       maxWidth: {
+        '1000px': '1000px',
+        '100px': '100px',
         '100vh': '100vh',
         '100vw': '100vw',
         '20%': '20%',
       },
       minWidth: {
         '220px': '220px',
+        '50px': '50px',
+      },
+      maxHeight: {
+        '60vh': '60vh',
+        '320px': '320px',
       },
       fontFamily: {
         'f-rubik': ['Rubik', 'sans-serif'],

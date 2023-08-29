@@ -7,13 +7,13 @@ import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
 const ProductCard: FC<IProductCard> = ({ product }) => {
   const imgList = getListImgSrc(product);
   return (
-    <section>
-      <div className='product-left'>
-        <div className='product-gallery'>
+    <section className='flex p-5 md:flex-col md:items-center'>
+      <div className='w-1/2 md:w-full'>
+        <div className='min-w-220px max-w-1000px'>
           <ImageSwiper images={imgList} />
         </div>
       </div>
-      <div className='product-right'>
+      <div className='w-1/2'>
         <div className='product-header'>
           <p>
             {product.masterVariant &&

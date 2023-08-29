@@ -27,7 +27,7 @@ const ImageSwiper: FC<Props> = ({ images }) => {
         return (
           <SwiperSlide key={idx}>
             <div className='swiper-zoom-container'>
-              <img src={src} alt='' />
+              <img src={src} alt='' className='w-full' />
             </div>
           </SwiperSlide>
         );
