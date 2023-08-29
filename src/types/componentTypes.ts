@@ -37,3 +37,11 @@ export interface IProductCard {
   products: Partial<ProductProjection>[];
   title: string;
 }
+
+// eslint-disable-next-line autofix/no-unused-vars
+type OnSearch = (searchString: string) => void;
+
+export interface SearchBarProps {
+  value: string;
+  onSearch: OnSearch;
+}
