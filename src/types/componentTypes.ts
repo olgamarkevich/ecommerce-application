@@ -38,9 +38,13 @@ export interface IProductCardList {
   title: string;
 }
 
-export interface IProductCard {
+export interface ICard {
   product: Partial<ProductProjection>;
   imgSrc: string;
   price: string;
   discountedPrice: string;
+}
+
+export interface IProductCard {
+  product: Partial<ProductProjection>;
 }

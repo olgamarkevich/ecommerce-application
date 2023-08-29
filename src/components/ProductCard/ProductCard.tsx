@@ -1,46 +1,26 @@
 import React from 'react';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
 import type { IProductCard } from 'types/componentTypes';
+import { getListImgSrc } from 'helpers/settingProduct';
 
-const ProductCard: FC<IProductCard> = ({
-  product,
-  imgSrc,
-  price,
-  discountedPrice,
-}) => {
-  const getShortDescription = (text: string): string => {
-    const space = ' ';
-    let maxIndex = 50;
-    while (text[maxIndex] !== space) {
-      maxIndex--;
-    }
-    return `${text.slice(0, maxIndex)}...`;
-  };
-
+const ProductCard: FC<IProductCard> = ({ product }) => {
+  const imgList = getListImgSrc(product);
   return (
-    <div
-      className='flex m-2 w-1/5 min-w-220px rounded-2xl border border-c-sky-green
-              transition-all duration-300
-              hover:shadow-2xl hover:scale-105'
-    >
-      <Link to={`/product/${product.slug?.en}`} className='flex flex-col'>
-        <div>
-          <img src={imgSrc} alt='Product' className='rounded-2xl' />
-        </div>
-
-        <div className='flex flex-col flex-grow justify-between'>
-          <p className='font-bold first-letter:uppercase'>{product.name?.en}</p>
-          <p className='my-2'>
-            {getShortDescription(product.description?.en ?? '')}
+    <section>
+      <div className='product-left'>
+        <div className='product-gallery'>{imgList}</div>
+      </div>
+      <div className='product-right'>
+        <div className='product-header'>
+          <p>
+            {product.masterVariant &&
+              product.masterVariant.attributes &&
+              product.masterVariant.attributes[0].name}
           </p>
-          <div>
-            <span className='font-bold text-xl mx-3'>{discountedPrice}$</span>
-            <span className='text-gray-600 line-through text-sm'>{price}$</span>
-          </div>
+          <p>{product.name?.en}</p>
         </div>
-      </Link>
-    </div>
+      </div>
+    </section>
   );
 };
 
