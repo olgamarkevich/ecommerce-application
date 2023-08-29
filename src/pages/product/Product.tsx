@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import { useGetProductsQuery } from '../../api/productApi';
 import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
 import { useAppSelector } from '../../hooks/hooks';
+import ProductCard from 'components/ProductCard/ProductCard';
 
 const Product: FC = () => {
   const { productSlug } = useParams();
@@ -45,12 +46,7 @@ const Product: FC = () => {
     );
   }
 
-  return (
-    <>
-      <h2 className={'mb-10'}>Product Details Page</h2>
-      {product && <div>{JSON.stringify(product.results)}</div>}
-    </>
-  );
+  return <>{product && <ProductCard product={product.results[0]} />}</>;
 };
 
 export default Product;

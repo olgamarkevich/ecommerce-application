@@ -1,50 +1,24 @@
 import React from 'react';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
 import type { IProductCard } from 'types/componentTypes';
-import type { IProductItem } from 'types/storeTypes';
-import Title from 'components/Title/Title';
+import { getListImgSrc } from 'helpers/settingProduct';
 
-const ProductCard: FC<IProductCard> = ({ products, title }) => {
+const ProductCard: FC<IProductCard> = ({ product }) => {
+  const imgList = getListImgSrc(product);
   return (
     <section>
-      <Title text={title} size='large' />
-      <div className='flex flex-wrap justify-between md:justify-center'>
-        {products.map((product: IProductItem) => {
-          return (
-            <div
-              className='flex m-2 w-1/5 min-w-220px rounded-2xl border border-c-sky-green
-              transition-all duration-300
-              hover:shadow-2xl hover:scale-105'
-              key={product.id}
-            >
-              <Link to={`/product/${product.name}-${product.id}`}>
-                <div>
-                  <img
-                    src={product.images[0]}
-                    alt='Product'
-                    className=' rounded-2xl'
-                  />
-                </div>
-
-                <div>
-                  <p className='font-bold first-letter:uppercase'>
-                    {product.name}
-                  </p>
-                  <p>{product.shortDescription}</p>
-                  <div className='flex justify-center'>
-                    <span className='font-bold text-xl mx-3'>
-                      {product.price}$
-                    </span>
-                    <span className='text-gray-600 line-through text-sm'>
-                      {product.oldPrice}$
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          );
-        })}
+      <div className='product-left'>
+        <div className='product-gallery'>{imgList}</div>
+      </div>
+      <div className='product-right'>
+        <div className='product-header'>
+          <p>
+            {product.masterVariant &&
+              product.masterVariant.attributes &&
+              product.masterVariant.attributes[0].name}
+          </p>
+          <p>{product.name?.en}</p>
+        </div>
       </div>
     </section>
   );

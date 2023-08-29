@@ -1,6 +1,6 @@
 import type React from 'react';
 import type { MouseEventHandler } from 'react';
-import type { IProductItem } from './storeTypes';
+import type { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
 
 export interface IPopUp {
   text: string;
@@ -33,7 +33,18 @@ export interface ITitle {
   size: TitleSizes;
 }
 
-export interface IProductCard {
-  products: IProductItem[];
+export interface IProductCardList {
+  products: Partial<ProductProjection>[];
   title: string;
+}
+
+export interface ICard {
+  product: Partial<ProductProjection>;
+  imgSrc: string;
+  price: string;
+  discountedPrice: string;
+}
+
+export interface IProductCard {
+  product: Partial<ProductProjection>;
 }
