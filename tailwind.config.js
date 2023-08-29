@@ -9,6 +9,10 @@ module.exports = {
       maxWidth: {
         '100vh': '100vh',
         '100vw': '100vw',
+        '20%': '20%',
+      },
+      minWidth: {
+        '220px': '220px',
       },
       fontFamily: {
         'f-rubik': ['Rubik', 'sans-serif'],

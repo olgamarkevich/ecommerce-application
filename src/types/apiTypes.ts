@@ -29,6 +29,7 @@ export type IntrospectTokenResponse =
 export interface GetProductQueryParams {
   limit: number;
   offset: number;
+  where: string;
 }
 
 export interface ProductProjectionPagedQueryResponse {

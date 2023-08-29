@@ -41,7 +41,6 @@ const baseQueryFn: BaseQueryFn<
       typeof refreshResult.data === 'object' &&
       'access_token' in refreshResult.data
     ) {
-      // TODO Decide if it should effect here or at another place???
       applyResponseEffects(
         endpoint,
         { ...refreshResult.data, refresh_token: refreshToken },
@@ -50,7 +49,6 @@ const baseQueryFn: BaseQueryFn<
       result = await makeQuery(args, api, extraOptions);
     } else {
       dispatch(removeUserAuthorization());
-      // TODO Decide if this needed?
       saveCustomerToLocalStorage({
         userType: null,
         customerId: null,

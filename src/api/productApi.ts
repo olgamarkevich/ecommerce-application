@@ -1,25 +1,13 @@
 import { apiClient } from './apiClient';
-import { getPathParams } from '../helpers/apiHelpers';
-import type {
-  GetProductQueryParams,
-  ProductProjectionPagedQueryResponse,
-} from '../types/apiTypes';
+import type { ProductProjectionPagedQueryResponse } from '../types/apiTypes';
 
 const productApi = apiClient.injectEndpoints({
   endpoints: (build) => {
     return {
-      getProducts: build.query<
-        ProductProjectionPagedQueryResponse,
-        Partial<GetProductQueryParams>
-      >({
-        query: (params = {}) => {
+      getProducts: build.query<ProductProjectionPagedQueryResponse, string>({
+        query: (params) => {
           const method = 'GET';
-          const pathParams = Object.keys(params).length
-            ? getPathParams(params)
-            : '';
-          const url = `${process.env.REACT_APP_API_URL}/${
-            process.env.REACT_APP_PROJECT_KEY
-          }/product-projections${pathParams.length ? '?' : ''}${pathParams}`;
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/product-projections?${params}`;
 
           return { url, method };
         },
