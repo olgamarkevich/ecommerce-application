@@ -279,14 +279,46 @@
   .profile_line {
     margin-bottom: 15px;
   }
+  .profile_line input {
+    margin-left: 0;
+  }
+  .profile_line input:disabled {
+    padding-left: 0;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .flex {
     flex-wrap: wrap;
   }
+
   .flex .col {
     width: 100%;
     margin-bottom: 20px;
+  }
+  .address_title,
+  .address_btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+  .address_btn {
+    text-align: right;
+  }
+  .addressBS_col {
+    width: 70px;
+    line-height: 1.2em;
+  }
+  .address_item {
+    flex-wrap: wrap;
+  }
+  .addresses_list_head .address_title,
+  .addresses_list_head .address_btn {
+    display: none;
+  }
+  .address_card {
+    padding: 10px;
+  }
+  .profile_border {
+    padding: 10px;
   }
 }

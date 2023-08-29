@@ -15,7 +15,7 @@ const PopUp: FC<IPopUp> = ({ text, isOnView }) => {
     <div
       className={`${
         isOnView ? 'translate-x-0' : 'translate-x-[150%]'
-      } absolute top-1 right-1 p-1 rounded-sm opacity-60 hover:opacity-75 font-medium text-c-alice-blue bg-blue-700 transition cursor-pointer`}
+      } fixed top-12 right-1 p-1 rounded-sm opacity-60 hover:opacity-75 font-medium text-c-alice-blue bg-blue-700 transition cursor-pointer`}
       onClick={clickHandler}
     >{`${text} \u274C`}</div>
   );
