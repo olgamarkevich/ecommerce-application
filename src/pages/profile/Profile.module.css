@@ -3,7 +3,7 @@
 }
 
 .wrapper {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -102,6 +102,7 @@
   padding: 20px;
   border-radius: 10px;
   transition: all 0.3s;
+  text-align: left;
 }
 
 .address_card:hover {
@@ -159,6 +160,7 @@
   justify-content: space-between;
   border-bottom: 1px solid #cecece;
   align-items: center;
+  padding: 5px 0;
 }
 
 .address_item:last-child {
@@ -166,5 +168,125 @@
 }
 
 .address_title {
-  min-width: 400px;
+  width: calc(100% - 468px);
+  text-align: left;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.address_add input {
+  margin: 0;
+}
+
+.address_add form {
+  margin-top: 5px;
+  background: #fff;
+  padding: 20px;
+}
+
+.address_add .profile_line {
+  margin-bottom: 15px;
+}
+
+.addresses_list {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.addresses_list_head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  text-align: center;
+  background: #5d77c7;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.address_btn {
+  width: 68px;
+}
+
+.addressBS_col {
+  width: 100px;
+}
+
+.chosen {
+  width: 17px;
+  height: 17px;
+  border-radius: 3px;
+  border: 1px solid #222;
+  margin: 0 auto;
+  background-image: url(../../assets/svg/check.svg);
+  background-position: center;
+  background-size: 20px;
+  cursor: pointer;
+}
+
+.noChosen {
+  width: 17px;
+  height: 17px;
+  border-radius: 3px;
+  border: 1px solid #222;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.noChosenRadio {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1px solid #222;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.chosenRadio {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1px solid #222;
+  margin: 0 auto;
+  cursor: pointer;
+  position: relative;
+}
+
+.chosenRadio:after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  position: absolute;
+  background: #15c17f;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  margin-left: -3px;
+  margin-top: -3px;
+}
+
+@media screen and (max-width: 991px) {
+  .profile_border {
+    padding: 10px 20px;
+  }
+
+  .addressBS_col {
+    width: 60px;
+  }
+
+  .address_title {
+    width: calc(100% - 308px);
+  }
+  .profile_line {
+    margin-bottom: 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .flex {
+    flex-wrap: wrap;
+  }
+  .flex .col {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }

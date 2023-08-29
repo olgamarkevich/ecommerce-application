@@ -5,6 +5,7 @@ import style from './Profile.module.css';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { email } from 'helpers/settingSchema';
+import { checkServerErrorMsg } from 'helpers/typesHelpers';
 import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import { useUpdateCustomerQuery } from 'api/customerApi';
 import type { Customer } from '@commercetools/platform-sdk';
@@ -146,14 +147,3 @@ const Email: FC<Props> = ({ customer, setCustomerData }) => {
 };
 
 export default Email;
-
-const checkServerErrorMsg = (
-  err: object,
-): err is { data: { message: string } } => {
-  return (
-    'data' in err &&
-    typeof err.data === 'object' &&
-    err.data !== null &&
-    'message' in err.data
-  );
-};

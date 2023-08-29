@@ -16,7 +16,7 @@ const Profile: FC = () => {
     <>
       <h2 className={'mb-10'}>Profile Page</h2>
 
-      <div>{JSON.stringify(customer, null, ' ')}</div>
+      {/* <div>{JSON.stringify(customer, null, ' ')}</div> */}
       <div className={style.wrapper}>
         <Details customer={customer} setCustomerData={setCustomerData} />
 

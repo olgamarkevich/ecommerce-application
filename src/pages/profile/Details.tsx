@@ -152,7 +152,7 @@ const Details: FC<Props> = ({ customer, setCustomerData }) => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           {serverErrorMsg && <TextInfo text={serverErrorMsg} type='warn' />}
-          <div className='columns-3'>
+          <div className='columns-3 md:columns-1'>
             <DetailsInput
               label='FirstName:'
               editMode={editMode}

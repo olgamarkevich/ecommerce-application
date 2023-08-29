@@ -1,12 +1,10 @@
 import React from 'react';
 import type { FC } from 'react';
-import style from './Profile.module.css';
 import type { Customer } from '@commercetools/platform-sdk';
-import AddressBilling from './AddressBilling';
-import AddressShipping from './AddressShipping';
-import AddressDefaultBilling from './AddressDefaultBilling';
-import AddressDefaultShipping from './AddressDefaultShipping';
-import AddressCard from './AddressCard';
+
+import style from './Profile.module.css';
+import AddressCard from './addressesSettings/AddressCard';
+import AddressAdd from './addressesSettings/AddressAdd';
 
 interface Props {
   customer: Customer | null;
@@ -14,46 +12,42 @@ interface Props {
 }
 
 const Addresses: FC<Props> = ({ customer, setCustomerData }) => {
-  console.log(setCustomerData);
   return (
     <div className={style.profile_border}>
       <div className={style.subtitle}>Addresses</div>
 
       <div className={style.addresses_list}>
+        <div className={style.addresses_list_head}>
+          <div className={style.address_title}>
+            Country/postal code/city/street
+          </div>
+          <div className={style.addressBS_col}>Billing</div>
+          <div className={style.addressBS_col}>Default Billing</div>
+          <div className={style.addressBS_col}>Shipping</div>
+          <div className={style.addressBS_col}>Default Shipping</div>
+          <div className={style.address_btn} />
+        </div>
         {customer?.addresses.map((address) => {
           return (
-            <div key={address.id}>
-              <div className={style.address_item}>
-                <div className={style.address_title}>
-                  {address.country}, {address.postalCode}, {address.city},{' '}
-                  {address.streetName}
-                </div>
-                <div className={style.addressBS_col}>
-                  <AddressBilling />
-                </div>
-                <div className={style.addressBS_col}>
-                  <AddressShipping />
-                </div>
-                <div className={style.addressBS_col}>
-                  <AddressDefaultBilling />
-                </div>
-                <div className={style.addressBS_col}>
-                  <AddressDefaultShipping />
-                </div>
-                <div className={style.address_btn}>
-                  <button className={style.edit} />
-                  <button className={style.cancel} />
-                  <button className={style.delete} />
-                </div>
-              </div>
-              <AddressCard
-                address={address}
-                setCustomerData={setCustomerData}
-              />
-            </div>
+            <AddressCard
+              isBilling={customer.billingAddressIds?.includes(address.id)}
+              isShipping={customer.shippingAddressIds?.includes(address.id)}
+              isDefaultBilling={customer.defaultBillingAddressId == address.id}
+              isDefaultShipping={
+                customer.defaultShippingAddressId == address.id
+              }
+              key={address.id}
+              address={address}
+              version={customer?.version || 0}
+              setCustomerData={setCustomerData}
+            />
           );
         })}
       </div>
+      <AddressAdd
+        version={customer?.version || 0}
+        setCustomerData={setCustomerData}
+      />
     </div>
   );
 };
