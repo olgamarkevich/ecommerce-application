@@ -1,0 +1,16 @@
+.swiperThumb {
+  @apply flex items-center h-1/5 px-2 box-border
+}
+
+.swiper-wrapper {
+  @apply mx-auto w-auto
+}
+
+.swiperThumb .swiper-slide {
+  width: max-content !important;
+  @apply h-24 opacity-60
+}
+
+.swiperThumb .swiper-slide-thumb-active {
+  @apply opacity-100 border-2 border-blue-950 rounded
+}
