@@ -6,9 +6,17 @@ import Addresses from './Addresses';
 import Email from './Email';
 import Details from './Details';
 import Password from './Password';
+import { useAppSelector } from 'hooks/hooks';
 
 const Profile: FC = () => {
-  const { data: customerData } = useGetCustomerQuery(); // TODO: Check extra queries
+  const { userType } = useAppSelector((state) => {
+    return state.auth;
+  });
+
+  const { data: customerData } = useGetCustomerQuery(undefined, {
+    skip: !userType,
+  });
+  // const { data: customerData } = useGetCustomerQuery(); // TODO: Check extra queries
 
   const [customer, setCustomerData] = useState(customerData || null);
 
@@ -16,7 +24,7 @@ const Profile: FC = () => {
     <>
       <h2 className={'mb-10'}>Profile Page</h2>
 
-      {/* <div>{JSON.stringify(customer, null, ' ')}</div> */}
+      <div>{JSON.stringify(customer, null, ' ')}</div>
       <div className={style.wrapper}>
         <Details customer={customer} setCustomerData={setCustomerData} />
 
