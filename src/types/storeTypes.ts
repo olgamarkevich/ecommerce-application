@@ -70,3 +70,15 @@ export interface IProductItem {
   price: number;
   oldPrice: number;
 }
+
+export interface CategoryTreeSource {
+  id: string;
+  name: string;
+  description: string;
+  slug: string;
+  parentId: string | null;
+  level: number;
+  isActive: boolean;
+  isOpen: boolean;
+  hasChildren: boolean;
+}

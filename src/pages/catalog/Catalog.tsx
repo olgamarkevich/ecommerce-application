@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Select, { type PropsValue } from 'react-select';
-import Loader from '../../components/Loader/Loader';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import CategoryTree from '../../components/CategoryTree/CategoryTree';
 import type { FC } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { prepareCatalogQueryParams } from '../../helpers/prepareCatalogQueryParams';
 import { useSearchProductsQuery } from '../../api/productApi';
 import { useGetCategoriesQuery } from '../../api/categoryApi';
@@ -11,13 +11,28 @@ import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProdu
 import { useAppSelector } from '../../hooks/hooks';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import type { OnChangeValue } from 'react-select/dist/declarations/src/types';
+import { setLoadingStatus } from '../../store/appSlice';
+import { useAppDispatch } from '../../hooks/hooks';
+import type { CategoryTreeSource } from '../../types/storeTypes';
+import { setCategories } from '../../store/catalogSlice';
+import {
+  checkCategoryChildren,
+  getCategoryItems,
+  markCategoryActive,
+  markCategoryOpen,
+} from '../../helpers/categoryTreeHelpers';
 
 const Catalog: FC = () => {
+  const dispatch = useAppDispatch();
   const { categorySlug } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { accessToken } = useAppSelector((state) => {
+  const { userType } = useAppSelector((state) => {
     return state.auth;
   });
+  const { categories } = useAppSelector((state) => {
+    return state.catalog;
+  });
+
   if (!searchParams) setSearchParams();
   const categoryQueryParams = prepareProductAndCategoryQueryParams(
     categorySlug || 'all',
@@ -28,7 +43,7 @@ const Catalog: FC = () => {
     isError: isCategoryError,
     isLoading: isCategoryLoading,
   } = useGetCategoriesQuery(categoryQueryParams.toString(), {
-    skip: !accessToken.length,
+    skip: !userType,
   });
 
   let params = new URLSearchParams();
@@ -46,6 +61,34 @@ const Catalog: FC = () => {
   } = useSearchProductsQuery(params.toString(), {
     skip: !category?.results[0]?.id || !params.size,
   });
+
+  const {
+    data,
+    isLoading: isCategoriesLoading,
+    isError: isCategoriesError,
+  } = useGetCategoriesQuery('limit=500&offset=0', {
+    skip: !userType || !!categories.length,
+  });
+
+  useEffect(() => {
+    if (data && !categories.length) {
+      const newCategories: CategoryTreeSource[] = [];
+      getCategoryItems(data.results, newCategories, null, 1);
+      markCategoryActive(newCategories, categorySlug || 'all');
+      markCategoryOpen(newCategories);
+      checkCategoryChildren(newCategories);
+      dispatch(setCategories(newCategories));
+    }
+  }, [dispatch, data, categorySlug, categories]);
+
+  // Set loading status
+  useEffect(() => {
+    dispatch(
+      setLoadingStatus(
+        isCategoryLoading || isProductLoading || isCategoriesLoading,
+      ),
+    );
+  }, [dispatch, isCategoryLoading, isProductLoading]);
 
   const showItemsOptions = [
     { value: '12', label: '12' },
@@ -154,14 +197,11 @@ const Catalog: FC = () => {
 
   if (products && products.results) console.log(products.results[0]); //TODO remove it
 
-  if (isCategoryLoading || isProductLoading) {
-    return <Loader />;
-  }
-
-  if (isCategoryError || isProductError) {
+  if (isCategoryError || isProductError || isCategoriesError) {
     return (
       <>
         <h3>Server error! Try later...</h3>
+        <Link to={'/products/all'}>Return to Catalog</Link>
       </>
     );
   }
@@ -174,6 +214,7 @@ const Catalog: FC = () => {
       <>
         <h2 className={'mb-10'}>Products Catalogs Page</h2>
         <h3>No products matching!</h3>
+        <Link to={'/products/all'}>Return to Catalog</Link>
       </>
     );
   }
@@ -217,7 +258,12 @@ const Catalog: FC = () => {
               </div>
             </div>
           </div>
-          <ProductCard products={products.results} title={'Products'} />
+          <div className={'flex gap-3'}>
+            <aside>
+              <CategoryTree />
+            </aside>
+            <ProductCard products={products.results} title={'Products'} />
+          </div>
         </>
       )}
     </>

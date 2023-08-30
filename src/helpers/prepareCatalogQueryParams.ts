@@ -5,7 +5,15 @@ export const prepareCatalogQueryParams = (
   categoryId: string | undefined,
   searchParams: URLSearchParams,
 ): URLSearchParams => {
-  const allowedParamsFields = ['filter', 'sort', 'text.en', 'limit', 'offset'];
+  const allowedParamsFields = [
+    'filter',
+    'sort',
+    'text.en',
+    'fuzzy',
+    'fuzzyLevel',
+    'limit',
+    'offset',
+  ];
 
   const params = new URLSearchParams();
 
@@ -34,6 +42,8 @@ export const prepareCatalogQueryParams = (
     const searchValue = searchParams.get('search') as string;
 
     params.append('text.en', searchValue);
+    params.append('fuzzy', 'true');
+    params.append('fuzzyLevel', '2');
   }
 
   // Add limit
