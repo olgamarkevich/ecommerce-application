@@ -34,6 +34,10 @@ const AddressCard: FC<Props> = ({
     editMode ? setEditMode(false) : setEditMode(true);
   };
 
+  if (!address.id) {
+    return null;
+  }
+
   return (
     <>
       <div className={style.address_item}>

@@ -30,8 +30,17 @@ const Addresses: FC<Props> = ({ customer, setCustomerData }) => {
         {customer?.addresses.map((address) => {
           return (
             <AddressCard
-              isBilling={customer.billingAddressIds?.includes(address.id)}
-              isShipping={customer.shippingAddressIds?.includes(address.id)}
+              isBilling={
+                !!(
+                  address.id && customer.billingAddressIds?.includes(address.id)
+                )
+              }
+              isShipping={
+                !!(
+                  address.id &&
+                  customer.shippingAddressIds?.includes(address.id)
+                )
+              }
               isDefaultBilling={customer.defaultBillingAddressId == address.id}
               isDefaultShipping={
                 customer.defaultShippingAddressId == address.id

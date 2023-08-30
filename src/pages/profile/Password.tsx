@@ -10,6 +10,9 @@ import type { Customer } from '@commercetools/platform-sdk';
 import { useUpdatePasswordQuery } from 'api/customerApi';
 import TextInfo from 'components/TextInfo/TextInfo';
 import Loader from 'components/Loader/Loader';
+import { checkServerErrorMsg } from 'helpers/typesHelpers';
+
+import { useGetCustomerTokenQuery } from 'api/authApi';
 
 interface Props {
   customer: Customer | null;
@@ -40,6 +43,15 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [serverErrorMsg, setServerErrorMsg] = useState('');
 
+  const defaultFormDataToken = useMemo(() => {
+    return {
+      email: customer?.email,
+      password: formData.password,
+    };
+  }, []);
+
+  const [formDataToken, setFormDataToken] = useState(defaultFormDataToken);
+
   const {
     register,
     handleSubmit,
@@ -49,16 +61,6 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
-
-  const onSubmit = (data: FormData) => {
-    setServerErrorMsg('');
-    setFormData({
-      password: data.password,
-      newPassword: data.newPassword,
-      confirmPassword: data.confirmPassword,
-    });
-    reset();
-  };
 
   const {
     data: customerData,
@@ -73,15 +75,38 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
     },
     {
       skip:
-        customer === null || formData.newPassword === '' || !!serverErrorMsg,
+        customer === null || !!serverErrorMsg || formData.newPassword === '',
     },
   );
 
+  const { data: tokenData, isLoading: isTokenLoading } =
+    useGetCustomerTokenQuery(
+      { email: formDataToken.email, password: formDataToken.password },
+      {
+        skip:
+          customer === null ||
+          !!serverErrorMsg ||
+          formDataToken.email == '' ||
+          formDataToken.password == '',
+      },
+    );
+
+  useEffect(() => {
+    if (tokenData && customerData) {
+      setCustomerData(customerData);
+
+      console.log(formDataToken);
+    }
+  }, [customerData, formDataToken, isTokenLoading, setCustomerData, tokenData]);
+
   useEffect(() => {
     if (customerData) {
-      setCustomerData(customerData);
+      setFormDataToken({
+        email: customerData.email,
+        password: customerData.password,
+      });
     }
-  }, [customerData, setCustomerData]);
+  }, [customerData, setFormDataToken]);
 
   useEffect(() => {
     if (serverError) {
@@ -90,9 +115,21 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
       } else {
         setServerErrorMsg('Server error. Please, try later...');
       }
+
       setFormData(defaultFormData);
+      setFormDataToken({ email: '', password: '' });
     }
   }, [defaultFormData, serverError]);
+
+  const onSubmit = (data: FormData) => {
+    setServerErrorMsg('');
+    setFormData({
+      password: data.password,
+      newPassword: data.newPassword,
+      confirmPassword: data.confirmPassword,
+    });
+    reset();
+  };
 
   return (
     <div className={style.profile_border}>
@@ -166,14 +203,3 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
 };
 
 export default Password;
-
-const checkServerErrorMsg = (
-  err: object,
-): err is { data: { message: string } } => {
-  return (
-    'data' in err &&
-    typeof err.data === 'object' &&
-    err.data !== null &&
-    'message' in err.data
-  );
-};

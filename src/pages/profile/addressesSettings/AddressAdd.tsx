@@ -30,7 +30,6 @@ interface Props {
 
 const AddressAdd: FC<Props> = ({ version, setCustomerData }) => {
   const [addresAddMode, setAddressMode] = useState(true);
-  console.log(setAddressMode);
 
   const schema = yup
     .object({
