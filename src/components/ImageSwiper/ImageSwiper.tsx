@@ -37,7 +37,7 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
         modules={[Navigation, Pagination, Zoom, Thumbs]}
-        className='my-4'
+        className='mb-4'
       >
         {images.map((src, idx) => {
           return (
