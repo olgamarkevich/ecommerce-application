@@ -16,7 +16,7 @@ const Profile: FC = () => {
   const { data: customerData } = useGetCustomerQuery(undefined, {
     skip: !userType,
   });
-  // const { data: customerData } = useGetCustomerQuery(); // TODO: Check extra queries
+  //const { data: customerData } = useGetCustomerQuery(); // TODO: Check extra queries
 
   const [customer, setCustomerData] = useState(customerData || null);
 

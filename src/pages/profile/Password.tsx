@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import type { FC } from 'react';
 import style from './Profile.module.css';
 import { password, newPassword, confirmPassword } from 'helpers/settingSchema';
@@ -11,8 +11,12 @@ import { useUpdatePasswordQuery } from 'api/customerApi';
 import TextInfo from 'components/TextInfo/TextInfo';
 import Loader from 'components/Loader/Loader';
 import { checkServerErrorMsg } from 'helpers/typesHelpers';
+import { getCustomerFromApiResponse } from 'helpers/appHelpers';
+import { useAppDispatch } from 'hooks/hooks';
+import { setCustomerToken } from 'store/authSlice';
 
 import { useGetCustomerTokenQuery } from 'api/authApi';
+import { showTextInfo } from 'store/appSlice';
 
 interface Props {
   customer: Customer | null;
@@ -30,6 +34,8 @@ const schema = yup
 export type FormData = yup.InferType<typeof schema>;
 
 const Password: FC<Props> = ({ customer, setCustomerData }) => {
+  const dispatch = useAppDispatch();
+
   const [editModePassword, setEditModePassword] = useState(true);
 
   const defaultFormData = useMemo<FormData>(() => {
@@ -42,15 +48,7 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
 
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [serverErrorMsg, setServerErrorMsg] = useState('');
-
-  const defaultFormDataToken = useMemo(() => {
-    return {
-      email: customer?.email,
-      password: formData.password,
-    };
-  }, []);
-
-  const [formDataToken, setFormDataToken] = useState(defaultFormDataToken);
+  const versionRef = useRef<number>(customer?.version || 0);
 
   const {
     register,
@@ -75,38 +73,34 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
     },
     {
       skip:
-        customer === null || !!serverErrorMsg || formData.newPassword === '',
+        customer === null ||
+        !!serverErrorMsg ||
+        formData.newPassword === '' ||
+        customer?.version !== versionRef.current,
     },
   );
 
-  const { data: tokenData, isLoading: isTokenLoading } =
-    useGetCustomerTokenQuery(
-      { email: formDataToken.email, password: formDataToken.password },
-      {
-        skip:
-          customer === null ||
-          !!serverErrorMsg ||
-          formDataToken.email == '' ||
-          formDataToken.password == '',
-      },
-    );
-
-  useEffect(() => {
-    if (tokenData && customerData) {
-      setCustomerData(customerData);
-
-      console.log(formDataToken);
-    }
-  }, [customerData, formDataToken, isTokenLoading, setCustomerData, tokenData]);
-
   useEffect(() => {
     if (customerData) {
-      setFormDataToken({
-        email: customerData.email,
-        password: customerData.password,
-      });
+      setCustomerData(customerData);
+      setEditModePassword(true);
+      dispatch(showTextInfo('Password updated'));
     }
-  }, [customerData, setFormDataToken]);
+  }, [customerData, dispatch, setCustomerData]);
+
+  const { data: tokenData } = useGetCustomerTokenQuery(
+    { email: customer?.email || '', password: formData.newPassword },
+    {
+      skip: customer === null || formData.newPassword === '',
+    },
+  );
+
+  useEffect(() => {
+    if (tokenData) {
+      const customer = getCustomerFromApiResponse(tokenData);
+      dispatch(setCustomerToken(customer));
+    }
+  }, [customerData?.version, dispatch, tokenData]);
 
   useEffect(() => {
     if (serverError) {
@@ -115,9 +109,7 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
       } else {
         setServerErrorMsg('Server error. Please, try later...');
       }
-
       setFormData(defaultFormData);
-      setFormDataToken({ email: '', password: '' });
     }
   }, [defaultFormData, serverError]);
 
