@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { FC } from 'react';
-import { useGetCustomerQuery } from '../../api/customerApi';
 import style from './Profile.module.css';
 import Addresses from './Addresses';
 import Email from './Email';
@@ -9,19 +8,16 @@ import Password from './Password';
 import { useAppSelector } from 'hooks/hooks';
 
 const Profile: FC = () => {
-  const { userType } = useAppSelector((state) => {
-    return state.auth;
+  const customerState = useAppSelector((state) => {
+    return state.customer;
   });
 
-  const { data: customerData } = useGetCustomerQuery(undefined, {
-    skip: !userType,
-  });
+  const [customer, setCustomerData] = useState(customerState || null);
 
-  const [customer, setCustomerData] = useState(customerData || null);
-
-  if (customerData && customer === null) {
-    setCustomerData(customerData);
-  }
+  useEffect(() => {
+    setCustomerData(customer);
+    console.log(customer);
+  }, [customer]);
 
   return (
     <>

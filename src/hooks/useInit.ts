@@ -85,6 +85,7 @@ const useInit = () => {
         lastName = '',
         dateOfBirth = '',
         addresses = [],
+        email = '',
         billingAddressIds = [],
         shippingAddressIds = [],
       } = customerData;
@@ -96,6 +97,7 @@ const useInit = () => {
           lastName,
           dateOfBirth,
           addresses,
+          email,
           billingAddressIds,
           shippingAddressIds,
         }),

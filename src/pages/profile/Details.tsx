@@ -30,8 +30,8 @@ const schema = yup
 export type FormData = RequiredKeepUndefined<yup.InferType<typeof schema>>;
 
 interface Props {
-  customer: Customer | null;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  customer: Customer;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
 }
 
 const Details: FC<Props> = ({ customer, setCustomerData }) => {

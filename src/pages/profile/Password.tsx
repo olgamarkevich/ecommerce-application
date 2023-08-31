@@ -91,7 +91,7 @@ const Password: FC<Props> = ({ customer, setCustomerData }) => {
   const { data: tokenData } = useGetCustomerTokenQuery(
     { email: customer?.email || '', password: formData.newPassword },
     {
-      skip: customer === null || formData.newPassword === '',
+      skip: customer === null || formData.newPassword === '' || !customerData,
     },
   );
 
