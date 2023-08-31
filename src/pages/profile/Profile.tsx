@@ -16,15 +16,17 @@ const Profile: FC = () => {
   const { data: customerData } = useGetCustomerQuery(undefined, {
     skip: !userType,
   });
-  //const { data: customerData } = useGetCustomerQuery(); // TODO: Check extra queries
 
   const [customer, setCustomerData] = useState(customerData || null);
+
+  if (customerData && customer === null) {
+    setCustomerData(customerData);
+  }
 
   return (
     <>
       <h2 className={'mb-10'}>Profile Page</h2>
 
-      <div>{JSON.stringify(customer, null, ' ')}</div>
       <div className={style.wrapper}>
         <Details customer={customer} setCustomerData={setCustomerData} />
 
