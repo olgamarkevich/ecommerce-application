@@ -8,8 +8,7 @@ import {
   getVendor,
 } from 'helpers/settingProduct';
 import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
-import { ReactComponent as RecycledSVG } from '../../assets/svg/recycled-packaging.svg';
-import { ReactComponent as PlasticFreeSvg } from '../../assets/svg/plastic-free.svg';
+import ProductDescription from 'components/ProductDescription/ProductDescription';
 
 const ProductCard: FC<IProductCard> = ({ product }) => {
   const imgList = getListImgSrc(product);
@@ -56,26 +55,7 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
               )}
             </div>
             <div className='mt-10'>
-              <div className='font-bold text-2xl text-blue-950'>
-                Description
-              </div>
-              <div className='text-lg p-5'>
-                <div className='text-blue-950 text-justify'>
-                  {product.description?.en ?? ''}
-                </div>
-              </div>
-              <div className='flex justify-around w-auto text-blue-900'>
-                <div className='flex items-center h-20'>
-                  <RecycledSVG className='h-auto' />
-                  Recycled
-                  <br />
-                  Packaging
-                </div>
-                <div className='flex items-center h-20'>
-                  <PlasticFreeSvg className='h-auto' />
-                  Plastic Free
-                </div>
-              </div>
+              <ProductDescription description={product.description?.en} />
             </div>
           </div>
         </div>
