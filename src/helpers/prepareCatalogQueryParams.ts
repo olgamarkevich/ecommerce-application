@@ -7,6 +7,7 @@ export const prepareCatalogQueryParams = (
 ): URLSearchParams => {
   const allowedParamsFields = [
     'filter',
+    'filter.query',
     'sort',
     'text.en',
     'fuzzy',
@@ -20,6 +21,15 @@ export const prepareCatalogQueryParams = (
   // Add category
   if (categoryId) {
     params.set('filter', `categories.id:"${categoryId}"`);
+  }
+
+  // Add filters
+  if (searchParams.has('filter')) {
+    searchParams.getAll('filter').forEach((value) => {
+      // variants.attributes.${attrName - vendor}.en:"${attrValue - Badger}"
+
+      params.append('filter', value);
+    });
   }
 
   // Add sort

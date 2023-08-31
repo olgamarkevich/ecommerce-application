@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Select, { type PropsValue } from 'react-select';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CategoryTree from '../../components/CategoryTree/CategoryTree';
+import FilterBar from '../../components/FilterBar/FilterBar';
 import type { FC } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { prepareCatalogQueryParams } from '../../helpers/prepareCatalogQueryParams';
@@ -195,7 +196,7 @@ const Catalog: FC = () => {
     return searchParams.get('search') || '';
   };
 
-  if (products && products.results) console.log(products.results[0]); //TODO remove it
+  if (products && products.results) console.log(products.results); //TODO remove it
 
   if (isCategoryError || isProductError || isCategoriesError) {
     return (
@@ -261,6 +262,7 @@ const Catalog: FC = () => {
           <div className={'flex gap-3'}>
             <aside>
               <CategoryTree />
+              <FilterBar />
             </aside>
             <ProductCard products={products.results} title={'Products'} />
           </div>
