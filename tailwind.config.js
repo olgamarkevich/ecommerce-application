@@ -6,6 +6,9 @@ module.exports = {
       boxShadow: {
         'custom-inner': 'inset 0 0 0 2em green',
       },
+      width: {
+        '55%': '55%',
+      },
       maxWidth: {
         '1000px': '1000px',
         '100px': '100px',

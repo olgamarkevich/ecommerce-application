@@ -1,6 +1,10 @@
-import type { ProductProjection } from '@commercetools/platform-sdk';
+import type {
+  ProductProjection,
+  ProductVariant,
+} from '@commercetools/platform-sdk';
 
 type Product = Partial<ProductProjection>;
+type Variant = Partial<ProductVariant> | undefined;
 
 export const getImgSrc = (product: Product) => {
   const imgName =
@@ -36,4 +40,13 @@ export const getDiscountedPrice = (product: Product) => {
     product.masterVariant.prices[0].discounted
     ? String(+product.masterVariant.prices[0].discounted.value.centAmount / 100)
     : 'No price';
+};
+
+export const getVendor = (variant: Variant) => {
+  if (!variant) return '';
+  const vendor = variant.attributes?.find((attr) => {
+    return attr.name.toLowerCase() === 'vendor';
+  });
+
+  return vendor ? vendor.value.en : '';
 };

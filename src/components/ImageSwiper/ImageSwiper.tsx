@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
-//import type { SwiperProps } from 'swiper/react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Zoom, Thumbs, FreeMode } from 'swiper';
 
@@ -33,6 +32,7 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
           clickable: true,
         }}
         zoom={true}
+        spaceBetween={5}
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
@@ -53,6 +53,7 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
         onSwiper={setThumbsSwiper}
         spaceBetween={15}
         slidesPerView={maxSlidesPerView}
+        allowTouchMove={false}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}

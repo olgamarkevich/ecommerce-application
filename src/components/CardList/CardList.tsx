@@ -11,7 +11,7 @@ import {
 
 const CardList: FC<IProductCardList> = ({ products, title }) => {
   return (
-    <section>
+    <section className='py-5 px-4'>
       <Title text={title} size='large' />
       <div className='flex flex-wrap justify-between md:justify-center'>
         {products.map((product) => {
