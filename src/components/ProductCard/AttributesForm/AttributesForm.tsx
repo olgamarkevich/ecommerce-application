@@ -72,6 +72,8 @@ const AttributesForm: FC<AttributesFormProps> = (props) => {
     }
   };
 
+  if (Object.keys(attributeOptions).length === 0) return <></>;
+
   return (
     <form id={'attributesForm'}>
       {Object.keys(attributeOptions).length &&
