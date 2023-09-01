@@ -1,7 +1,6 @@
 import type React from 'react';
 import type { MouseEventHandler } from 'react';
 import type { ProductProjection } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product';
-import { getAttributeOptions } from '../helpers/settingProduct';
 
 export interface IPopUp {
   text: string;
@@ -51,9 +50,3 @@ export interface IProductCard {
 }
 
 export type AttributeOptionsSet = Record<string, string[]>;
-
-export interface VariantToShow {
-  price: string;
-  discountPrice: string;
-  attributes: Record<string, string>[];
-}

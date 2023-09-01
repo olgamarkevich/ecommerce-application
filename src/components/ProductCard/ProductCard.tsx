@@ -7,20 +7,19 @@ import {
   getPrice,
   getVendor,
   getAttributeOptions,
-  getVariantToShowIndex,
+  getVariantToShow,
 } from 'helpers/settingProduct';
 import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
 import ProductDescription from 'components/ProductDescription/ProductDescription';
 import { useSearchParams } from 'react-router-dom';
+import AttributesForm from './AttributesForm/AttributesForm';
 
 const ProductCard: FC<IProductCard> = ({ product }) => {
   const [searchParams] = useSearchParams();
   const attributeOptions = getAttributeOptions(product);
-  const variantToShowIndex: number = getVariantToShowIndex(
-    product,
-    attributeOptions,
-    searchParams,
-  );
+
+  const { index: variantToShowIndex, options: chosenOptions } =
+    getVariantToShow(product, attributeOptions, searchParams);
   const imgList = getListImgSrc(product);
   const price = getPrice(product, variantToShowIndex);
   const discountPrice = getDiscountedPrice(product, variantToShowIndex);
@@ -42,6 +41,13 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
             <div className='font-bold text-2xl text-left text-blue-950'>
               {product.name?.en}
             </div>
+          </div>
+          <div>
+            <AttributesForm
+              attributeOptions={attributeOptions}
+              chosenOptions={chosenOptions}
+              variantIndex={variantToShowIndex}
+            />
           </div>
           <div className='my-5'>
             <div className='flex font-f-open-sans'>

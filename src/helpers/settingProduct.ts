@@ -150,15 +150,15 @@ export const getAttributeOptions = (product: Product): AttributeOptionsSet => {
   }, atributeOptions);
 };
 
-export const getVariantToShowIndex = (
+export const getVariantToShow = (
   product: Product,
   attributeOptions: AttributeOptionsSet,
   searchParams: URLSearchParams,
-): number => {
+): { index: number; options?: Record<string, string> } => {
   const attributesNames = Object.keys(attributeOptions);
   const params: Record<string, string> = {};
 
-  if (searchParams.size !== attributesNames.length) return 0;
+  if (searchParams.size !== attributesNames.length) return { index: 0 };
 
   searchParams.forEach((value, key) => {
     if (
@@ -169,7 +169,9 @@ export const getVariantToShowIndex = (
     }
   });
 
-  if (Object.keys(params).length !== attributesNames.length) return 0;
+  if (Object.keys(params).length !== attributesNames.length) {
+    return { index: 0 };
+  }
 
   const index = product.variants
     ? product.variants.reduce((acc, variant, variantIndex) => {
@@ -196,5 +198,5 @@ export const getVariantToShowIndex = (
       }, -1)
     : -1;
 
-  return index + 1;
+  return { index: index + 1, options: params };
 };
