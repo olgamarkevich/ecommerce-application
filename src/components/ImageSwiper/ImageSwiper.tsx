@@ -17,12 +17,30 @@ interface Props {
   maxThumbSlidesPerView?: number;
 }
 
-const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
+const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 4 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [swiperIndexStart, setSwiperIndexStart] = useState(0);
   const maxSlidesPerView =
     images.length < maxThumbSlidesPerView
       ? images.length
       : maxThumbSlidesPerView;
+
+  const handleThumbClick = (index: number) => {
+    if (thumbsSwiper) {
+      if (index === swiperIndexStart && swiperIndexStart !== 0) {
+        thumbsSwiper.slideTo(swiperIndexStart - 1);
+        setSwiperIndexStart(swiperIndexStart - 1);
+      }
+      if (
+        index === maxSlidesPerView + swiperIndexStart - 1 &&
+        index !== images.length - 1
+      ) {
+        thumbsSwiper.slideTo(index + 1);
+        setSwiperIndexStart(swiperIndexStart + 1);
+      }
+    }
+  };
+
   return (
     <>
       <Swiper
@@ -53,7 +71,6 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
         onSwiper={setThumbsSwiper}
         spaceBetween={15}
         slidesPerView={maxSlidesPerView}
-        allowTouchMove={false}
         freeMode={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
@@ -62,7 +79,14 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
         {images.map((src, idx) => {
           return (
             <SwiperSlide key={idx}>
-              <img src={src} alt='' className='h-full rounded cursor-pointer' />
+              <img
+                src={src}
+                alt=''
+                className='h-full rounded cursor-pointer'
+                onClick={() => {
+                  return handleThumbClick(idx);
+                }}
+              />
             </SwiperSlide>
           );
         })}

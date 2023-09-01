@@ -32,8 +32,10 @@ module.exports = {
         'one-origin': '1px',
       },
       screens: {
-        md: { max: '767px' },
-        'md-min': { min: '768px' },
+        sm: { min: '300px', max: '767px' },
+        md: { max: '768px' },
+        'md-min': { min: '640px' },
+        xl: { min: '768px', max: '1280px' },
       },
       colors: {
         'c-orange': '#ff8800',
