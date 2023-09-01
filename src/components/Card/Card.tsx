@@ -65,7 +65,7 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
           </Swiper>
         </div>
 
-        <div className='flex flex-col flex-grow justify-between'>
+        <div className='flex flex-col flex-grow justify-between p-3'>
           <p className='font-bold first-letter:uppercase'>{product.name?.en}</p>
           <p className='my-2'>
             {getShortDescription(product.description?.en ?? '')}
