@@ -17,7 +17,6 @@ const Profile: FC = () => {
 
   useEffect(() => {
     setCustomerData(customer);
-    console.log(customer);
   }, [customer]);
 
   return (

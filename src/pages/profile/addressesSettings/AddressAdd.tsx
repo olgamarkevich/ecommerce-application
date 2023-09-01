@@ -128,7 +128,7 @@ const AddressAdd: FC<Props> = ({ version, setCustomerData }) => {
       {isLoading && <Loader />}
       {addresAddMode ? (
         <ButtonSubmit
-          text='Add addres'
+          text='Add address'
           onClick={() => {
             return setAddressMode(false);
           }}

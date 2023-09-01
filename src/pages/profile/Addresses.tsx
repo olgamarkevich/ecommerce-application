@@ -17,16 +17,19 @@ const Addresses: FC<Props> = ({ customer, setCustomerData }) => {
       <div className={style.subtitle}>Addresses</div>
 
       <div className={style.addresses_list}>
-        <div className={style.addresses_list_head}>
-          <div className={style.address_title}>
-            Country/postal code/city/street
+        {customer !== null && customer.addresses.length > 0 && (
+          <div className={style.addresses_list_head}>
+            <div className={style.address_title}>
+              Country/postal code/city/street
+            </div>
+            <div className={style.addressBS_col}>Billing</div>
+            <div className={style.addressBS_col}>Default Billing</div>
+            <div className={style.addressBS_col}>Shipping</div>
+            <div className={style.addressBS_col}>Default Shipping</div>
+            <div className={style.address_btn} />
           </div>
-          <div className={style.addressBS_col}>Billing</div>
-          <div className={style.addressBS_col}>Default Billing</div>
-          <div className={style.addressBS_col}>Shipping</div>
-          <div className={style.addressBS_col}>Default Shipping</div>
-          <div className={style.address_btn} />
-        </div>
+        )}
+
         {customer?.addresses.map((address) => {
           return (
             <AddressCard
