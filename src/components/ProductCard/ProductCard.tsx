@@ -17,8 +17,8 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
   const vendor = getVendor(product.masterVariant);
   return (
     <section className='py-5'>
-      <div className='flex p-5 md:flex-col md:items-center'>
-        <div className='w-1/2 md:w-full'>
+      <div className='flex p-5 md:flex-col justify-center md:items-center'>
+        <div className='w-1/3 md:w-full'>
           <div className='min-w-220px max-w-1000px'>
             <ImageSwiper images={imgList} />
           </div>
@@ -41,12 +41,12 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
                     : 'text-blue-950'
                 } font-bold text-2xl float-left ml-1 mr-4`}
               >
-                $ {price}
+                $ {discountPrice}
               </div>
-              {discountPrice.toLowerCase() !== 'no price' && (
+              {price.toLowerCase() !== 'no price' && (
                 <>
                   <div className='h-max mt-auto mr-3 opacity-70 text-c-shadow-blue line-through'>
-                    ${discountPrice}
+                    ${price}
                   </div>
                   <div className='h-max my-auto px-2 text-c-sky bg-c-light-blue rounded'>
                     SOLD OUT

@@ -62,7 +62,7 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 5 }) => {
         {images.map((src, idx) => {
           return (
             <SwiperSlide key={idx}>
-              <img src={src} alt='' className='h-full rounded' />
+              <img src={src} alt='' className='h-full rounded cursor-pointer' />
             </SwiperSlide>
           );
         })}
