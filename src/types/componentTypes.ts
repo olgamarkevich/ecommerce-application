@@ -40,7 +40,7 @@ export interface IProductCardList {
 
 export interface ICard {
   product: Partial<ProductProjection>;
-  imgSrc: string;
+  imgSrcList: string[];
   price: string;
   discountedPrice: string;
 }

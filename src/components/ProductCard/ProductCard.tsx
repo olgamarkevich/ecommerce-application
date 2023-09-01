@@ -18,7 +18,7 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
   return (
     <section className='py-5'>
       <div className='flex p-5 md:flex-col md:items-center'>
-        <div className='w-55% md:w-full'>
+        <div className='w-1/2 md:w-full'>
           <div className='min-w-220px max-w-1000px'>
             <ImageSwiper images={imgList} />
           </div>
