@@ -12,14 +12,20 @@ import 'swiper/css/thumbs';
 
 import './ImageSwiper.css';
 
-interface Props {
+export interface ImageSwiperProps {
   images: string[];
   maxThumbSlidesPerView?: number;
 }
 
-const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 4 }) => {
+const ImageSwiper: FC<ImageSwiperProps> = ({
+  images,
+  maxThumbSlidesPerView = 4,
+}) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [swiperIndexStart, setSwiperIndexStart] = useState(0);
+  const [isModal, setModalActive] = useState(false);
+  const [isZoom, setZoomActive] = useState(false);
+
   const maxSlidesPerView =
     images.length < maxThumbSlidesPerView
       ? images.length
@@ -41,57 +47,106 @@ const ImageSwiper: FC<Props> = ({ images, maxThumbSlidesPerView = 4 }) => {
     }
   };
 
+  const activeModal = (swiper: SwiperType) => {
+    if (!isModal) {
+      setModalActive(true);
+      setZoomActive(true);
+    }
+    if (isModal) {
+      if (isZoom) {
+        swiper.zoom.in();
+        setZoomActive(false);
+      } else {
+        swiper.zoom.out();
+        setZoomActive(true);
+      }
+    }
+  };
+
+  const disableModal = () => {
+    if (isModal) {
+      setModalActive(false);
+      setZoomActive(false);
+    }
+  };
+
   return (
-    <>
-      <Swiper
-        navigation={true}
-        pagination={{
-          dynamicBullets: true,
-          clickable: true,
+    <div
+      className={`${
+        isModal
+          ? 'flex flex-col justify-center items-center fixed h-screen w-screen top-0 left-0 z-50 bg-c-black-opacity-3'
+          : 'min-w-220px max-w-1000px'
+      }`}
+      onClick={() => {
+        disableModal();
+      }}
+    >
+      <div
+        className={`min-w-0 ${
+          isModal ? 'max-w-1000px lg:w-full xl:w-4/5 sm:w-4/5' : ''
+        }`}
+        onClick={(e) => {
+          e.stopPropagation();
         }}
-        zoom={true}
-        spaceBetween={5}
-        thumbs={{
-          swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-        }}
-        modules={[Navigation, Pagination, Zoom, Thumbs]}
-        className='mb-4'
       >
-        {images.map((src, idx) => {
-          return (
-            <SwiperSlide key={idx}>
-              <div className='swiper-zoom-container'>
-                <img src={src} alt='' className='w-full' />
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-      <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={15}
-        slidesPerView={maxSlidesPerView}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-        className='swiperThumb'
-      >
-        {images.map((src, idx) => {
-          return (
-            <SwiperSlide key={idx}>
-              <img
-                src={src}
-                alt=''
-                className='h-full rounded cursor-pointer'
-                onClick={() => {
-                  return handleThumbClick(idx);
-                }}
-              />
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
-    </>
+        <Swiper
+          navigation={true}
+          pagination={{
+            dynamicBullets: true,
+            clickable: true,
+          }}
+          spaceBetween={5}
+          thumbs={{
+            swiper:
+              thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+          }}
+          modules={[Navigation, Pagination, Zoom, Thumbs]}
+          onDoubleClick={(swiper) => {
+            activeModal(swiper);
+          }}
+          zoom={{ toggle: false }}
+          className={`mb-4 ${isModal ? '' : 'cursor-pointer'}`}
+        >
+          {images.map((src, idx) => {
+            return (
+              <SwiperSlide key={idx}>
+                <div className='swiper-zoom-container'>
+                  <img src={src} alt='' className='w-full' />
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          spaceBetween={15}
+          slidesPerView={maxSlidesPerView}
+          freeMode={true}
+          watchSlidesProgress={true}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className='swiperThumb'
+        >
+          {images.map((src, idx) => {
+            return (
+              <SwiperSlide
+                key={idx}
+                className={`${isModal ? 'max-w-24' : 'max-w-20%'}`}
+              >
+                <img
+                  src={src}
+                  alt=''
+                  className='h-full rounded cursor-pointer'
+                  onClick={() => {
+                    handleThumbClick(idx);
+                  }}
+                />
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </div>
+    </div>
   );
 };
+
 export default ImageSwiper;

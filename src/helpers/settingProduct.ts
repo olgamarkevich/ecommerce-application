@@ -92,7 +92,7 @@ export const getVendor = (variant: Variant) => {
 };
 
 export const getAttributeOptions = (product: Product): AttributeOptionsSet => {
-  const atributeOptions: AttributeOptionsSet = {};
+  const attributeOptions: AttributeOptionsSet = {};
   const attributeNames =
     product.masterVariant && product.masterVariant.attributes
       ? product.masterVariant.attributes
@@ -147,7 +147,7 @@ export const getAttributeOptions = (product: Product): AttributeOptionsSet => {
     }
 
     return acc;
-  }, atributeOptions);
+  }, attributeOptions);
 };
 
 export const getVariantToShow = (
