@@ -1,13 +1,57 @@
-import React, { type FC } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import Select from 'react-select';
+import type { ChooseAttributeHandler } from '../../types/componentTypes';
+import AttributeItem from './AttributeItem/AttributeItem';
+import { useSearchParams } from 'react-router-dom';
+import type { ProductProjection } from '@commercetools/platform-sdk';
+import {
+  attributeSortCallback,
+  prepareOptions,
+} from '../../helpers/filterBarHelpers';
 
-const FilterBar: FC = () => {
-  const priceOptions = [
-    { value: 0, label: '0.00' },
-    { value: 100, label: '1.00' },
-    { value: 200, label: '2.00' },
-  ];
-  const vendors = new Set(['Vendor1', 'Vendor2', 'Vendor3']);
+const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
+  const [attributesOptions, setAttributesOptions] = useState<
+    Record<string, string[]> | undefined
+  >(undefined);
+  const [priceOptions, setPriceOptions] = useState<
+    { value: number; label: string }[]
+  >([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { products } = props;
+
+  useEffect(() => {
+    if (products) {
+      const { attributesOptions, priceOptions } = prepareOptions(products);
+      setAttributesOptions(attributesOptions);
+      setPriceOptions(priceOptions);
+    }
+  }, [products]);
+
+  const chooseAttributeHandler: ChooseAttributeHandler = (
+    attributeName,
+    attributeValue,
+    isAttributeSet,
+  ) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    const searchParamValue = `${attributeName}:${attributeValue}`;
+
+    if (isAttributeSet) {
+      newSearchParams.append('filter', searchParamValue);
+    } else {
+      const values = newSearchParams.getAll('filter');
+      newSearchParams.delete('filter');
+      values
+        .filter((value) => {
+          return value !== searchParamValue;
+        })
+        .forEach((value) => {
+          newSearchParams.append('filter', value);
+        });
+    }
+
+    setSearchParams(newSearchParams);
+  };
 
   return (
     <div className={'border-solid border-2 border-blue-800'}>
@@ -24,22 +68,22 @@ const FilterBar: FC = () => {
           placeholder={'Min price'}
           isClearable={true}
         />
-        <h4 className={'mt-3'}>By vendor</h4>
-        <ul>
-          {[...vendors].sort().map((vendor) => {
-            // const paramString = `filter=${attrName - vendor}:${attrValue - Badger}`
+      </div>
+      {attributesOptions &&
+        Object.keys(attributesOptions)
+          .sort(attributeSortCallback)
+          .map((key) => {
             return (
-              <li key={vendor}>
-                <label>
-                  <input type={'checkbox'} />
-                  {vendor}
-                </label>
-                {/*variants.attributes.${attrName - vendor}.en:"${attrValue - Badger}"*/}
-              </li>
+              <AttributeItem
+                key={key}
+                attributeName={key}
+                attributeValues={
+                  attributesOptions ? attributesOptions[key] : []
+                }
+                chooseAttributeHandler={chooseAttributeHandler}
+              />
             );
           })}
-        </ul>
-      </div>
     </div>
   );
 };

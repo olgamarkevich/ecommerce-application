@@ -20,15 +20,30 @@ export const prepareCatalogQueryParams = (
 
   // Add category
   if (categoryId) {
-    params.set('filter', `categories.id:"${categoryId}"`);
+    params.set('filter.query', `categories.id:"${categoryId}"`);
   }
 
-  // Add filters
+  // Add attributes filters
   if (searchParams.has('filter')) {
-    searchParams.getAll('filter').forEach((value) => {
-      // variants.attributes.${attrName - vendor}.en:"${attrValue - Badger}"
+    const filterAttributes = searchParams.getAll('filter').reduce(
+      (acc, item): Record<string, string[]> => {
+        const [name, value] = item.split(':');
 
-      params.append('filter', value);
+        if (!(name in acc)) acc[name] = [];
+
+        acc[name].push(`"${value}"`);
+
+        return acc;
+      },
+      {} as Record<string, string[]>,
+    );
+
+    Object.keys(filterAttributes).forEach((attrName) => {
+      const attrValue = filterAttributes[attrName].join(', ');
+      params.append(
+        'filter',
+        `variants.attributes.${attrName}.en:${attrValue}`,
+      );
     });
   }
 

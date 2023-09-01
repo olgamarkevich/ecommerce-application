@@ -45,3 +45,18 @@ export interface SearchBarProps {
   value: string;
   onSearch: OnSearch;
 }
+
+export type ChooseAttributeHandler = (
+  // eslint-disable-next-line autofix/no-unused-vars
+  attributeName: string,
+  // eslint-disable-next-line autofix/no-unused-vars
+  attributeValue: string,
+  // eslint-disable-next-line autofix/no-unused-vars
+  isAttributeSet: boolean,
+) => void;
+
+export interface AttributesItem {
+  attributeName: string;
+  attributeValues: string[];
+  chooseAttributeHandler: ChooseAttributeHandler;
+}

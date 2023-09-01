@@ -89,7 +89,7 @@ const Catalog: FC = () => {
         isCategoryLoading || isProductLoading || isCategoriesLoading,
       ),
     );
-  }, [dispatch, isCategoryLoading, isProductLoading]);
+  }, [dispatch, isCategoryLoading, isProductLoading, isCategoriesLoading]);
 
   const showItemsOptions = [
     { value: '12', label: '12' },
@@ -262,7 +262,7 @@ const Catalog: FC = () => {
           <div className={'flex gap-3'}>
             <aside>
               <CategoryTree />
-              <FilterBar />
+              <FilterBar products={products.results} />
             </aside>
             <ProductCard products={products.results} title={'Products'} />
           </div>
