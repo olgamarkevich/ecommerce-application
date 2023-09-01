@@ -6,15 +6,26 @@ import {
   getListImgSrc,
   getPrice,
   getVendor,
+  getAttributeOptions,
+  getVariantToShowIndex,
 } from 'helpers/settingProduct';
 import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
 import ProductDescription from 'components/ProductDescription/ProductDescription';
+import { useSearchParams } from 'react-router-dom';
 
 const ProductCard: FC<IProductCard> = ({ product }) => {
+  const [searchParams] = useSearchParams();
+  const attributeOptions = getAttributeOptions(product);
+  const variantToShowIndex: number = getVariantToShowIndex(
+    product,
+    attributeOptions,
+    searchParams,
+  );
   const imgList = getListImgSrc(product);
-  const price = getPrice(product);
-  const discountPrice = getDiscountedPrice(product);
+  const price = getPrice(product, variantToShowIndex);
+  const discountPrice = getDiscountedPrice(product, variantToShowIndex);
   const vendor = getVendor(product.masterVariant);
+
   return (
     <section className='py-5'>
       <div className='flex p-5 md:flex-col md:items-center'>
