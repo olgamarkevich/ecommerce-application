@@ -48,3 +48,5 @@ export interface ICard {
 export interface IProductCard {
   product: Partial<ProductProjection>;
 }
+
+export type AttributeOptionsSet = Record<string, string[]>;
