@@ -6,13 +6,14 @@ import Email from './Email';
 import Details from './Details';
 import Password from './Password';
 import { useAppSelector } from 'hooks/hooks';
+import type { Customer } from '@commercetools/platform-sdk';
 
 const Profile: FC = () => {
   const customerState = useAppSelector((state) => {
     return state.customer;
-  });
+  }) as Customer;
 
-  const [customer, setCustomerData] = useState(customerState || null);
+  const [customer, setCustomerData] = useState(customerState);
 
   useEffect(() => {
     setCustomerData(customer);

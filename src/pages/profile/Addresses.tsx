@@ -8,7 +8,7 @@ import AddressAdd from './addressesSettings/AddressAdd';
 
 interface Props {
   customer: Customer | null;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
 }
 
 const Addresses: FC<Props> = ({ customer, setCustomerData }) => {

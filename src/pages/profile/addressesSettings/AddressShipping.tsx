@@ -12,7 +12,7 @@ interface Props {
   isShipping: boolean;
   id: string;
   version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
 }
 
 interface FormData {

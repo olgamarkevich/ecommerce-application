@@ -12,7 +12,7 @@ import AddressRemove from './AddressRemove';
 interface Props {
   address: Address;
   version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
   isBilling: boolean;
   isShipping: boolean;
   isDefaultBilling: boolean;

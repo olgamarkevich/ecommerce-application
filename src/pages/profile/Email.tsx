@@ -16,7 +16,7 @@ import TextInfo from 'components/TextInfo/TextInfo';
 
 interface Props {
   customer: Customer | null;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
 }
 
 const schema = yup
@@ -69,6 +69,7 @@ const Email: FC<Props> = ({ customer, setCustomerData }) => {
       skip:
         customer === null ||
         !!serverErrorMsg ||
+        errors.email?.message === '' ||
         customer.email === formData.email,
     },
   );
@@ -118,6 +119,7 @@ const Email: FC<Props> = ({ customer, setCustomerData }) => {
             onClick={() => {
               setValue('email', defaultFormData.email);
               setEditModeEmail(true);
+              setServerErrorMsg('');
             }}
           >
             Cancel

@@ -11,7 +11,7 @@ import { checkServerErrorMsg } from 'helpers/typesHelpers';
 interface Props {
   id: string | undefined;
   version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
 }
 
 interface FormData {

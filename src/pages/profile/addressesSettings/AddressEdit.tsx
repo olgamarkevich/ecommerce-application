@@ -23,7 +23,7 @@ import TextInfo from 'components/TextInfo/TextInfo';
 interface Props {
   address: Address;
   version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
   setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

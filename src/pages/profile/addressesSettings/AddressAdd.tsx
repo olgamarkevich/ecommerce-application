@@ -25,7 +25,7 @@ import Loader from 'components/Loader/Loader';
 
 interface Props {
   version: number;
-  setCustomerData: React.Dispatch<React.SetStateAction<Customer | null>>;
+  setCustomerData: React.Dispatch<React.SetStateAction<Customer>>;
 }
 
 const AddressAdd: FC<Props> = ({ version, setCustomerData }) => {
