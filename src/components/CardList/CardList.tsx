@@ -5,7 +5,7 @@ import Title from 'components/Title/Title';
 import Card from 'components/Card/Card';
 import {
   getDiscountedPrice,
-  getImgSrc,
+  getListImgSrc,
   getPrice,
 } from 'helpers/settingProduct';
 
@@ -15,14 +15,14 @@ const CardList: FC<IProductCardList> = ({ products, title }) => {
       <Title text={title} size='large' />
       <div className='flex flex-wrap justify-between md:justify-center'>
         {products.map((product) => {
-          const imgSrc = getImgSrc(product);
+          const imgSrcList = getListImgSrc(product);
           const price = getPrice(product);
           const discountedPrice = getDiscountedPrice(product);
 
           return (
             <Card
               product={product}
-              imgSrc={imgSrc}
+              imgSrcList={imgSrcList}
               price={price}
               discountedPrice={discountedPrice}
               key={product.id}
