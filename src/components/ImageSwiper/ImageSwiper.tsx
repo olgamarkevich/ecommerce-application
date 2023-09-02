@@ -82,7 +82,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
       }}
     >
       <div
-        className={`relative top-16 min-w-0 ${isModal ? 'max-w-60vh' : ''}`}
+        className={`min-w-0 ${isModal ? 'max-w-60vh relative top-16 ' : ''}`}
         onClick={(e) => {
           e.stopPropagation();
         }}
