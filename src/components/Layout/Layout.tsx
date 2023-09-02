@@ -6,13 +6,13 @@ import PopUp from '../PopUp/PopUp';
 import { useAppSelector } from '../../hooks/hooks';
 
 const Layout: FC = () => {
-  const { isLoading, textInfo } = useAppSelector((state) => {
+  const { loadingSet, textInfo } = useAppSelector((state) => {
     return state.app;
   });
 
   return (
     <div className='App relative'>
-      {isLoading && <Loader />}
+      {loadingSet.size > 0 && <Loader />}
       <Header />
       <div className='wrapper relative overflow-x-hidden'>
         {textInfo && (

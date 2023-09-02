@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { enableMapSet } from 'immer';
 import appReducer from './appSlice';
 import authReducer from './authSlice';
 import customerReducer from './customerSlice';
 import catalogReducer from './catalogSlice';
 import customerSignUpReducer from './customerSignUpSlice';
 import { apiClient } from '../api/apiClient';
+
+enableMapSet();
 
 const store = configureStore({
   reducer: {
@@ -16,7 +19,11 @@ const store = configureStore({
     [apiClient.reducerPath]: apiClient.reducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(apiClient.middleware);
+    return getDefaultMiddleware({
+      serializableCheck: {
+        ignoredPaths: ['app.loadingSet'],
+      },
+    }).concat(apiClient.middleware);
   },
   devTools: process.env.NODE_ENV === 'development',
 });

@@ -12,7 +12,7 @@ import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProdu
 import { useAppSelector } from '../../hooks/hooks';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import type { OnChangeValue } from 'react-select/dist/declarations/src/types';
-import { setLoadingStatus } from '../../store/appSlice';
+import { setLoadingSet } from '../../store/appSlice';
 import { useAppDispatch } from '../../hooks/hooks';
 import type { CategoryTreeSource } from '../../types/storeTypes';
 import { setCategories } from '../../store/catalogSlice';
@@ -85,11 +85,28 @@ const Catalog: FC = () => {
   // Set loading status
   useEffect(() => {
     dispatch(
-      setLoadingStatus(
-        isCategoryLoading || isProductLoading || isCategoriesLoading,
-      ),
+      setLoadingSet({
+        value: 'categoryLoadingInCatalog',
+        status: isCategoryLoading,
+      }),
     );
-  }, [dispatch, isCategoryLoading, isProductLoading, isCategoriesLoading]);
+  }, [dispatch, isCategoryLoading]);
+  useEffect(() => {
+    dispatch(
+      setLoadingSet({
+        value: 'productLoadingInCatalog',
+        status: isProductLoading,
+      }),
+    );
+  }, [dispatch, isProductLoading]);
+  useEffect(() => {
+    dispatch(
+      setLoadingSet({
+        value: 'categoriesLoadingInCatalog',
+        status: isCategoriesLoading,
+      }),
+    );
+  }, [dispatch, isCategoriesLoading]);
 
   const showItemsOptions = [
     { value: '12', label: '12' },

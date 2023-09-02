@@ -12,7 +12,7 @@ export interface AppState {
   isInitialized: boolean;
   isAuthorized: boolean;
   isCustomerLogged: boolean;
-  isLoading: boolean;
+  loadingSet: Set<string>;
   textInfo: TextInfoState | null;
 }
 
