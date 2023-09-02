@@ -1,14 +1,13 @@
 import React, { type FC } from 'react';
 import type { AttributesItem } from '../../../types/componentTypes';
-import { useSearchParams } from 'react-router-dom';
 
 const AttributeItem: FC<AttributesItem> = ({
   attributeName,
   attributeValues,
   chooseAttributeHandler,
+  filterOptions,
 }) => {
-  const [searchParams] = useSearchParams();
-  const filterAttributes = searchParams.getAll('filter').reduce(
+  const filterAttributes = filterOptions.getAll('filter').reduce(
     (acc, item): Record<string, string[]> => {
       const [name, value] = item.split(':');
 
@@ -34,7 +33,7 @@ const AttributeItem: FC<AttributesItem> = ({
                 <input
                   type={'checkbox'}
                   checked={
-                    filterAttributes[attributeName] &&
+                    !!filterAttributes[attributeName] &&
                     filterAttributes[attributeName].includes(attributeValue)
                   }
                   onChange={(e) => {

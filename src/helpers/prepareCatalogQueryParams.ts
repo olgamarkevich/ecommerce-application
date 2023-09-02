@@ -38,12 +38,24 @@ export const prepareCatalogQueryParams = (
       {} as Record<string, string[]>,
     );
 
-    Object.keys(filterAttributes).forEach((attrName) => {
-      const attrValue = filterAttributes[attrName].join(', ');
+    if ('minPrice' in filterAttributes || 'maxPrice' in filterAttributes) {
       params.append(
-        'filter',
-        `variants.attributes.${attrName}.en:${attrValue}`,
+        'filter.query',
+        `variants.price.centAmount:range (${
+          filterAttributes.minPrice ? filterAttributes.minPrice : '*'
+        } to ${filterAttributes.maxPrice ? filterAttributes.maxPrice : '*'})`,
       );
+    }
+
+    Object.keys(filterAttributes).forEach((attrName) => {
+      if (attrName !== 'minPrice' && attrName !== 'maxPrice') {
+        params.append(
+          'filter.query',
+          `variants.attributes.${attrName}.en:${filterAttributes[attrName].join(
+            ', ',
+          )}`,
+        );
+      }
     });
   }
 

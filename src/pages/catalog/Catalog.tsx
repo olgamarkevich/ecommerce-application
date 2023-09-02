@@ -213,8 +213,6 @@ const Catalog: FC = () => {
     return searchParams.get('search') || '';
   };
 
-  if (products && products.results) console.log(products.results); //TODO remove it
-
   if (isCategoryError || isProductError || isCategoriesError) {
     return (
       <>

@@ -59,4 +59,5 @@ export interface AttributesItem {
   attributeName: string;
   attributeValues: string[];
   chooseAttributeHandler: ChooseAttributeHandler;
+  filterOptions: URLSearchParams;
 }
