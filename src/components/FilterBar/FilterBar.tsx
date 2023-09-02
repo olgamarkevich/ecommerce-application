@@ -2,13 +2,14 @@ import React, { type FC, useEffect, useState } from 'react';
 import Select, { type GroupBase, type SingleValue } from 'react-select';
 import type { ChooseAttributeHandler } from '../../types/componentTypes';
 import AttributeItem from './AttributeItem/AttributeItem';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import type { ProductProjection } from '@commercetools/platform-sdk';
 import {
   attributeSortCallback,
   prepareOptions,
 } from '../../helpers/filterBarHelpers';
 import type SelectType from 'react-select/dist/declarations/src/Select';
+import ButtonSubmit from '../Buttons/ButtonSubmit/ButtonSubmit';
 
 const getInitialFilterOptions = (params: URLSearchParams) => {
   const newParams = new URLSearchParams(params);
@@ -18,10 +19,14 @@ const getInitialFilterOptions = (params: URLSearchParams) => {
 };
 
 const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
+  const { categorySlug } = useParams();
+  const [isFiltersShown, setIsFiltersShown] = useState<boolean>(false);
+  const [isPriceFilterShown, setIsPriceFilterShown] = useState<boolean>(false);
+
   const { products } = props;
   const [searchParams, setSearchParams] = useSearchParams();
   const [filtersOptionsToApply, setFiltersOptionsToApply] =
-    useState<URLSearchParams>(getInitialFilterOptions(searchParams));
+    useState<URLSearchParams>(new URLSearchParams());
   const [attributesOptions, setAttributesOptions] = useState<
     Record<string, string[]> | undefined
   >(undefined);
@@ -52,6 +57,10 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
       setPriceOptions(prices);
     }
   }, [products]);
+
+  useEffect(() => {
+    setFiltersOptionsToApply(getInitialFilterOptions(searchParams));
+  }, [searchParams, categorySlug]);
 
   useEffect(() => {
     const minPriceParam = filtersOptionsToApply
@@ -85,7 +94,7 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
         'select-option',
       );
     }
-  }, []);
+  }, [categorySlug]);
 
   const choosePriceHandler = (
     priceType: 'minPrice' | 'maxPrice',
@@ -174,63 +183,96 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
   };
 
   return (
-    <div className={'border-solid border-2 border-blue-800'}>
-      <h3>Filters</h3>
-      <button onClick={applyFiltersHandler}>Apply filters</button>
-      <button onClick={clearFiltersHandler}>Clear filters</button>
-      <div>
-        <h4 className={'mt-3'}>By price</h4>
-        <Select
-          options={
-            priceLimits.max
-              ? priceOptions.filter((option) => {
-                  return option.value <= (priceLimits.max as number);
-                })
-              : priceOptions
-          }
-          placeholder={'Min price'}
-          isClearable={true}
-          onChange={(newValue) => {
-            choosePriceHandler('minPrice', newValue);
-          }}
-          ref={(ref) => {
-            minPriceSelectRef = ref;
-          }}
-        />
-        <Select
-          options={
-            priceLimits.min
-              ? priceOptions.filter((option) => {
-                  return option.value >= (priceLimits.min as number);
-                })
-              : priceOptions
-          }
-          placeholder={'Max price'}
-          isClearable={true}
-          onChange={(newValue) => {
-            choosePriceHandler('maxPrice', newValue);
-          }}
-          ref={(ref) => {
-            maxPriceSelectRef = ref;
+    <div>
+      <div className={'flex justify-between items-center p-2'}>
+        <h3>Filters</h3>
+        <div
+          className={`w-2.5 h-2.5 rounded ${
+            isFiltersShown ? 'rotate-45' : '-rotate-45'
+          } cursor-pointer border-b-solid border-b-2 border-b-gray-400 hover:border-b-gray-600 border-r-solid border-r-2 border-r-gray-400 hover:border-r-gray-600 hover:scale-105 transition-all`}
+          onClick={() => {
+            setIsFiltersShown(!isFiltersShown);
           }}
         />
       </div>
-      {attributesOptions &&
-        Object.keys(attributesOptions)
-          .sort(attributeSortCallback)
-          .map((key) => {
-            return (
-              <AttributeItem
-                key={key}
-                attributeName={key}
-                attributeValues={
-                  attributesOptions ? attributesOptions[key] : []
-                }
-                chooseAttributeHandler={chooseAttributeHandler}
-                filterOptions={filtersOptionsToApply}
-              />
-            );
-          })}
+      <div
+        className={`${
+          isFiltersShown ? 'scale-y-100 block' : 'scale-y-0 hidden'
+        } transition-all`}
+      >
+        <ButtonSubmit text={'Apply'} onClick={applyFiltersHandler} />
+        <div className={'m-1'} />
+        <ButtonSubmit text={'Clear'} onClick={clearFiltersHandler} />
+        <div>
+          <div className={'flex justify-between items-center p-2'}>
+            <h4>By price</h4>
+            <div
+              className={`w-2.5 h-2.5 rounded ${
+                isPriceFilterShown ? 'rotate-45' : '-rotate-45'
+              } cursor-pointer border-b-solid border-b-2 border-b-gray-400 hover:border-b-gray-600 border-r-solid border-r-2 border-r-gray-400 hover:border-r-gray-600 hover:scale-105 transition-all`}
+              onClick={() => {
+                setIsPriceFilterShown(!isPriceFilterShown);
+              }}
+            />
+          </div>
+          <div
+            className={`${
+              isPriceFilterShown ? 'scale-y-100 block' : 'scale-y-0 hidden'
+            } transition-all`}
+          >
+            <Select
+              options={
+                priceLimits.max
+                  ? priceOptions.filter((option) => {
+                      return option.value <= (priceLimits.max as number);
+                    })
+                  : priceOptions
+              }
+              placeholder={'Min price'}
+              isClearable={true}
+              onChange={(newValue) => {
+                choosePriceHandler('minPrice', newValue);
+              }}
+              ref={(ref) => {
+                minPriceSelectRef = ref;
+              }}
+            />
+            <Select
+              options={
+                priceLimits.min
+                  ? priceOptions.filter((option) => {
+                      return option.value >= (priceLimits.min as number);
+                    })
+                  : priceOptions
+              }
+              placeholder={'Max price'}
+              isClearable={true}
+              onChange={(newValue) => {
+                choosePriceHandler('maxPrice', newValue);
+              }}
+              ref={(ref) => {
+                maxPriceSelectRef = ref;
+              }}
+            />
+          </div>
+        </div>
+        {attributesOptions &&
+          Object.keys(attributesOptions)
+            .sort(attributeSortCallback)
+            .map((key) => {
+              return (
+                <AttributeItem
+                  key={key}
+                  attributeName={key}
+                  attributeValues={
+                    attributesOptions ? attributesOptions[key] : []
+                  }
+                  chooseAttributeHandler={chooseAttributeHandler}
+                  filterOptions={filtersOptionsToApply}
+                />
+              );
+            })}
+      </div>
     </div>
   );
 };

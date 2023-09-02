@@ -53,8 +53,6 @@ const Catalog: FC = () => {
     params = prepareCatalogQueryParams(category.results[0].id, searchParams);
   }
 
-  if (params.size) console.log(params.toString()); // TODO remove
-
   const {
     data: products,
     isError: isProductError,

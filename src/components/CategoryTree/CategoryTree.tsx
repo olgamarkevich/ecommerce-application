@@ -37,7 +37,7 @@ const CategoryTree: FC = () => {
           return (
             <li
               key={category.id}
-              className={`w-full flex justify-between gap-1 ${
+              className={`w-full flex justify-between items-center gap-1 ${
                 category.level === 1
                   ? 'pl-1'
                   : category.level === 2
@@ -45,7 +45,7 @@ const CategoryTree: FC = () => {
                   : 'pl-5'
               } ${
                 checkShouldBeShown(category.parentId)
-                  ? 'scale-x-100 block'
+                  ? 'scale-y-100 block'
                   : 'scale-y-0 hidden'
               } transition-all`}
             >
@@ -61,15 +61,15 @@ const CategoryTree: FC = () => {
                 {category.name}
               </Link>
               <div
-                className={`cursor-pointer ${
-                  category.isOpen ? 'rotate-90' : 'rotate-0'
-                } hover:scale-105`}
+                className={`w-2.5 h-2.5 rounded ${
+                  category.isOpen ? 'rotate-45' : '-rotate-45'
+                } cursor-pointer ${
+                  category.hasChildren ? 'block' : 'hidden'
+                } border-b-solid border-b-2 border-b-gray-400 hover:border-b-gray-600 border-r-solid border-r-2 border-r-gray-400 hover:border-r-gray-600 hover:scale-105 transition-all`}
                 onClick={() => {
                   toggleIsOpen(category.id);
                 }}
-              >
-                {category.hasChildren ? '\uFE65' : ''}
-              </div>
+              />
             </li>
           );
         })}
