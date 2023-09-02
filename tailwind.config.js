@@ -8,6 +8,7 @@ module.exports = {
       },
       width: {
         '55%': '55%',
+        '30%': '30%',
       },
       height: {
         '50vh': '50vh',
@@ -17,9 +18,15 @@ module.exports = {
       maxWidth: {
         '1000px': '1000px',
         '100px': '100px',
+        '40vh': '40vh',
+        '60vh': '60vh',
+        '80vh': '80vh',
         '100vh': '100vh',
         '100vw': '100vw',
         '70vw': '70vw',
+        '80%': '80%',
+        '60%': '60%',
+        '30%': '30%',
         '20%': '20%',
         24: '6rem' /* 96px */,
       },
@@ -30,6 +37,7 @@ module.exports = {
       maxHeight: {
         '60vh': '60vh',
         '320px': '320px',
+        '20%': '20%',
       },
       fontFamily: {
         'f-rubik': ['Rubik', 'sans-serif'],

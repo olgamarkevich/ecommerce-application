@@ -26,9 +26,9 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
   const vendor = getVendor(product.masterVariant);
 
   return (
-    <section className='py-5'>
+    <section>
       <div className='flex p-5 md:flex-col justify-center md:items-center'>
-        <div className='w-1/3 xl:w-1/2 md:w-3/4 sm:w-full'>
+        <div className='w-30% md:w-3/4 sm:w-full'>
           <div>
             <ImageSwiper images={imgList} />
           </div>

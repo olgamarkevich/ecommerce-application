@@ -11,7 +11,7 @@
 }
 
 .swiperThumb .swiper-slide {
-  @apply h-24 opacity-60;
+  @apply opacity-60;
 }
 
 .swiperThumb .swiper-slide-thumb-active {
