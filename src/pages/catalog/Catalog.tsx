@@ -3,6 +3,7 @@ import Select, { type PropsValue } from 'react-select';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CategoryTree from '../../components/CategoryTree/CategoryTree';
 import FilterBar from '../../components/FilterBar/FilterBar';
+import ReactPaginate from 'react-paginate';
 import type { FC } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { prepareCatalogQueryParams } from '../../helpers/prepareCatalogQueryParams';
@@ -68,6 +69,19 @@ const Catalog: FC = () => {
   } = useGetCategoriesQuery('limit=500&offset=0', {
     skip: !userType || !!categories.length,
   });
+
+  const handlePageClick = (e: { selected: number }) => {
+    console.log(e.selected);
+    console.log(products);
+    const currentPage = searchParams.get('page') || 1;
+
+    if (+currentPage === e.selected + 1) return;
+
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete('page');
+    newParams.append('page', String(e.selected + 1));
+    setSearchParams(newParams);
+  };
 
   useEffect(() => {
     if (data && !categories.length) {
@@ -277,7 +291,31 @@ const Catalog: FC = () => {
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
-            <ProductCard products={products.results} title={'Products'} />
+            <main className={'flex flex-col justify-between'}>
+              <ProductCard products={products.results} title={'Products'} />
+              <ReactPaginate
+                className={'mt-4 flex self-center'}
+                pageClassName={'hover:scale-110 text-sky-900'}
+                activeClassName={
+                  '-mt-1 border-y-solid border-y-2 border-y-sky-300 hover:scale-100'
+                }
+                activeLinkClassName={'text-sky-800'}
+                previousClassName={'hover:scale-105 pr-7 text-sky-900'}
+                nextClassName={'hover:scale-105 pl-7 text-sky-900'}
+                initialPage={Math.floor(products.offset / products.limit)}
+                breakLabel={'...'}
+                nextLabel={'next >'}
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={
+                  products.total
+                    ? Math.ceil(products.total / products.limit)
+                    : 1
+                }
+                previousLabel={'< previous'}
+                renderOnZeroPageCount={null}
+              />
+            </main>
           </div>
         </>
       )}
