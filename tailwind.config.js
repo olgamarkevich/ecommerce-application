@@ -16,8 +16,12 @@ module.exports = {
         '80vh': '80vh',
       },
       maxWidth: {
-        '1000px': '1000px',
         '100px': '100px',
+        'little-s': '220px',
+        'small-s': '320px',
+        'medium-s': '440px',
+        'medium-m': '480px',
+        'big-s': '1000px',
         '40vh': '40vh',
         '60vh': '60vh',
         '70vh': '70vh',
@@ -48,6 +52,8 @@ module.exports = {
         'one-origin': '1px',
       },
       screens: {
+        x: { max: '300px' },
+        m: { max: '550px' },
         sm: { min: '300px', max: '767px' },
         md: { max: '768px' },
         'md-min': { min: '640px' },
