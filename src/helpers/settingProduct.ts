@@ -82,6 +82,14 @@ export const getDiscountedPrice = (product: Product, variantIndex?: number) => {
   return masterVariantPrice;
 };
 
+export const getSale = (strPrice: string, strDiscountPrice: string) => {
+  const price = parseFloat(strPrice);
+  const discountPrice = parseFloat(strDiscountPrice);
+  return isNaN(price) || isNaN(discountPrice)
+    ? null
+    : `${Math.round(((price - discountPrice) / price) * 100)}%`;
+};
+
 export const getVendor = (variant: Variant) => {
   if (!variant) return '';
   const vendor = variant.attributes?.find((attr) => {

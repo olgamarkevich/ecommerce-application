@@ -8,6 +8,7 @@ import {
   getVendor,
   getAttributeOptions,
   getVariantToShow,
+  getSale,
 } from 'helpers/settingProduct';
 import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
 import ProductDescription from 'components/ProductDescription/ProductDescription';
@@ -23,6 +24,7 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
   const imgList = getListImgSrc(product);
   const price = getPrice(product, variantToShowIndex);
   const discountPrice = getDiscountedPrice(product, variantToShowIndex);
+  const sale = getSale(price, discountPrice);
   const vendor = getVendor(product.masterVariant);
 
   return (
@@ -44,25 +46,27 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
           </div>
           <div className='my-5'>
             <div className='flex font-f-open-sans'>
-              <div
-                className={`${
-                  discountPrice.toLowerCase() !== 'no price'
-                    ? 'text-c-sale-red'
-                    : 'text-blue-950'
-                } font-bold text-2xl float-left ml-1 mr-4`}
-              >
-                $ {discountPrice}
-              </div>
-              {price.toLowerCase() !== 'no price' && (
+              {discountPrice.toLowerCase() !== 'no price' ? (
                 <>
+                  <div className='font-bold text-2xl float-left ml-1 mr-4 text-c-sale-red'>
+                    {discountPrice}
+                  </div>
                   <div className='h-max mt-auto mr-3 opacity-70 text-c-shadow-blue line-through'>
                     ${price}
                   </div>
-                  <div className='h-max my-auto px-2 text-c-sky bg-c-light-blue rounded'>
-                    SOLD OUT
-                  </div>
                 </>
+              ) : (
+                <div className='font-bold text-2xl float-left text-blue-950 mr-3'>
+                  $ {price}
+                </div>
               )}
+              <div
+                className={`h-max my-auto px-2 text-c-sky ${
+                  !sale ? 'bg-c-light-blue' : 'bg-c-sale-red'
+                } rounded`}
+              >
+                {sale ? `SAVE ${sale}` : 'SOLD OUT'}
+              </div>
             </div>
             <div className='my-2'>
               <AttributesForm
