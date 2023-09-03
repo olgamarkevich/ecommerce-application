@@ -12,7 +12,7 @@ const BurgerMenu: FC = () => {
   return (
     <div
       onClick={() => {
-        return setOpen(!isOpen);
+        setOpen(!isOpen);
       }}
     >
       <div

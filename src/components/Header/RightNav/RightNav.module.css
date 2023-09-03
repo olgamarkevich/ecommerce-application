@@ -8,10 +8,10 @@ ul li:not(:last-child) {
 
 @media (max-width: 768px) {
   .ul {
-    @apply fixed items-start top-0 right-0 h-screen w-60 pt-16 bg-c-green-by-loader bg-opacity-95 z-10 transition-transform duration-300;
+    @apply flex flex-col fixed items-start top-0 right-0 h-screen w-60 pt-16 px-5 bg-c-green-by-loader bg-opacity-95 z-10;
   }
 
   .nav__link {
-    @apply mx-auto;
+    @apply w-full mx-auto mb-1 !important;
   }
 }
