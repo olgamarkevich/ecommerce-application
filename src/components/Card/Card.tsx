@@ -71,8 +71,18 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
             {getShortDescription(product.description?.en ?? '')}
           </p>
           <div>
-            <span className='font-bold text-xl mx-3'>{discountedPrice}$</span>
-            <span className='text-gray-600 line-through text-sm'>{price}$</span>
+            {discountedPrice.toLowerCase() !== 'no price' ? (
+              <>
+                <span className='font-bold text-xl mx-3'>
+                  {discountedPrice}$
+                </span>
+                <span className='text-gray-600 line-through text-sm'>
+                  {price}$
+                </span>
+              </>
+            ) : (
+              <span className='font-bold text-xl mx-3'>{price}$</span>
+            )}
           </div>
         </div>
       </Link>
