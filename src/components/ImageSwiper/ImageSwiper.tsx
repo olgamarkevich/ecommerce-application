@@ -93,7 +93,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
         }}
       >
         {isModal && (
-          <ButtonClose onClick={disableModal} className='-top-11 -right-11' />
+          <ButtonClose onClick={disableModal} className='-top-9 -right-9' />
         )}
         <Swiper
           navigation={true}
@@ -134,10 +134,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
         >
           {images.map((src, idx) => {
             return (
-              <SwiperSlide
-                key={idx}
-                className={`${isModal ? 'max-w-24' : 'max-w-20% max-h-20%'}`}
-              >
+              <SwiperSlide key={idx}>
                 <img
                   src={src}
                   alt=''
