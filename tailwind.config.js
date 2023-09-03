@@ -20,6 +20,7 @@ module.exports = {
         '100px': '100px',
         '40vh': '40vh',
         '60vh': '60vh',
+        '70vh': '70vh',
         '80vh': '80vh',
         '100vh': '100vh',
         '100vw': '100vw',

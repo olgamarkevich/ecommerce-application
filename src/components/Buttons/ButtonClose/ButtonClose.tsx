@@ -5,7 +5,7 @@ import type { IButton } from 'types/componentTypes';
 import './ButtonClose.css';
 
 interface ButtonCloseProps extends Pick<IButton, 'onClick'> {
-  className: string /*width, height*/;
+  className: string /* position */;
 }
 
 const ButtonClose: FC<ButtonCloseProps> = ({ onClick, className }) => {

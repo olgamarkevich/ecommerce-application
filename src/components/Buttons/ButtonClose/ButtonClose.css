@@ -1,43 +1,23 @@
 .ButtonClose {
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
-  position: relative;
-  z-index: 1;
-  cursor: pointer;
+  @apply w-14 h-14 absolute rounded-full z-10 cursor-pointer;
 }
 
 .ButtonClose::before {
-  content: '';
-  color: #337ab7;
-  position: absolute;
-  z-index: 2;
-  transform: rotate(45deg);
-  font-size: 50px;
-  line-height: 1;
-  top: -5px;
-  left: 6px;
-  transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+  content: '+';
+  left: 11px;
+  @apply absolute z-20 -top-px rotate-45 text-6xl text-c-pink-red transition-all duration-300;
 }
 
 .ButtonClose::after {
   content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  background: #337ab7;
-  z-index: 1;
-  transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+  transform: scale(0.01);
+  @apply absolute top-0 left-0 z-10 w-full h-full rounded-full bg-c-pink-red transition-all duration-300;
 }
 
 .ButtonClose:hover::after {
-  transform: scale(1);
+  @apply scale-100
 }
 
 .ButtonClose:hover:before {
-  transform: scale(0.8) rotate(45deg);
-  color: #fff;
+  @apply scale-110 rotate-45 text-c-sky
 }

@@ -11,6 +11,7 @@ import 'swiper/css/zoom';
 import 'swiper/css/thumbs';
 
 import './ImageSwiper.css';
+import ButtonClose from 'components/Buttons/ButtonClose/ButtonClose';
 
 export interface ImageSwiperProps {
   images: string[];
@@ -82,68 +83,71 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
       }}
     >
       <div
-        className={`min-w-0 ${isModal ? 'max-w-60vh relative top-16 ' : ''}`}
+        className={`min-w-0 ${
+          isModal
+            ? 'max-w-70vh xl:max-w-60vh md:max-w-70vw relative top-10'
+            : ''
+        }`}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        <div>
-          <Swiper
-            navigation={true}
-            pagination={{
-              dynamicBullets: true,
-              clickable: true,
-            }}
-            spaceBetween={5}
-            thumbs={{
-              swiper:
-                thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-            }}
-            modules={[Navigation, Pagination, Zoom, Thumbs]}
-            onDoubleClick={(swiper) => {
-              activeModal(swiper);
-            }}
-            zoom={{ toggle: false }}
-            className={`mb-4 ${isModal ? '' : 'cursor-pointer'}`}
-          >
-            {images.map((src, idx) => {
-              return (
-                <SwiperSlide key={idx}>
-                  <div className='swiper-zoom-container'>
-                    <img src={src} alt='' className='w-full' />
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            spaceBetween={15}
-            slidesPerView={maxSlidesPerView}
-            freeMode={true}
-            watchSlidesProgress={true}
-            modules={[FreeMode, Navigation, Thumbs]}
-            className='swiperThumb'
-          >
-            {images.map((src, idx) => {
-              return (
-                <SwiperSlide
-                  key={idx}
-                  className={`${isModal ? 'max-w-24' : 'max-w-20% max-h-20%'}`}
-                >
-                  <img
-                    src={src}
-                    alt=''
-                    className='h-full rounded cursor-pointer'
-                    onClick={() => {
-                      handleThumbClick(idx);
-                    }}
-                  />
-                </SwiperSlide>
-              );
-            })}
-          </Swiper>
-        </div>
+        <ButtonClose onClick={disableModal} className='top-0 right-0' />
+        <Swiper
+          navigation={true}
+          pagination={{
+            dynamicBullets: true,
+            clickable: true,
+          }}
+          spaceBetween={5}
+          thumbs={{
+            swiper:
+              thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+          }}
+          modules={[Navigation, Pagination, Zoom, Thumbs]}
+          onDoubleClick={(swiper) => {
+            activeModal(swiper);
+          }}
+          zoom={{ toggle: false }}
+          className={`mb-4 ${isModal ? '' : 'cursor-pointer'}`}
+        >
+          {images.map((src, idx) => {
+            return (
+              <SwiperSlide key={idx}>
+                <div className='swiper-zoom-container'>
+                  <img src={src} alt='' className='w-full' />
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+        <Swiper
+          onSwiper={setThumbsSwiper}
+          spaceBetween={15}
+          slidesPerView={maxSlidesPerView}
+          freeMode={true}
+          watchSlidesProgress={true}
+          modules={[FreeMode, Navigation, Thumbs]}
+          className='swiperThumb'
+        >
+          {images.map((src, idx) => {
+            return (
+              <SwiperSlide
+                key={idx}
+                className={`${isModal ? 'max-w-24' : 'max-w-20% max-h-20%'}`}
+              >
+                <img
+                  src={src}
+                  alt=''
+                  className='h-full rounded cursor-pointer'
+                  onClick={() => {
+                    handleThumbClick(idx);
+                  }}
+                />
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
       </div>
     </div>
   );
