@@ -4,8 +4,7 @@
 
 .ButtonClose::before {
   content: '+';
-  left: 11px;
-  @apply absolute z-20 -top-px rotate-45 text-5xl text-blue-50 transition-all duration-300;
+  @apply absolute z-20 left-2.5 -top-px rotate-45 text-5xl text-blue-50 transition-all duration-300;
 }
 
 .ButtonClose::after {

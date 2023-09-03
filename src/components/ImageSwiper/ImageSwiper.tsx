@@ -3,6 +3,10 @@ import type { FC } from 'react';
 import type { Swiper as SwiperType } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Zoom, Thumbs, FreeMode } from 'swiper';
+import ButtonClose from 'components/Buttons/ButtonClose/ButtonClose';
+import { ReactComponent as FullScreenSVG } from '../../assets/svg/full-screen.svg';
+import { ReactComponent as ZoomInSVG } from '../../assets/svg/zoom-in.svg';
+import { ReactComponent as ZoomOutSVG } from '../../assets/svg/zoom-out.svg';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -11,7 +15,6 @@ import 'swiper/css/zoom';
 import 'swiper/css/thumbs';
 
 import './ImageSwiper.css';
-import ButtonClose from 'components/Buttons/ButtonClose/ButtonClose';
 
 export interface ImageSwiperProps {
   images: string[];
@@ -22,6 +25,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
   images,
   maxThumbSlidesPerView = 4,
 }) => {
+  const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
   const [swiperIndexStart, setSwiperIndexStart] = useState(0);
   const [isModal, setModalActive] = useState(false);
@@ -48,26 +52,35 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
     }
   };
 
-  const activeModal = (swiper: SwiperType) => {
+  const activeModal = () => {
     if (!isModal) {
       setModalActive(true);
       setZoomActive(true);
-    }
-    if (isModal) {
-      if (isZoom) {
-        swiper.zoom.in();
-        setZoomActive(false);
-      } else {
-        swiper.zoom.out();
-        setZoomActive(true);
-      }
     }
   };
 
   const disableModal = () => {
     if (isModal) {
       setModalActive(false);
-      setZoomActive(false);
+      disableZoomMode();
+    }
+  };
+
+  const activeZoomMode = () => {
+    if (mainSwiper) {
+      if (isZoom) {
+        mainSwiper.zoom.in();
+        setZoomActive(false);
+      }
+    }
+  };
+
+  const disableZoomMode = () => {
+    if (mainSwiper) {
+      if (!isZoom) {
+        mainSwiper.zoom.out();
+        setZoomActive(true);
+      }
     }
   };
 
@@ -78,9 +91,6 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
           ? 'flex flex-col justify-start items-center fixed h-screen w-screen top-0 left-0 z-50 bg-c-black-opacity-3'
           : 'min-w-220px max-w-1000px'
       }`}
-      onClick={() => {
-        disableModal();
-      }}
     >
       <div
         className={`min-w-0 ${
@@ -88,15 +98,13 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
             ? 'max-w-70vh xl:max-w-60vh md:max-w-70vw relative top-10'
             : ''
         }`}
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
       >
         {isModal && (
           <ButtonClose onClick={disableModal} className='-top-9 -right-9' />
         )}
         <Swiper
           navigation={true}
+          onSwiper={setMainSwiper}
           pagination={{
             dynamicBullets: true,
             clickable: true,
@@ -107,9 +115,6 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
           modules={[Navigation, Pagination, Zoom, Thumbs]}
-          onDoubleClick={(swiper) => {
-            activeModal(swiper);
-          }}
           zoom={{ toggle: false }}
           className={`mb-4 ${isModal ? '' : 'cursor-pointer'}`}
         >
@@ -122,6 +127,26 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
               </SwiperSlide>
             );
           })}
+          <div className='absolute z-10 w-10 bottom-0 right-0 bg-cyan-400 rounded-md'>
+            {!isModal && (
+              <FullScreenSVG
+                className='stroke-sky-50 hover:stroke-c-light-blue transition-colors'
+                onClick={activeModal}
+              />
+            )}
+            {isModal &&
+              (!isZoom ? (
+                <ZoomOutSVG
+                  className='stroke-sky-50 hover:stroke-c-light-blue transition-colors'
+                  onClick={disableZoomMode}
+                />
+              ) : (
+                <ZoomInSVG
+                  className='stroke-sky-50 hover:stroke-c-light-blue transition-colors'
+                  onClick={activeZoomMode}
+                />
+              ))}
+          </div>
         </Swiper>
         <Swiper
           onSwiper={setThumbsSwiper}
