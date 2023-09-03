@@ -92,7 +92,9 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
           e.stopPropagation();
         }}
       >
-        <ButtonClose onClick={disableModal} className='top-0 right-0' />
+        {isModal && (
+          <ButtonClose onClick={disableModal} className='-top-11 -right-11' />
+        )}
         <Swiper
           navigation={true}
           pagination={{
