@@ -42,13 +42,6 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
               {product.name?.en}
             </div>
           </div>
-          <div>
-            <AttributesForm
-              attributeOptions={attributeOptions}
-              chosenOptions={chosenOptions}
-              variantIndex={variantToShowIndex}
-            />
-          </div>
           <div className='my-5'>
             <div className='flex font-f-open-sans'>
               <div
@@ -70,6 +63,13 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
                   </div>
                 </>
               )}
+            </div>
+            <div className='my-2'>
+              <AttributesForm
+                attributeOptions={attributeOptions}
+                chosenOptions={chosenOptions}
+                variantIndex={variantToShowIndex}
+              />
             </div>
             <div className='mt-10'>
               <ProductDescription description={product.description?.en} />

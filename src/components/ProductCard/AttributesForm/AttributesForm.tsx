@@ -85,8 +85,13 @@ const AttributesForm: FC<AttributesFormProps> = (props) => {
           );
 
           return (
-            <label key={attributeName}>
-              Choose {attributeName}:
+            <label
+              key={attributeName}
+              className='flex flex-col text-start font-f-open-sans'
+            >
+              <span className='w-full my-3 text-blue-950'>
+                {attributeName} : {options[defaultValueIndex].value}
+              </span>
               <Select
                 options={options}
                 defaultValue={options[defaultValueIndex]}
@@ -94,6 +99,7 @@ const AttributesForm: FC<AttributesFormProps> = (props) => {
                   changeHandler(attributeName, newValue);
                 }}
                 name={attributeName}
+                className='max-w-60%'
               />
             </label>
           );
