@@ -138,7 +138,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
                 <img
                   src={src}
                   alt=''
-                  className='h-full rounded cursor-pointer'
+                  className='h-auto rounded cursor-pointer'
                   onClick={() => {
                     handleThumbClick(idx);
                   }}
