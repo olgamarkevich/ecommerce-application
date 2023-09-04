@@ -35,7 +35,7 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
 
   return (
     <div
-      className='flex m-2 w-1/5 min-w-220px rounded-2xl border border-c-sky-green
+      className='flex w-1/5 min-w-240px rounded-2xl border border-c-sky-green
               transition-all duration-300
               hover:shadow-2xl hover:scale-105'
     >
@@ -48,6 +48,7 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
             onSwiper={(s) => {
               return setSwiper(s);
             }}
+            spaceBetween={10}
             autoplay={false}
             pagination={{
               dynamicBullets: true,

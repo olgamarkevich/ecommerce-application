@@ -25,15 +25,19 @@ const AttributeItem: FC<AttributesItem> = ({
 
   return (
     <>
-      <div className={'flex justify-between items-center p-2'}>
+      <div
+        className={
+          'filter_option flex justify-between items-center p-2 cursor-pointer hover:scale-105'
+        }
+        onClick={() => {
+          setIsChildrenShown(!isChildrenShown);
+        }}
+      >
         <h4>By {attributeName}</h4>
         <div
-          className={`w-2.5 h-2.5 rounded ${
+          className={`filter__show-btn w-2.5 h-2.5 rounded ${
             isChildrenShown ? 'rotate-45' : '-rotate-45'
-          } cursor-pointer border-b-solid border-b-2 border-b-gray-400 hover:border-b-gray-600 border-r-solid border-r-2 border-r-gray-400 hover:border-r-gray-600 hover:scale-105 transition-all`}
-          onClick={() => {
-            setIsChildrenShown(!isChildrenShown);
-          }}
+          } border-b-solid border-b-2 border-b-gray-400 border-r-solid border-r-2 border-r-gray-400`}
         />
       </div>
       <ul

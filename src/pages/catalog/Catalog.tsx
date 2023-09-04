@@ -23,6 +23,7 @@ import {
   markCategoryActive,
   markCategoryOpen,
 } from '../../helpers/categoryTreeHelpers';
+import Title from 'components/Title/Title';
 
 const Catalog: FC = () => {
   const dispatch = useAppDispatch();
@@ -249,60 +250,68 @@ const Catalog: FC = () => {
     <>
       {products && (
         <>
-          <div
-            className={
-              'mb-4 flex flex-row flex-wrap justify-between gap-4 w-full'
-            }
-          >
-            <div className={'basis-300px'}>
-              <div className={'flex flex-row gap-2 items-center w-full'}>
-                <div className={'w-5/8'}>Items per page:</div>
-                <Select
-                  className={'w-3/8'}
-                  options={showItemsOptions}
-                  defaultValue={getShowItemsDefaultValue()}
-                  onChange={onShowItemsSelect}
-                />
+          <div className={'flex flex-wrap gap-3'}>
+            <aside className='basis-180px shrink grow-0 px-3 pt-28 m:pt-1 m:mx-auto'>
+              <div className='hidden m:block'>
+                <Title text='Products' size='large' />
               </div>
-            </div>
-            <div className={'basis-300px'}>
-              <div className={'min-w-full'}>
-                <SearchBar value={getSearchValue()} onSearch={onSearch} />
-              </div>
-            </div>
-            <div className={'basis-300px'}>
-              <div className={'flex flex-row gap-2 items-center w-full'}>
-                <div className={'w-3/8'}>Sort by:</div>
-                <Select
-                  className={'w-5/8'}
-                  options={sortSelectOptions}
-                  defaultValue={getSortDefaultValue()}
-                  isClearable={true}
-                  placeholder={'Default'}
-                  onChange={onSortSelect}
-                />
-              </div>
-            </div>
-          </div>
-          <div className={'flex gap-3'}>
-            <aside>
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
-            <main className={'flex flex-col justify-between min-w-0'}>
-              <CardList products={products.results} title={'Products'} />
+            <main
+              className={
+                'basis-320px shrink-0 grow flex flex-col justify-between min-w-0 px-4 md-xl:items-center'
+              }
+            >
+              <div className='block m:hidden'>
+                <Title text='Products' size='large' />
+              </div>
+              <div className='px-10 md-xl:px-0'>
+                <div className='flex justify-center max-w-lg min-w-220px mx-auto'>
+                  <SearchBar value={getSearchValue()} onSearch={onSearch} />
+                </div>
+                <div
+                  className={
+                    'flex md-xl:flex-col md-xl:justify-center relative justify-between font-f-open-sans text-sm z-5 max-w-90% mx-auto'
+                  }
+                >
+                  <div className='flex items-center gap-2 md-xl:my-4'>
+                    <div className='mr-4'>Show</div>
+                    <Select
+                      options={showItemsOptions}
+                      defaultValue={getShowItemsDefaultValue()}
+                      onChange={onShowItemsSelect}
+                    />
+                    <div>Per Page</div>
+                  </div>
+                  <div>
+                    <div className={'flex gap-2 items-center'}>
+                      <div>Sort by:</div>
+                      <Select
+                        options={sortSelectOptions}
+                        defaultValue={getSortDefaultValue()}
+                        isClearable={true}
+                        placeholder={'Default'}
+                        onChange={onSortSelect}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <CardList products={products.results} />
+              </div>
               <ReactPaginate
-                className={'mt-4 flex self-center'}
-                pageClassName={'hover:scale-110 text-sky-900'}
-                activeClassName={
-                  '-mt-1 border-y-solid border-y-2 border-y-sky-300 hover:scale-100'
+                className={'p-4 self-center flex'}
+                pageClassName={'text-sky-900 hover:text-sky-600 transition-all'}
+                activeClassName={'text-sky-600'}
+                previousClassName={
+                  'pr-3 text-sky-900 hover:text-sky-600 transition-all'
                 }
-                activeLinkClassName={'text-sky-800'}
-                previousClassName={'hover:scale-105 pr-7 text-sky-900'}
-                nextClassName={'hover:scale-105 pl-7 text-sky-900'}
+                nextClassName={
+                  'pl-3 text-sky-900 hover:text-sky-600 transition-all'
+                }
                 initialPage={Math.floor(products.offset / products.limit)}
                 breakLabel={'...'}
-                nextLabel={'next >'}
+                nextLabel={'>'}
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
                 pageCount={
@@ -310,7 +319,7 @@ const Catalog: FC = () => {
                     ? Math.ceil(products.total / products.limit)
                     : 1
                 }
-                previousLabel={'< previous'}
+                previousLabel={'<'}
                 renderOnZeroPageCount={null}
               />
             </main>

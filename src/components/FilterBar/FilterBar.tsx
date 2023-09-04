@@ -10,6 +10,7 @@ import {
 } from '../../helpers/filterBarHelpers';
 import type SelectType from 'react-select/dist/declarations/src/Select';
 import ButtonSubmit from '../Buttons/ButtonSubmit/ButtonSubmit';
+import './FilterBar.css';
 
 const getInitialFilterOptions = (params: URLSearchParams) => {
   const newParams = new URLSearchParams(params);
@@ -183,95 +184,108 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
   };
 
   return (
-    <div>
-      <div className={'flex justify-between items-center p-2'}>
-        <h3>Filters</h3>
+    <div className='border-r-2 m:border-r-0 m:border-b-2 rounded border-c-light-blue'>
+      <div className='p-2 transition-all relative'>
         <div
-          className={`w-2.5 h-2.5 rounded ${
-            isFiltersShown ? 'rotate-45' : '-rotate-45'
-          } cursor-pointer border-b-solid border-b-2 border-b-gray-400 hover:border-b-gray-600 border-r-solid border-r-2 border-r-gray-400 hover:border-r-gray-600 hover:scale-105 transition-all`}
+          className='filter_option flex justify-between items-center w-full cursor-pointer hover:scale-105'
           onClick={() => {
             setIsFiltersShown(!isFiltersShown);
           }}
-        />
-      </div>
-      <div
-        className={`${
-          isFiltersShown ? 'scale-y-100 block' : 'scale-y-0 hidden'
-        } transition-all`}
-      >
-        <ButtonSubmit text={'Apply'} onClick={applyFiltersHandler} />
-        <div className={'m-1'} />
-        <ButtonSubmit text={'Clear'} onClick={clearFiltersHandler} />
-        <div>
-          <div className={'flex justify-between items-center p-2'}>
-            <h4>By price</h4>
-            <div
-              className={`w-2.5 h-2.5 rounded ${
-                isPriceFilterShown ? 'rotate-45' : '-rotate-45'
-              } cursor-pointer border-b-solid border-b-2 border-b-gray-400 hover:border-b-gray-600 border-r-solid border-r-2 border-r-gray-400 hover:border-r-gray-600 hover:scale-105 transition-all`}
-              onClick={() => {
-                setIsPriceFilterShown(!isPriceFilterShown);
-              }}
-            />
-          </div>
+        >
+          <span className='flex text-lg font-f-open-sans font-bold pb-3'>
+            Filters
+          </span>
           <div
-            className={`${
-              isPriceFilterShown ? 'scale-y-100 block' : 'scale-y-0 hidden'
-            } transition-all`}
-          >
-            <Select
-              options={
-                priceLimits.max
-                  ? priceOptions.filter((option) => {
-                      return option.value <= (priceLimits.max as number);
-                    })
-                  : priceOptions
-              }
-              placeholder={'Min price'}
-              isClearable={true}
-              onChange={(newValue) => {
-                choosePriceHandler('minPrice', newValue);
-              }}
-              ref={(ref) => {
-                minPriceSelectRef = ref;
-              }}
-            />
-            <Select
-              options={
-                priceLimits.min
-                  ? priceOptions.filter((option) => {
-                      return option.value >= (priceLimits.min as number);
-                    })
-                  : priceOptions
-              }
-              placeholder={'Max price'}
-              isClearable={true}
-              onChange={(newValue) => {
-                choosePriceHandler('maxPrice', newValue);
-              }}
-              ref={(ref) => {
-                maxPriceSelectRef = ref;
-              }}
-            />
-          </div>
+            className={`filter__show-btn w-2.5 h-2.5 rounded ${
+              isFiltersShown ? 'rotate-45' : '-rotate-45'
+            } border-b-solid border-b-2 border-b-gray-400 border-r-solid border-r-2 border-r-gray-400`}
+          />
         </div>
-        {attributesOptions &&
-          Object.keys(attributesOptions)
-            .sort(attributeSortCallback)
-            .map((key) => {
-              return (
-                <AttributeItem
-                  key={key}
-                  attributeName={key}
-                  attributeValues={
-                    attributesOptions ? attributesOptions[key] : []
-                  }
-                  chooseAttributeHandler={chooseAttributeHandler}
-                  filterOptions={filtersOptionsToApply}
-                />
-              );
-            })}
+        <div
+          className={`${
+            isFiltersShown ? 'scale-y-100 h-auto' : 'scale-y-0 h-0'
+          } transition-all duration-75 origin-top`}
+        >
+          <div
+            className='filter_option'
+            onClick={() => {
+              setIsPriceFilterShown(!isPriceFilterShown);
+            }}
+          >
+            <div
+              className={
+                'flex p-2 justify-between items-center w-full cursor-pointer hover:scale-105'
+              }
+            >
+              <h4>By price</h4>
+              <div
+                className={`filter__show-btn w-2.5 h-2.5 rounded ${
+                  isPriceFilterShown ? 'rotate-45' : '-rotate-45'
+                } border-b-solid border-b-2 border-b-gray-400 border-r-solid border-r-2 border-r-gray-400`}
+              />
+            </div>
+            <div
+              className={`${
+                isPriceFilterShown ? 'scale-y-100 block' : 'scale-y-0 hidden'
+              } transition-all origin-top`}
+            >
+              <Select
+                options={
+                  priceLimits.max
+                    ? priceOptions.filter((option) => {
+                        return option.value <= (priceLimits.max as number);
+                      })
+                    : priceOptions
+                }
+                placeholder={'Min price'}
+                isClearable={true}
+                onChange={(newValue) => {
+                  choosePriceHandler('minPrice', newValue);
+                }}
+                ref={(ref) => {
+                  minPriceSelectRef = ref;
+                }}
+              />
+              <Select
+                options={
+                  priceLimits.min
+                    ? priceOptions.filter((option) => {
+                        return option.value >= (priceLimits.min as number);
+                      })
+                    : priceOptions
+                }
+                placeholder={'Max price'}
+                isClearable={true}
+                onChange={(newValue) => {
+                  choosePriceHandler('maxPrice', newValue);
+                }}
+                ref={(ref) => {
+                  maxPriceSelectRef = ref;
+                }}
+              />
+            </div>
+          </div>
+          {attributesOptions &&
+            Object.keys(attributesOptions)
+              .sort(attributeSortCallback)
+              .map((key) => {
+                return (
+                  <AttributeItem
+                    key={key}
+                    attributeName={key}
+                    attributeValues={
+                      attributesOptions ? attributesOptions[key] : []
+                    }
+                    chooseAttributeHandler={chooseAttributeHandler}
+                    filterOptions={filtersOptionsToApply}
+                  />
+                );
+              })}
+          <div className={'mt-2'} />
+          <ButtonSubmit text={'Apply'} onClick={applyFiltersHandler} />
+          <div className={'mb-2'} />
+          <ButtonSubmit text={'Clear'} onClick={clearFiltersHandler} />
+        </div>
       </div>
     </div>
   );

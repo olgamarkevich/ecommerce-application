@@ -1,7 +1,6 @@
 import React from 'react';
 import type { FC } from 'react';
 import type { IProductCardList } from 'types/componentTypes';
-import Title from 'components/Title/Title';
 import Card from 'components/Card/Card';
 import {
   getDiscountedPrice,
@@ -9,11 +8,10 @@ import {
   getPrice,
 } from 'helpers/settingProduct';
 
-const CardList: FC<IProductCardList> = ({ products, title }) => {
+const CardList: FC<IProductCardList> = ({ products }) => {
   return (
-    <section className='py-5 px-4'>
-      <Title text={title} size='large' />
-      <div className='flex flex-wrap justify-between md:justify-center'>
+    <section className='py-5'>
+      <div className=' grid grid-cols-auto gap-3 justify-evenly md:gap-y-3 md-xl:justify-items-center'>
         {products.map((product) => {
           const imgSrcList = getListImgSrc(product);
           const price = getPrice(product);

@@ -23,7 +23,7 @@ const Breadcrumbs: FC = () => {
     });
 
   return (
-    <ul className={'flex px-3 text-xs text-blue-900'}>
+    <ul className={'flex my-2 px-3 text-xs text-blue-950'}>
       {crumbs.map((crumb, index) => {
         return (
           <li key={index}>
