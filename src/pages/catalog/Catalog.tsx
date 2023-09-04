@@ -252,6 +252,9 @@ const Catalog: FC = () => {
         <>
           <div className={'flex flex-wrap gap-3'}>
             <aside className='basis-180px shrink grow-0 px-3 pt-28 m:pt-1 m:mx-auto'>
+              <div className='hidden m:block'>
+                <Title text='Products' size='large' />
+              </div>
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
@@ -260,7 +263,9 @@ const Catalog: FC = () => {
                 'basis-320px shrink-0 grow flex flex-col justify-between min-w-0 px-4 md-xl:items-center'
               }
             >
-              <Title text='Products' size='large' />
+              <div className='block m:hidden'>
+                <Title text='Products' size='large' />
+              </div>
               <div className='px-10 md-xl:px-0'>
                 <div className='flex justify-center max-w-lg min-w-220px mx-auto'>
                   <SearchBar value={getSearchValue()} onSearch={onSearch} />
