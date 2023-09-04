@@ -71,8 +71,6 @@ const Catalog: FC = () => {
   });
 
   const handlePageClick = (e: { selected: number }) => {
-    console.log(e.selected);
-    console.log(products);
     const currentPage = searchParams.get('page') || 1;
 
     if (+currentPage === e.selected + 1) return;
