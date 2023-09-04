@@ -3,7 +3,7 @@ import type { SearchBarProps } from '../../types/componentTypes';
 
 const SearchBar: FC<SearchBarProps> = (props) => {
   const sterilizeText = (text: string): string => {
-    const maxTextLength = 64;
+    const maxTextLength = 256;
 
     if (!text || typeof text !== 'string') return '';
 
