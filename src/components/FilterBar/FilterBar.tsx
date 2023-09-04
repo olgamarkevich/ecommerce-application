@@ -192,7 +192,9 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
             setIsFiltersShown(!isFiltersShown);
           }}
         >
-          <h3>Filters</h3>
+          <span className='flex text-lg font-f-open-sans font-bold pb-3'>
+            Filters
+          </span>
           <div
             className={`filter__show-btn w-2.5 h-2.5 rounded ${
               isFiltersShown ? 'rotate-45' : '-rotate-45'

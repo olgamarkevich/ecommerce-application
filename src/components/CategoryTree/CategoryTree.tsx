@@ -35,7 +35,9 @@ const CategoryTree: FC = () => {
         'justify-self-stretch min-w-180px mb-5 p-2 border-r-2 rounded border-c-light-blue'
       }
     >
-      <span>Categories</span>
+      <span className='flex text-lg font-f-open-sans font-bold pb-3'>
+        Categories
+      </span>
       <ul>
         {categories.map((category) => {
           return (

@@ -35,7 +35,7 @@ export interface ITitle {
 
 export interface IProductCardList {
   products: Partial<ProductProjection>[];
-  title: string;
+  title?: string;
 }
 export interface ICard {
   product: Partial<ProductProjection>;
