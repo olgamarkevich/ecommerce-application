@@ -261,7 +261,7 @@ const Catalog: FC = () => {
               }
             >
               <Title text='Products' size='large' />
-              <div className='px-10 md-xl:pr-0'>
+              <div className='px-10 md-xl:px-0'>
                 <div className='flex justify-center max-w-lg min-w-220px mx-auto'>
                   <SearchBar value={getSearchValue()} onSearch={onSearch} />
                 </div>
