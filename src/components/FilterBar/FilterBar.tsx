@@ -184,8 +184,12 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
   };
 
   return (
-    <div>
-      <div className='p-2 transition-all'>
+    <div
+      className={` ${
+        isFiltersShown ? 'border-r-2' : ''
+      } rounded border-c-light-blue`}
+    >
+      <div className='p-2 transition-all relative'>
         <div
           className='filter_option flex justify-between items-center w-full cursor-pointer hover:scale-105'
           onClick={() => {
@@ -199,6 +203,9 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
             } border-b-solid border-b-2 border-b-gray-400 border-r-solid border-r-2 border-r-gray-400`}
           />
         </div>
+        {!isFiltersShown && (
+          <div className='absolute right-0 top-2 border-r-2  rounded border-c-light-blue h-5 w-2' />
+        )}
         <div
           className={`${
             isFiltersShown ? 'scale-y-100 visible' : 'scale-y-0 invisible'
