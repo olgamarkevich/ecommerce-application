@@ -7,13 +7,13 @@ import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
 
 const Layout: FC = () => {
-  const { isLoading, textInfo } = useAppSelector((state) => {
+  const { loadingSet, textInfo } = useAppSelector((state) => {
     return state.app;
   });
 
   return (
     <div className='App relative'>
-      {isLoading && <Loader />}
+      {loadingSet.size > 0 && <Loader />}
       <Header />
       <Breadcrumbs />
       <div className='wrapper relative overflow-x-hidden'>

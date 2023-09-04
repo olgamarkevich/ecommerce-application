@@ -12,7 +12,11 @@ module.exports = {
         '20%': '20%',
       },
       minWidth: {
+        '180px': '180px',
         '220px': '220px',
+      },
+      paddingLeft: {
+        '10px': '10px',
       },
       fontFamily: {
         'f-rubik': ['Rubik', 'sans-serif'],
