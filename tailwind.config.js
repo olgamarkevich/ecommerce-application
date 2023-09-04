@@ -37,6 +37,7 @@ module.exports = {
         24: '6rem' /* 96px */,
       },
       minWidth: {
+        '180px': '180px',
         '220px': '220px',
         '50px': '50px',
       },
@@ -44,6 +45,9 @@ module.exports = {
         '60vh': '60vh',
         '320px': '320px',
         '20%': '20%',
+      },
+      paddingLeft: {
+        '10px': '10px',
       },
       fontFamily: {
         'f-rubik': ['Rubik', 'sans-serif'],

@@ -1,50 +1,124 @@
+type SortValue = 'priceAsc' | 'priceDesc' | 'nameAsc' | 'nameDesc';
+type AllowedSortValues = Record<SortValue, string>;
+
 export const prepareCatalogQueryParams = (
   categoryId: string | undefined,
   searchParams: URLSearchParams,
 ): URLSearchParams => {
-  // Add allowed params
-  const allowedParamsFields = ['where', 'limit', 'offset'];
+  const allowedParamsFields = [
+    'filter',
+    'filter.query',
+    'sort',
+    'text.en',
+    'fuzzy',
+    'fuzzyLevel',
+    'limit',
+    'offset',
+  ];
 
   const params = new URLSearchParams();
 
+  // Add category
   if (categoryId) {
-    params.set('where', `categories(id="${categoryId}")`);
+    params.set('filter.query', `categories.id:"${categoryId}"`);
   }
 
-  if (searchParams) {
-    searchParams.forEach((value, key) => {
-      params.append(key, value);
+  // Add attributes filters
+  if (searchParams.has('filter')) {
+    const filterAttributes = searchParams.getAll('filter').reduce(
+      (acc, item): Record<string, string[]> => {
+        const [name, value] = item.split(':');
+
+        if (!(name in acc)) acc[name] = [];
+
+        acc[name].push(`"${value}"`);
+
+        return acc;
+      },
+      {} as Record<string, string[]>,
+    );
+
+    if ('minPrice' in filterAttributes || 'maxPrice' in filterAttributes) {
+      params.append(
+        'filter.query',
+        `variants.price.centAmount:range (${
+          filterAttributes.minPrice ? filterAttributes.minPrice : '*'
+        } to ${filterAttributes.maxPrice ? filterAttributes.maxPrice : '*'})`,
+      );
+    }
+
+    Object.keys(filterAttributes).forEach((attrName) => {
+      if (attrName !== 'minPrice' && attrName !== 'maxPrice') {
+        params.append(
+          'filter.query',
+          `variants.attributes.${attrName}.en:${filterAttributes[attrName].join(
+            ', ',
+          )}`,
+        );
+      }
     });
   }
 
-  const getDefaultLimit = () => {
-    const defaultProductsPerPageLimit = '12';
-    params.append('limit', defaultProductsPerPageLimit);
+  // Add sort
+  if (searchParams.has('sort')) {
+    const allowedSortValues: AllowedSortValues = {
+      priceAsc: 'price asc',
+      priceDesc: 'price desc',
+      nameAsc: 'name.en asc',
+      nameDesc: 'name.en desc',
+    };
+    const sortValue = searchParams.get('sort') as SortValue;
 
-    return defaultProductsPerPageLimit;
+    if (Object.keys(allowedSortValues).includes(sortValue)) {
+      params.append('sort', allowedSortValues[sortValue]);
+    }
+  }
+
+  // Add text search
+  if (searchParams.has('search')) {
+    const searchValue = searchParams.get('search') as string;
+
+    params.append('text.en', searchValue);
+    params.append('fuzzy', 'true');
+    params.append('fuzzyLevel', '2');
+  }
+
+  // Add limit
+  const getLimit = (productsPerPageLimit?: number): number => {
+    const defaultProductsPerPageLimit = 12;
+    const allowedProductsPerPageLimit = [12, 24, 36];
+
+    return productsPerPageLimit &&
+      allowedProductsPerPageLimit.includes(productsPerPageLimit)
+      ? productsPerPageLimit
+      : defaultProductsPerPageLimit;
   };
 
-  const limit = params.has('limit') ? params.get('limit') : getDefaultLimit();
+  const productsPerPageLimit = getLimit(
+    searchParams.has('limit')
+      ? +(searchParams.get('limit') as string)
+      : undefined,
+  );
 
-  const getPageToShow = () => {
+  params.append('limit', String(productsPerPageLimit));
+
+  // Add offset
+  const getPageToShow = (pageNumber?: number): number => {
     const defaultPageNumber = 1;
 
-    if (params.has('page')) {
-      const pageNumber = params.get('page');
-      params.delete('page');
-
-      return pageNumber;
-    }
-
-    return params.has('offset')
-      ? String(+(params.get('offset') as string) / +(limit as string) + 1)
-      : defaultPageNumber;
+    return pageNumber ? pageNumber : defaultPageNumber;
   };
 
-  const pageNumber = getPageToShow();
-  const offset = String(+(limit as string) * (+(pageNumber as string) - 1));
-  params.set('offset', offset);
+  const pageNumber = getPageToShow(
+    searchParams.has('page')
+      ? +(searchParams.get('page') as string)
+      : undefined,
+  );
 
+  const offset = productsPerPageLimit * (pageNumber - 1);
+  params.set('offset', String(offset));
+
+  // Remove not allowed params
   for (const key of params.keys()) {
     if (!allowedParamsFields.includes(key)) {
       params.delete(key);

@@ -37,7 +37,6 @@ export interface IProductCardList {
   products: Partial<ProductProjection>[];
   title: string;
 }
-
 export interface ICard {
   product: Partial<ProductProjection>;
   imgSrcList: string[];
@@ -50,3 +49,27 @@ export interface IProductCard {
 }
 
 export type AttributeOptionsSet = Record<string, string[]>;
+
+// eslint-disable-next-line autofix/no-unused-vars
+type OnSearch = (searchString: string) => void;
+
+export interface SearchBarProps {
+  value: string;
+  onSearch: OnSearch;
+}
+
+export type ChooseAttributeHandler = (
+  // eslint-disable-next-line autofix/no-unused-vars
+  attributeName: string,
+  // eslint-disable-next-line autofix/no-unused-vars
+  attributeValue: string,
+  // eslint-disable-next-line autofix/no-unused-vars
+  isAttributeSet: boolean,
+) => void;
+
+export interface AttributesItem {
+  attributeName: string;
+  attributeValues: string[];
+  chooseAttributeHandler: ChooseAttributeHandler;
+  filterOptions: URLSearchParams;
+}
