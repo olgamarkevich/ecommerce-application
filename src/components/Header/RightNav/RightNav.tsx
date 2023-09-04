@@ -37,15 +37,9 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       }}
     >
       <li className={style.nav__link}>
-        <LinkItem to='/categories'>Categories</LinkItem>
-      </li>
-      <li className={style.nav__link}>
         <LinkItem to='/products/CategoryNameSample?param1=one&&param2=two'>
           Catalog
         </LinkItem>
-      </li>
-      <li className={style.nav__link}>
-        <LinkItem to='/product/toothpaste-tablets-w-fluoride'>Product</LinkItem>
       </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>

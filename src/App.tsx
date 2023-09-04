@@ -41,7 +41,9 @@ const routes: RouteObject[] = [
           crumb: (params: { categorySlug: string } | undefined) => {
             return (
               <Link to={'/products'}>
-                {params ? `Category: ${params.categorySlug}` : 'Catalog'}
+                {params && params.categorySlug
+                  ? `Category: ${params.categorySlug}`
+                  : 'Catalog'}
               </Link>
             );
           },
@@ -54,7 +56,9 @@ const routes: RouteObject[] = [
           crumb: (params: { productSlug: string } | undefined) => {
             return (
               <Link to={'/product/:productSlug'}>
-                {params ? `Product: ${params.productSlug}` : 'Product'}
+                {params && params.productSlug
+                  ? `Product: ${params.productSlug}`
+                  : 'Product'}
               </Link>
             );
           },
