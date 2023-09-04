@@ -284,25 +284,30 @@ const Catalog: FC = () => {
               </div>
             </div>
           </div>
-          <div className={'flex gap-3'}>
-            <aside>
+          <div className={'flex flex-wrap gap-3'}>
+            <aside className={'basis-180px shrink grow-0'}>
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
-            <main className={'flex flex-col justify-between min-w-0'}>
+            <main
+              className={
+                'basis-320px shrink-0 grow flex flex-col justify-between min-w-0'
+              }
+            >
               <CardList products={products.results} title={'Products'} />
               <ReactPaginate
-                className={'mt-4 flex self-center'}
-                pageClassName={'hover:scale-110 text-sky-900'}
-                activeClassName={
-                  '-mt-1 border-y-solid border-y-2 border-y-sky-300 hover:scale-100'
+                className={'p-4 self-center flex'}
+                pageClassName={'text-sky-900 hover:text-sky-600 transition-all'}
+                activeClassName={'text-sky-600'}
+                previousClassName={
+                  'pr-3 text-sky-900 hover:text-sky-600 transition-all'
                 }
-                activeLinkClassName={'text-sky-800'}
-                previousClassName={'hover:scale-105 pr-7 text-sky-900'}
-                nextClassName={'hover:scale-105 pl-7 text-sky-900'}
+                nextClassName={
+                  'pl-3 text-sky-900 hover:text-sky-600 transition-all'
+                }
                 initialPage={Math.floor(products.offset / products.limit)}
                 breakLabel={'...'}
-                nextLabel={'next >'}
+                nextLabel={'>'}
                 onPageChange={handlePageClick}
                 pageRangeDisplayed={5}
                 pageCount={
@@ -310,7 +315,7 @@ const Catalog: FC = () => {
                     ? Math.ceil(products.total / products.limit)
                     : 1
                 }
-                previousLabel={'< previous'}
+                previousLabel={'<'}
                 renderOnZeroPageCount={null}
               />
             </main>
