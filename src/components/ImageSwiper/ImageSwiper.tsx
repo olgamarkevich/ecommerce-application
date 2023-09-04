@@ -95,7 +95,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
       <div
         className={`min-w-0 ${
           isModal
-            ? ' max-w-medium-s md:max-w-small-s m:max-w-little-s relative top-10'
+            ? ' max-w-medium-s md:max-w-small-xs m:max-w-little-s relative top-10'
             : ''
         }`}
       >
