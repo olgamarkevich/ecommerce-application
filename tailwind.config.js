@@ -70,12 +70,16 @@ module.exports = {
       },
       screens: {
         x: { max: '300px' },
-        m: { max: '550px' },
+        m: { max: '554px' },
         sm: { min: '300px', max: '767px' },
         md: { max: '768px' },
         'md-min': { min: '640px' },
+        'md-xl': { max: '916px' } /* max: 916px */,
         xl: { min: '768px', max: '1280px' },
         lg: { min: '1280px' },
+      },
+      zIndex: {
+        5: '5',
       },
       colors: {
         'c-orange': '#ff8800',

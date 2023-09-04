@@ -49,7 +49,7 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
               {discountPrice.toLowerCase() !== 'no price' ? (
                 <>
                   <div className='font-bold text-2xl float-left ml-1 mr-4 text-c-sale-red'>
-                    {discountPrice}
+                    $ {discountPrice}
                   </div>
                   <div className='h-max mt-auto mr-3 opacity-70 text-c-shadow-blue line-through'>
                     ${price}

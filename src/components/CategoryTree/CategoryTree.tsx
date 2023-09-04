@@ -30,11 +30,7 @@ const CategoryTree: FC = () => {
   };
 
   return (
-    <div
-      className={
-        'justify-self-stretch min-w-180px mb-5 p-2 border-r-2 rounded border-c-light-blue'
-      }
-    >
+    <div className='justify-self-stretch min-w-180px mb-5 p-2 border-r-2 m:border-r-0 m:border-b-2 rounded border-c-light-blue'>
       <span className='flex text-lg font-f-open-sans font-bold pb-3'>
         Categories
       </span>
