@@ -156,7 +156,12 @@ const Catalog: FC = () => {
       'value' in newValue &&
       allowedShowItemsValues.includes(newValue.value)
     ) {
+      if (newSearchParams.has('page')) {
+        newSearchParams.delete('page');
+      }
+
       newSearchParams.append('limit', newValue.value);
+      newSearchParams.append('page', '1');
     }
 
     setSearchParams(newSearchParams);
