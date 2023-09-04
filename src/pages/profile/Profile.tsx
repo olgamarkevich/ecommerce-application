@@ -7,6 +7,7 @@ import Details from './Details';
 import Password from './Password';
 import { useAppSelector } from 'hooks/hooks';
 import type { Customer } from '@commercetools/platform-sdk';
+import Title from 'components/Title/Title';
 
 const Profile: FC = () => {
   const customerState = useAppSelector((state) => {
@@ -21,7 +22,7 @@ const Profile: FC = () => {
 
   return (
     <>
-      <h2 className={'mb-10'}>Profile Page</h2>
+      <Title text='Profile Page' size='large' />
 
       <div className={style.wrapper}>
         <Details customer={customer} setCustomerData={setCustomerData} />
