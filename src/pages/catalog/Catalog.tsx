@@ -267,7 +267,7 @@ const Catalog: FC = () => {
                 </div>
                 <div
                   className={
-                    'flex md-xl:flex-col md-xl:justify-center relative justify-between font-f-open-sans text-sm z-10 max-w-90% mx-auto'
+                    'flex md-xl:flex-col md-xl:justify-center relative justify-between font-f-open-sans text-sm z-5 max-w-90% mx-auto'
                   }
                 >
                   <div className='flex items-center gap-2 md-xl:my-4'>
