@@ -272,7 +272,7 @@ const Catalog: FC = () => {
                 </div>
                 <div
                   className={
-                    'flex md-xl:flex-col md-xl:justify-center relative justify-between font-f-open-sans text-sm z-5 max-w-90% mx-auto'
+                    'flex md-xl:flex-col md-xl:justify-center relative justify-between font-f-open-sans text-sm z-5 mx-auto'
                   }
                 >
                   <div className='flex items-center gap-2 md-xl:my-4'>
@@ -285,7 +285,7 @@ const Catalog: FC = () => {
                     <div>Per Page</div>
                   </div>
                   <div>
-                    <div className={'flex gap-2 items-center'}>
+                    <div className={'flex gap-2 items-center mr-10'}>
                       <div>Sort by:</div>
                       <Select
                         options={sortSelectOptions}

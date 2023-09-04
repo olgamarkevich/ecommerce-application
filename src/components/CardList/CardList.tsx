@@ -11,7 +11,7 @@ import {
 const CardList: FC<IProductCardList> = ({ products }) => {
   return (
     <section className='py-5'>
-      <div className=' grid grid-cols-auto gap-3 justify-evenly md:gap-y-3 md-xl:justify-items-center'>
+      <div className=' grid grid-cols-auto gap-y-5 justify-between md:gap-y-3 md-xl:justify-items-center'>
         {products.map((product) => {
           const imgSrcList = getListImgSrc(product);
           const price = getPrice(product);
