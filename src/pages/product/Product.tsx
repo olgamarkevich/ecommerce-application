@@ -1,13 +1,14 @@
-import React from 'react';
-import Loader from '../../components/Loader/Loader';
+import React, { useEffect } from 'react';
 import type { FC } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { useGetProductsQuery } from '../../api/productApi';
 import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
-import { useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import ProductCard from 'components/ProductCard/ProductCard';
+import { setLoadingSet } from '../../store/appSlice';
 
 const Product: FC = () => {
+  const dispatch = useAppDispatch();
   const { productSlug } = useParams();
   const { accessToken } = useAppSelector((state) => {
     return state.auth;
@@ -21,9 +22,15 @@ const Product: FC = () => {
     isLoading,
   } = useGetProductsQuery(params.toString(), { skip: !accessToken.length });
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // Set loading status
+  useEffect(() => {
+    dispatch(
+      setLoadingSet({
+        value: 'productLoadingInCatalog',
+        status: isLoading,
+      }),
+    );
+  }, [dispatch, isLoading]);
 
   if (isError) {
     return (
