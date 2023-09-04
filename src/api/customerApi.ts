@@ -47,6 +47,23 @@ const customerApi = apiClient.injectEndpoints({
           return { method, url, body };
         },
       }),
+
+      updatePassword: build.query<
+        Customer,
+        {
+          id: string | undefined;
+          version: number;
+          currentPassword: string;
+          newPassword: string;
+        }
+      >({
+        query: (body) => {
+          const method = 'POST';
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/me/password`;
+
+          return { method, url, body };
+        },
+      }),
     };
   },
 });
@@ -56,4 +73,5 @@ export const {
   useSignInCustomerQuery,
   useSignUpCustomerQuery,
   useUpdateCustomerQuery,
+  useUpdatePasswordQuery,
 } = customerApi;

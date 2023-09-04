@@ -80,6 +80,7 @@ const useCustomerSignIn = (
         lastName = '',
         dateOfBirth = '',
         addresses = [],
+        email = '',
         billingAddressIds = [],
         shippingAddressIds = [],
       } = customerData.customer;
@@ -91,6 +92,7 @@ const useCustomerSignIn = (
           lastName,
           dateOfBirth,
           addresses,
+          email,
           billingAddressIds,
           shippingAddressIds,
         }),

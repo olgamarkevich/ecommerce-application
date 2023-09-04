@@ -69,19 +69,13 @@ const SignUp: FC = () => {
   useCustomerSignUp(errors, setError);
 
   const onSubmit = (data: FormData) => {
-    const dateOfBirth: string = data.dateOfBirth
-      ? `${String(data.dateOfBirth.getUTCFullYear())}-${String(
-          data.dateOfBirth.getUTCMonth() + 1,
-        )}-${String(data.dateOfBirth.getUTCDate())}`
-      : '';
-
     dispatch(
       setCustomerSignUpData({
         email: data.email.trim(),
         password: data.password,
         firstName: data.firstname.trim(),
         lastName: data.lastname.trim(),
-        dateOfBirth,
+        dateOfBirth: data.dateOfBirth,
         addresses: [
           {
             country: data.country as 'US' | 'DE',

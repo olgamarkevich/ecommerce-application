@@ -145,6 +145,7 @@ const useCustomerSignUp = (
         lastName = '',
         dateOfBirth = '',
         addresses = [],
+        email = '',
         billingAddressIds = [],
         shippingAddressIds = [],
       } = signUpResult.customer;
@@ -156,6 +157,7 @@ const useCustomerSignUp = (
           lastName,
           dateOfBirth,
           addresses,
+          email,
           billingAddressIds,
           shippingAddressIds,
         }),
