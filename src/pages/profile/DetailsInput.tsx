@@ -2,20 +2,22 @@ import React from 'react';
 import type { FC } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import style from './Profile.module.css';
-import type { FormData } from './Details';
+import type { FormData } from './DetailsForm';
 
 interface InputProps {
   fieldId: keyof FormData;
   label: string;
-  register: UseFormRegister<FormData>;
-  editMode: boolean;
+  value?: string;
+  register?: UseFormRegister<FormData>;
+  disabled?: boolean;
   errorText?: string;
   type: string;
 }
 
 const DetailsInput: FC<InputProps> = ({
   label,
-  editMode,
+  disabled,
+  value,
   register,
   fieldId,
   errorText,
@@ -28,8 +30,13 @@ const DetailsInput: FC<InputProps> = ({
       </div>
 
       <div className={style.profile_line_r}>
-        <input type={type} disabled={editMode} {...register(fieldId)} />
-        {!editMode && <p>{errorText}</p>}
+        <input
+          type={type}
+          disabled={disabled}
+          value={value}
+          {...register?.(fieldId)}
+        />
+        {!disabled && <p>{errorText}</p>}
       </div>
     </div>
   );
