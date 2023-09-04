@@ -115,6 +115,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
           modules={[Navigation, Pagination, Zoom, Thumbs]}
+          onClick={activeModal}
           zoom={{ toggle: false }}
           className={`mb-4 ${isModal ? '' : 'cursor-pointer'}`}
         >
