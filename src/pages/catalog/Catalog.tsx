@@ -251,7 +251,7 @@ const Catalog: FC = () => {
         <>
           <div
             className={
-              'mb-4 flex flex-row flex-wrap justify-between gap-4 w-full'
+              'mb-4 px-5 flex flex-row flex-wrap justify-between gap-4 w-full'
             }
           >
             <div className={'basis-300px'}>
@@ -285,7 +285,7 @@ const Catalog: FC = () => {
             </div>
           </div>
           <div className={'flex flex-wrap gap-3'}>
-            <aside className={'basis-180px shrink grow-0'}>
+            <aside className='basis-180px shrink grow-0 px-3'>
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
