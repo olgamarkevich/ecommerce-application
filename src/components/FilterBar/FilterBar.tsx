@@ -175,12 +175,12 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
   };
 
   const clearFiltersHandler = () => {
-    setFiltersOptionsToApply(new URLSearchParams());
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.delete('filter');
     if (minPriceSelectRef) minPriceSelectRef.clearValue();
     if (maxPriceSelectRef) maxPriceSelectRef.clearValue();
     setSearchParams(newSearchParams);
+    setFiltersOptionsToApply(new URLSearchParams());
   };
 
   return (
@@ -282,7 +282,12 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
           <div className={'mt-2'} />
           <ButtonSubmit text={'Apply'} onClick={applyFiltersHandler} />
           <div className={'mb-2'} />
-          <ButtonSubmit text={'Clear'} onClick={clearFiltersHandler} />
+          <ButtonSubmit
+            text={'Clear'}
+            onClick={() => {
+              clearFiltersHandler();
+            }}
+          />
         </div>
       </div>
     </div>
