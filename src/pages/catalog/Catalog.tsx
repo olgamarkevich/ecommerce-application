@@ -289,7 +289,7 @@ const Catalog: FC = () => {
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
-            <main className={'flex flex-col justify-between'}>
+            <main className={'flex flex-col justify-between min-w-0'}>
               <CardList products={products.results} title={'Products'} />
               <ReactPaginate
                 className={'mt-4 flex self-center'}
