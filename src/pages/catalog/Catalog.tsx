@@ -296,7 +296,7 @@ const Catalog: FC = () => {
             </aside>
             <main
               className={
-                'basis-320px shrink-0 grow flex flex-col justify-between min-w-0'
+                'basis-320px shrink-0 grow flex flex-col justify-between min-w-0 px-4'
               }
             >
               <CardList products={products.results} title={'Products'} />

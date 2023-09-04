@@ -3,6 +3,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        auto: 'repeat( auto-fit, minmax(245px, 280px) )',
+      },
       boxShadow: {
         'custom-inner': 'inset 0 0 0 2em green',
       },
@@ -18,6 +21,7 @@ module.exports = {
       maxWidth: {
         '100px': '100px',
         'little-s': '220px',
+        'little-xs': '280px',
         'small-s': '360px',
         'small-xs': '400px',
         'medium-s': '440px',
@@ -30,6 +34,7 @@ module.exports = {
         '100vh': '100vh',
         '100vw': '100vw',
         '70vw': '70vw',
+        '90%': '90%',
         '80%': '80%',
         '60%': '60%',
         '30%': '30%',
@@ -37,9 +42,11 @@ module.exports = {
         24: '6rem' /* 96px */,
       },
       minWidth: {
+        '50px': '50px',
         '180px': '180px',
         '220px': '220px',
-        '50px': '50px',
+        '240px': '240px',
+        '20%': '20%',
       },
       maxHeight: {
         '60vh': '60vh',

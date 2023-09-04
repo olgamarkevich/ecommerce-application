@@ -11,9 +11,9 @@ import {
 
 const CardList: FC<IProductCardList> = ({ products, title }) => {
   return (
-    <section className='py-5 px-4'>
+    <section className='py-5 pl-10'>
       <Title text={title} size='large' />
-      <div className='flex flex-wrap justify-between md:justify-center'>
+      <div className=' grid grid-cols-auto justify-evenly'>
         {products.map((product) => {
           const imgSrcList = getListImgSrc(product);
           const price = getPrice(product);
