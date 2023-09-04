@@ -1,0 +1,22 @@
+.ButtonClose {
+  @apply w-12 h-12 absolute rounded-full z-10 cursor-pointer;
+}
+
+.ButtonClose::before {
+  content: '+';
+  @apply absolute z-20 left-2.5 -top-px rotate-45 text-5xl text-blue-50 transition-all duration-300;
+}
+
+.ButtonClose::after {
+  content: '';
+  transform: scale(0.01);
+  @apply absolute top-0 left-0 z-10 w-full h-full rounded-full bg-c-pink-red transition-all duration-300;
+}
+
+.ButtonClose:hover::after {
+  @apply scale-100
+}
+
+.ButtonClose:hover:before {
+  @apply scale-110 rotate-45 text-blue-100
+}

@@ -9,7 +9,7 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
-  setLoadingStatus,
+  setLoadingSet,
   showTextInfo,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from './hooks';
@@ -48,8 +48,15 @@ const useCustomerSignIn = (
 
   // Set loading status
   useEffect(() => {
-    dispatch(setLoadingStatus(isSignInLoading || isTokenLoading));
-  }, [dispatch, isSignInLoading, isTokenLoading]);
+    dispatch(
+      setLoadingSet({ value: 'signinLoadingInLogin', status: isSignInLoading }),
+    );
+  }, [dispatch, isSignInLoading]);
+  useEffect(() => {
+    dispatch(
+      setLoadingSet({ value: 'tokenLoadingInLogin', status: isTokenLoading }),
+    );
+  }, [dispatch, isTokenLoading]);
 
   // Set error after unsuccessful response
   useEffect(() => {

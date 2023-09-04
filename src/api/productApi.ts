@@ -12,9 +12,17 @@ const productApi = apiClient.injectEndpoints({
           return { url, method };
         },
       }),
+      searchProducts: build.query<ProductProjectionPagedQueryResponse, string>({
+        query: (params) => {
+          const method = 'GET';
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/product-projections/search?${params}`;
+
+          return { url, method };
+        },
+      }),
     };
   },
 });
 
 // Built-in hooks to make request
-export const { useGetProductsQuery } = productApi;
+export const { useGetProductsQuery, useSearchProductsQuery } = productApi;

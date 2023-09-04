@@ -10,7 +10,7 @@ const initialState: AppState = {
   isInitialized: false,
   isAuthorized: false,
   isCustomerLogged: false,
-  isLoading: false,
+  loadingSet: new Set(),
   textInfo: null,
 };
 
@@ -49,8 +49,20 @@ export const appSlice = createSlice({
     setCustomerLoggedState: (state, action: PayloadAction<boolean>) => {
       return { ...state, isCustomerLogged: action.payload };
     },
-    setLoadingStatus: (state, action: PayloadAction<boolean>) => {
-      return { ...state, isLoading: action.payload };
+    setLoadingSet: (
+      state,
+      action: PayloadAction<{ value: string; status: boolean }>,
+    ) => {
+      const { value, status } = action.payload;
+      const loadingSet = new Set(state.loadingSet);
+
+      if (status) {
+        loadingSet.add(value);
+      } else {
+        loadingSet.delete(value);
+      }
+
+      return { ...state, loadingSet };
     },
     setTextInfo: (state, action: PayloadAction<TextInfoState | null>) => {
       return { ...state, textInfo: action.payload };
@@ -62,7 +74,7 @@ export const {
   setInitializationState,
   setAuthorizationState,
   setCustomerLoggedState,
-  setLoadingStatus,
+  setLoadingSet,
   setTextInfo,
 } = appSlice.actions;
 
