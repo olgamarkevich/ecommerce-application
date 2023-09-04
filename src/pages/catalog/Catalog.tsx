@@ -270,7 +270,7 @@ const Catalog: FC = () => {
                 <SearchBar value={getSearchValue()} onSearch={onSearch} />
               </div>
             </div>
-            <div className={'basis-300px'}>
+            <div className={'basis-300px z-10'}>
               <div className={'flex flex-row gap-2 items-center w-full'}>
                 <div className={'w-3/8'}>Sort by:</div>
                 <Select
