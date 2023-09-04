@@ -46,6 +46,10 @@ module.exports = {
         '320px': '320px',
         '20%': '20%',
       },
+      flexBasis: {
+        '320px': '320px',
+        '180px': '180px',
+      },
       paddingLeft: {
         '10px': '10px',
       },

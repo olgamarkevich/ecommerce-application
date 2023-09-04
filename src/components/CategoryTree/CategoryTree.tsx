@@ -30,7 +30,7 @@ const CategoryTree: FC = () => {
   };
 
   return (
-    <div className={'justify-self-stretch min-w-180px mb-5'}>
+    <div className={'justify-self-stretch min-w-180px mb-5 p-2'}>
       <ul>
         Categories
         {categories.map((category) => {
