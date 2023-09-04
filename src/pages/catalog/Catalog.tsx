@@ -11,7 +11,7 @@ import { useSearchProductsQuery } from '../../api/productApi';
 import { useGetCategoriesQuery } from '../../api/categoryApi';
 import { prepareProductAndCategoryQueryParams } from '../../helpers/prepareProductAndCategoryQueryParams';
 import { useAppSelector } from '../../hooks/hooks';
-import ProductCard from '../../components/ProductCard/ProductCard';
+import CardList from 'components/CardList/CardList';
 import type { OnChangeValue } from 'react-select/dist/declarations/src/types';
 import { setLoadingSet } from '../../store/appSlice';
 import { useAppDispatch } from '../../hooks/hooks';
@@ -289,8 +289,8 @@ const Catalog: FC = () => {
               <CategoryTree />
               <FilterBar products={products.results} />
             </aside>
-            <main className={'flex flex-col justify-between'}>
-              <ProductCard products={products.results} title={'Products'} />
+            <main className={'flex flex-col justify-between min-w-0'}>
+              <CardList products={products.results} title={'Products'} />
               <ReactPaginate
                 className={'mt-4 flex self-center'}
                 pageClassName={'hover:scale-110 text-sky-900'}

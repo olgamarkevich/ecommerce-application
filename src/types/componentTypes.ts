@@ -33,10 +33,22 @@ export interface ITitle {
   size: TitleSizes;
 }
 
-export interface IProductCard {
+export interface IProductCardList {
   products: Partial<ProductProjection>[];
   title: string;
 }
+export interface ICard {
+  product: Partial<ProductProjection>;
+  imgSrcList: string[];
+  price: string;
+  discountedPrice: string;
+}
+
+export interface IProductCard {
+  product: Partial<ProductProjection>;
+}
+
+export type AttributeOptionsSet = Record<string, string[]>;
 
 // eslint-disable-next-line autofix/no-unused-vars
 type OnSearch = (searchString: string) => void;

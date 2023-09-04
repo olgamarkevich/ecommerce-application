@@ -28,7 +28,9 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   return (
     <ul
       className={`${style.ul} ${
-        isOpen ? 'md:translate-x-0' : 'md:translate-x-full'
+        isOpen
+          ? 'md:translate-x-0 md:transition-transform duration-300'
+          : 'md:translate-x-full'
       }`}
       onClick={(e: React.MouseEvent) => {
         if (isOpen && e.target === e.currentTarget) {
