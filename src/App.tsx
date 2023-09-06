@@ -8,12 +8,14 @@ import {
 import { Login, Main, Page404, SignUp } from 'pages';
 import Layout from './components/Layout/Layout';
 import useInit from './hooks/useInit';
-import './App.css';
 import Profile from './pages/profile/Profile';
 import Catalog from './pages/catalog/Catalog';
 import Product from './pages/product/Product';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
+import { ToastContainer } from 'react-toastify';
+import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const routes: RouteObject[] = [
   {
@@ -133,7 +135,12 @@ const router = createBrowserRouter(routes);
 function App() {
   useInit();
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 }
 
 export default App;
