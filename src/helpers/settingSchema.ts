@@ -28,15 +28,28 @@ export const email = { email: yup.string().email().required() };
 
 export const isBillingTheSame = { isBillingTheSame: yup.boolean() };
 
+const passwordYup = yup
+  .string()
+  .required()
+  .matches(/^\S.*\S$/, 'must not Contain leading or trailing whitespace')
+  .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
+  .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
+  .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
+  .min(8);
+
 export const password = {
-  password: yup
-    .string()
-    .required()
-    .matches(/^\S.*\S$/, 'must not Contain leading or trailing whitespace')
-    .matches(/^(?=.*[a-z])/, 'must Contain One Lowercase Character')
-    .matches(/^(?=.*[A-Z])/, 'must Contain One Uppercase Character')
-    .matches(/^(?=.*[0-9])/, 'must Contain One Number Character')
-    .min(8),
+  password: passwordYup,
+};
+
+export const newPassword = {
+  newPassword: passwordYup,
+};
+
+export const confirmPassword = {
+  confirmPassword: passwordYup.oneOf(
+    [yup.ref('newPassword')],
+    'Your new password and confirmation password do not match',
+  ),
 };
 
 export const firstname = {
@@ -63,8 +76,8 @@ export const lastname = {
 
 export const dateOfBirth = {
   dateOfBirth: yup
-    .date()
-    .nullable()
+    .string()
+    .required()
     .typeError('date of birth is required')
     .test('DOB', 'you must be at least 13 years', (value) => {
       return dayjs().diff(dayjs(value), 'years') >= 13;

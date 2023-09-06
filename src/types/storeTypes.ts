@@ -12,7 +12,7 @@ export interface AppState {
   isInitialized: boolean;
   isAuthorized: boolean;
   isCustomerLogged: boolean;
-  isLoading: boolean;
+  loadingSet: Set<string>;
   textInfo: TextInfoState | null;
 }
 
@@ -57,4 +57,28 @@ export interface CustomerSignUp {
   isBillingTheSame: boolean;
   isShippingDefault: boolean;
   isBillingDefault: boolean;
+}
+
+export interface IProductItem {
+  id: number;
+  name: string;
+  brand: string;
+  images: string[];
+  category: string;
+  description: string;
+  shortDescription: string;
+  price: number;
+  oldPrice: number;
+}
+
+export interface CategoryTreeSource {
+  id: string;
+  name: string;
+  description: string;
+  slug: string;
+  parentId: string | null;
+  level: number;
+  isActive: boolean;
+  isOpen: boolean;
+  hasChildren: boolean;
 }

@@ -11,7 +11,7 @@ const ProtectedRoute = ({
     return state.app;
   });
 
-  if (isCustomerLogged) {
+  if (!isCustomerLogged) {
     return <Navigate to={'/'} replace={true} />;
   }
 

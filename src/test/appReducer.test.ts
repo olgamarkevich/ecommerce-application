@@ -1,18 +1,21 @@
+import { enableMapSet } from 'immer';
 import reducer, {
   setInitializationState,
   setAuthorizationState,
   setCustomerLoggedState,
-  setLoadingStatus,
+  setLoadingSet,
   setTextInfo,
   showTextInfo,
 } from '../store/appSlice';
 import type { AppState } from '../types/storeTypes';
 
+enableMapSet();
+
 const nullState: AppState = {
   isInitialized: false,
   isAuthorized: false,
   isCustomerLogged: false,
-  isLoading: false,
+  loadingSet: new Set(),
   textInfo: null,
 };
 
@@ -20,7 +23,7 @@ const someState: AppState = {
   isInitialized: true,
   isAuthorized: true,
   isCustomerLogged: true,
-  isLoading: true,
+  loadingSet: new Set(['one']),
   textInfo: { msgText: 'Some text info', isOnView: true },
 };
 
@@ -65,15 +68,19 @@ describe('appReducer should work correctly', () => {
     });
   });
 
-  test('setLoadingStatus should set isInitialized', () => {
-    expect(reducer(nullState, setLoadingStatus(true))).toEqual({
+  test('setLoadingSet should set isInitialized', () => {
+    expect(
+      reducer(nullState, setLoadingSet({ value: 'one', status: true })),
+    ).toEqual({
       ...nullState,
-      isLoading: true,
+      loadingSet: new Set(['one']),
     });
 
-    expect(reducer(someState, setLoadingStatus(false))).toEqual({
+    expect(
+      reducer(someState, setLoadingSet({ value: 'one', status: false })),
+    ).toEqual({
       ...someState,
-      isLoading: false,
+      loadingSet: new Set(),
     });
   });
 

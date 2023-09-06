@@ -9,7 +9,7 @@ import {
   setAuthorizationState,
   setCustomerLoggedState,
   setInitializationState,
-  setLoadingStatus,
+  setLoadingSet,
 } from '../store/appSlice';
 import { getCustomerFromApiResponse } from '../helpers/appHelpers';
 import { setCustomerData } from '../store/customerSlice';
@@ -52,8 +52,18 @@ const useInit = () => {
 
   // Set loading status
   useEffect(() => {
-    dispatch(setLoadingStatus(isTokenLoading || isCustomerLoading));
-  }, [dispatch, isTokenLoading, isCustomerLoading]);
+    dispatch(
+      setLoadingSet({ value: 'tokenLoadingInInit', status: isTokenLoading }),
+    );
+  }, [dispatch, isTokenLoading]);
+  useEffect(() => {
+    dispatch(
+      setLoadingSet({
+        value: 'customerLoadingInInit',
+        status: isCustomerLoading,
+      }),
+    );
+  }, [dispatch, isCustomerLoading]);
 
   // Load customer data from local storage when start App
   useEffect(() => {
@@ -85,6 +95,7 @@ const useInit = () => {
         lastName = '',
         dateOfBirth = '',
         addresses = [],
+        email = '',
         billingAddressIds = [],
         shippingAddressIds = [],
       } = customerData;
@@ -96,6 +107,7 @@ const useInit = () => {
           lastName,
           dateOfBirth,
           addresses,
+          email,
           billingAddressIds,
           shippingAddressIds,
         }),

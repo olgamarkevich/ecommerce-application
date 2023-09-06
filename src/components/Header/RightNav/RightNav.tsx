@@ -28,7 +28,9 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   return (
     <ul
       className={`${style.ul} ${
-        isOpen ? 'md:translate-x-0' : 'md:translate-x-full'
+        isOpen
+          ? 'md:translate-x-0 md:transition-transform duration-300'
+          : 'md:translate-x-full'
       }`}
       onClick={(e: React.MouseEvent) => {
         if (isOpen && e.target === e.currentTarget) {
@@ -36,6 +38,9 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         }
       }}
     >
+      <li className={style.nav__link}>
+        <LinkItem to='/products/all?page=1'>Catalog</LinkItem>
+      </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/login'>log in</LinkItem>
@@ -44,6 +49,11 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItem to='/signup'>sign up</LinkItem>
+        </li>
+      )}
+      {isCustomerLogged && (
+        <li className={style.nav__link}>
+          <LinkItem to='/profile'>Profile</LinkItem>
         </li>
       )}
       {isCustomerLogged && (

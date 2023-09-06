@@ -7,7 +7,7 @@ import { setCustomerToken } from '../store/authSlice';
 import {
   setAuthorizationState,
   setCustomerLoggedState,
-  setLoadingStatus,
+  setLoadingSet,
   showTextInfo,
 } from '../store/appSlice';
 import { clearCustomerSignUpData } from '../store/customerSignUpSlice';
@@ -107,8 +107,21 @@ const useCustomerSignUp = (
 
   // Set loading status
   useEffect(() => {
-    dispatch(setLoadingStatus(isSignUpLoading || isTokenLoading));
-  }, [dispatch, isSignUpLoading, isTokenLoading]);
+    dispatch(
+      setLoadingSet({
+        value: 'signupLoadingInRegistration',
+        status: isSignUpLoading,
+      }),
+    );
+  }, [dispatch, isSignUpLoading]);
+  useEffect(() => {
+    dispatch(
+      setLoadingSet({
+        value: 'tokenLoadingInRegistration',
+        status: isTokenLoading,
+      }),
+    );
+  }, [dispatch, isTokenLoading]);
 
   // Set error after unsuccessful response
   useEffect(() => {
@@ -132,6 +145,7 @@ const useCustomerSignUp = (
         lastName = '',
         dateOfBirth = '',
         addresses = [],
+        email = '',
         billingAddressIds = [],
         shippingAddressIds = [],
       } = signUpResult.customer;
@@ -143,6 +157,7 @@ const useCustomerSignUp = (
           lastName,
           dateOfBirth,
           addresses,
+          email,
           billingAddressIds,
           shippingAddressIds,
         }),
