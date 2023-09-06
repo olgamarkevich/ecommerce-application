@@ -117,7 +117,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
           zoom={{ toggle: false }}
           className={`mb-4 ${
             isModal
-              ? 'modal w-full overflow-y-auto max-h-80vh'
+              ? 'modal w-1/2 md:w-3/4 m:w-full overflow-y-auto max-h-80vh'
               : 'cursor-pointer'
           }`}
         >
