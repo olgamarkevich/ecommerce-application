@@ -17,6 +17,8 @@ module.exports = {
         '50vh': '50vh',
         '70vh': '70vh',
         '80vh': '80vh',
+        '80%': '80%',
+        10: '2.5em',
       },
       maxWidth: {
         '100px': '100px',
@@ -40,6 +42,7 @@ module.exports = {
         '60%': '60%',
         '30%': '30%',
         '20%': '20%',
+        10: '2.5em',
         24: '6rem' /* 96px */,
       },
       minWidth: {
@@ -51,6 +54,7 @@ module.exports = {
       },
       maxHeight: {
         '60vh': '60vh',
+        '80vh': '80vh',
         '320px': '320px',
         '20%': '20%',
       },
