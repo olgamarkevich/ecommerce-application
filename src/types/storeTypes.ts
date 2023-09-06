@@ -1,5 +1,5 @@
 import type { Address, MyCartUpdateAction } from '@commercetools/platform-sdk';
-import { LineItem } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/cart';
+import type { LineItem } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/cart';
 
 export type UserType = 'anonymous' | 'customer' | null;
 export type CustomerId = string | null;
