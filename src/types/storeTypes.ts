@@ -1,4 +1,5 @@
-import type { Address } from '@commercetools/platform-sdk';
+import type { Address, MyCartUpdateAction } from '@commercetools/platform-sdk';
+import { LineItem } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/cart';
 
 export type UserType = 'anonymous' | 'customer' | null;
 export type CustomerId = string | null;
@@ -81,4 +82,17 @@ export interface CategoryTreeSource {
   isActive: boolean;
   isOpen: boolean;
   hasChildren: boolean;
+}
+
+export interface Cart {
+  cartId: string | null | undefined;
+  version: number | undefined;
+  products: LineItem[];
+  totalProductsQuantity: number | undefined;
+  totalPrice: number | undefined;
+  discountCodes: string[];
+}
+
+export interface CartState extends Cart {
+  updateActions: MyCartUpdateAction[];
 }

@@ -14,6 +14,7 @@ import Catalog from './pages/catalog/Catalog';
 import Product from './pages/product/Product';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
+import useCart from './hooks/useCart';
 
 const routes: RouteObject[] = [
   {
@@ -132,6 +133,7 @@ const router = createBrowserRouter(routes);
 
 function App() {
   useInit();
+  useCart();
 
   return <RouterProvider router={router} />;
 }
