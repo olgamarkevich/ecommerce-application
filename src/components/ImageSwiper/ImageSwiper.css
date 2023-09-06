@@ -28,5 +28,6 @@
 }
 
 .modal .swiper-pagination {
-  
+  @apply sticky;
+  bottom: 5%;
 }

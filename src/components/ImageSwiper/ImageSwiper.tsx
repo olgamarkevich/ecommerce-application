@@ -37,7 +37,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
       : maxThumbSlidesPerView;
 
   const handleThumbClick = (index: number) => {
-    if (thumbsSwiper) {
+    if (thumbsSwiper && !isModal) {
       if (index === swiperIndexStart && swiperIndexStart !== 0) {
         thumbsSwiper.slideTo(swiperIndexStart - 1);
         setSwiperIndexStart(swiperIndexStart - 1);
@@ -98,7 +98,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
         }`}
       >
         {isModal && (
-          <ButtonClose onClick={disableModal} className='top-9 right-9' />
+          <ButtonClose onClick={disableModal} className='top-1 right-6' />
         )}
         <Swiper
           navigation={true}
