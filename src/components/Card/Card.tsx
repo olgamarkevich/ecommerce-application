@@ -8,6 +8,7 @@ import { Pagination, Autoplay } from 'swiper';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import CartButton from '../Buttons/CartButton/CartButton';
 
 const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
@@ -35,7 +36,7 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
 
   return (
     <div
-      className='flex w-1/5 min-w-240px rounded-2xl border border-c-sky-green
+      className='pb-1 flex flex-col justify-between w-1/5 min-w-240px rounded-2xl border border-c-sky-green
               transition-all duration-300
               hover:shadow-2xl hover:scale-105'
     >
@@ -87,6 +88,9 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
           </div>
         </div>
       </Link>
+      <div>
+        <CartButton sku={product.masterVariant?.sku || ''} />
+      </div>
     </div>
   );
 };
