@@ -7,9 +7,11 @@ import {
   setAuthorizationState,
   setCustomerLoggedState,
 } from '../../../store/appSlice';
-
 import LinkItem from 'components/LinkItem/LinkItem';
 import style from './RightNav.module.css';
+import LinkItemSVG from 'components/LinkItem/LinkItemSVG/LinkItemSVG';
+import { ReactComponent as ProfileSVG } from '../../../assets/svg/profile.svg';
+import { ReactComponent as LogOutSVG } from '../../../assets/svg/logout.svg';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const dispatch = useAppDispatch();
@@ -53,14 +55,16 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       )}
       {isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/profile'>Profile</LinkItem>
+          <LinkItemSVG to='/profile'>
+            <ProfileSVG />
+          </LinkItemSVG>
         </li>
       )}
       {isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/' onClick={logoutHandler}>
-            log out
-          </LinkItem>
+          <LinkItemSVG to='/' onClick={logoutHandler}>
+            <LogOutSVG />
+          </LinkItemSVG>
         </li>
       )}
     </ul>
