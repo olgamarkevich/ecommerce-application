@@ -59,10 +59,14 @@ const AddressBilling: FC<Props> = ({
   useEffect(() => {
     if (customerData) {
       setCustomerData(customerData);
-      dispatch(showTextInfo('Billing address added'));
+      if (isBilling) {
+        dispatch(showTextInfo('Billing address added'));
+      } else {
+        dispatch(showTextInfo('Billing address removed'));
+      }
       setFormData(defaultFormData);
     }
-  }, [customerData, defaultFormData, dispatch, setCustomerData]);
+  }, [customerData, defaultFormData, dispatch, isBilling, setCustomerData]);
 
   useEffect(() => {
     if (serverError) {

@@ -59,10 +59,15 @@ const AddressShipping: FC<Props> = ({
   useEffect(() => {
     if (customerData) {
       setCustomerData(customerData);
-      dispatch(showTextInfo('Shipping address added'));
+      if (isShipping) {
+        dispatch(showTextInfo('Shipping address added'));
+      } else {
+        dispatch(showTextInfo('Shipping address removed'));
+      }
+
       setFormData(defaultFormData);
     }
-  }, [customerData, defaultFormData, dispatch, setCustomerData]);
+  }, [customerData, defaultFormData, dispatch, isShipping, setCustomerData]);
 
   useEffect(() => {
     if (serverError) {
