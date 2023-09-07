@@ -8,6 +8,7 @@ module.exports = {
       },
       boxShadow: {
         'custom-inner': 'inset 0 0 0 2em green',
+        'custom-invert': 'inset 0 0 0 2em #5d77c7',
       },
       width: {
         '55%': '55%',
@@ -93,6 +94,7 @@ module.exports = {
         'c-kiwi': '#cccccc',
         'c-green-meadow': '#6d9654',
         'c-green-by-loader': '#85c69d',
+        'c-green': '#008000',
         'c-grass': '#df6c4f',
         'c-dry-sand': '#ffe0da',
         'c-alice-blue': '#f0f8ff',

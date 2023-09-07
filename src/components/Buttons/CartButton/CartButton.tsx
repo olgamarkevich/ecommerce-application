@@ -74,6 +74,7 @@ const CartButton: FC<ICartButton> = (props) => {
           { action: 'addLineItem', sku, quantity: quantityToAdd },
         ]),
       );
+      setQuantityToAdd(1);
     }
 
     if (buttonState === 'remove' && productId) {
@@ -105,17 +106,15 @@ const CartButton: FC<ICartButton> = (props) => {
 
   return (
     <div
-      className='cart-button__main-area
-      min-w-[100px] max-w-little-s m-auto
-      flex
-      bg-c-light-blue
-      rounded-full
-      border-solid border-2 border-light-blue
-      font-medium text-c-alice-blue
-      cursor-pointer
-      transition duration-500 ease-in-out
-      hover:shadow-custom-inner hover:text-sky-100
-      '
+      className={`cart-button__main-area min-w-[100px] max-w-little-s flex ${
+        buttonState === 'add' ? 'bg-c-light-blue' : 'bg-c-green'
+      } rounded-full border-solid border-2 ${
+        buttonState === 'add' ? 'border-light-blue' : 'border-green'
+      } font-medium text-c-alice-blue transition duration-500 ease-in-out ${
+        buttonState === 'add'
+          ? 'hover:shadow-custom-inner'
+          : 'hover:shadow-custom-invert'
+      } hover:text-sky-100 cursor-pointer`}
       onClick={(e) => {
         mainButtonHandler(e, sku, productId);
       }}
@@ -129,11 +128,15 @@ const CartButton: FC<ICartButton> = (props) => {
         '
       >
         <button
-          className='
+          className={`
           px-2 rounded-s-full
           transition duration-500 ease-in-out
-          hover:shadow-custom-inner hover:text-sky-100
-          '
+          ${
+            buttonState === 'add'
+              ? 'hover:shadow-custom-inner'
+              : 'hover:shadow-custom-invert'
+          } hover:text-sky-100
+          `}
           disabled={minusButtonDisabled}
           onClick={() => {
             minusButtonHandler(productId);
@@ -151,11 +154,15 @@ const CartButton: FC<ICartButton> = (props) => {
           {buttonState === 'remove' && quantityInCart}
         </div>
         <button
-          className='
-          px-2 rounded-e-full
-          transition duration-500 ease-in-out
-          hover:shadow-custom-inner hover:text-sky-100
-          '
+          className={`
+            px-2 rounded-e-full
+            transition duration-500 ease-in-out
+            ${
+              buttonState === 'add'
+                ? 'hover:shadow-custom-inner'
+                : 'hover:shadow-custom-invert'
+            } hover:text-sky-100
+            `}
           disabled={plusButtonDisabled}
           onClick={() => {
             plusButtonHandler(sku);
