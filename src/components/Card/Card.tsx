@@ -88,7 +88,7 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
           </div>
         </div>
       </Link>
-      <div className={'m-auto'}>
+      <div className={'mx-auto'}>
         <CartButton sku={product.masterVariant?.sku || ''} />
       </div>
     </div>
