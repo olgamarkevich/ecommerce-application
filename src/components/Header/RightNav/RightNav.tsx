@@ -12,6 +12,7 @@ import style from './RightNav.module.css';
 import LinkItemSVG from 'components/LinkItem/LinkItemSVG/LinkItemSVG';
 import { ReactComponent as ProfileSVG } from '../../../assets/svg/profile.svg';
 import { ReactComponent as LogOutSVG } from '../../../assets/svg/logout.svg';
+import Basket from 'components/Basket/Basket';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const dispatch = useAppDispatch();
@@ -67,6 +68,11 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
           </LinkItemSVG>
         </li>
       )}
+      <li className={style.nav__link}>
+        <LinkItemSVG to='/shopping-cart/'>
+          <Basket />
+        </LinkItemSVG>
+      </li>
     </ul>
   );
 };

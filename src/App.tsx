@@ -11,6 +11,7 @@ import useInit from './hooks/useInit';
 import Profile from './pages/profile/Profile';
 import Catalog from './pages/catalog/Catalog';
 import Product from './pages/product/Product';
+import ShoppingCart from './pages/shoppingCart/ShoppingCart';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
@@ -114,6 +115,15 @@ const routes: RouteObject[] = [
         handle: {
           crumb: () => {
             return <Link to={'/signup'}>Sign Up</Link>;
+          },
+        },
+      },
+      {
+        path: 'shopping-cart',
+        element: <ShoppingCart />,
+        handle: {
+          crumb: () => {
+            return <Link to={'/shopping-cart'}>shopping cart</Link>;
           },
         },
       },
