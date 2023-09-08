@@ -90,7 +90,9 @@ const AttributesForm: FC<AttributesFormProps> = (props) => {
               className='flex flex-col text-start font-f-open-sans'
             >
               <span className='w-full my-3 text-blue-950'>
-                {attributeName} : {options[defaultValueIndex].value}
+                <span className='capitalize'>{attributeName}</span>
+                {': '}
+                {options[defaultValueIndex].value}
               </span>
               <Select
                 options={options}

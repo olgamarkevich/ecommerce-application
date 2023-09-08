@@ -9,16 +9,17 @@ import {
   getAttributeOptions,
   getVariantToShow,
   getSale,
+  getProductSku,
 } from 'helpers/settingProduct';
 import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
 import ProductDescription from 'components/ProductDescription/ProductDescription';
 import { useSearchParams } from 'react-router-dom';
 import AttributesForm from './AttributesForm/AttributesForm';
+import CartButton from '../Buttons/CartButton/CartButton';
 
 const ProductCard: FC<IProductCard> = ({ product }) => {
   const [searchParams] = useSearchParams();
   const attributeOptions = getAttributeOptions(product);
-
   const { index: variantToShowIndex, options: chosenOptions } =
     getVariantToShow(product, attributeOptions, searchParams);
   const imgList = getListImgSrc(product);
@@ -26,6 +27,7 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
   const discountPrice = getDiscountedPrice(product, variantToShowIndex);
   const sale = getSale(price, discountPrice);
   const vendor = getVendor(product.masterVariant);
+  const sku = getProductSku(product, variantToShowIndex);
 
   return (
     <section>
@@ -65,7 +67,7 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
                   !sale ? 'bg-c-light-blue' : 'bg-c-sale-red'
                 } rounded`}
               >
-                {sale ? `SAVE ${sale}` : 'SOLD OUT'}
+                {sale ? `SAVE ${sale}` : ''}
               </div>
             </div>
             <div className='my-2'>
@@ -74,6 +76,9 @@ const ProductCard: FC<IProductCard> = ({ product }) => {
                 chosenOptions={chosenOptions}
                 variantIndex={variantToShowIndex}
               />
+            </div>
+            <div>
+              <CartButton sku={sku} />
             </div>
             <div className='mt-10'>
               <ProductDescription description={product.description?.en} />
