@@ -1,5 +1,6 @@
 import type { Cart as ApiCart } from '@commercetools/platform-sdk';
 import type { Cart as StoreCart } from '../types/storeTypes';
+import type { LineItem } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/cart';
 
 export const getCartFromResponse = (response: ApiCart): StoreCart => {
   const {
@@ -25,4 +26,26 @@ export const getCartFromResponse = (response: ApiCart): StoreCart => {
     totalPrice: centAmount,
     discountCodes,
   };
+};
+
+export const getProductIdFromCart = (
+  sku: string,
+  productsInCart: LineItem[],
+): string | null => {
+  const matchingVariant = productsInCart.find((product) => {
+    return product.variant.sku === sku;
+  });
+
+  return matchingVariant ? matchingVariant.id : null;
+};
+
+export const getProductQuantityFromCart = (
+  sku: string,
+  productsInCart: LineItem[],
+): number => {
+  const matchingVariant = productsInCart.find((product) => {
+    return product.variant.sku === sku;
+  });
+
+  return matchingVariant ? matchingVariant.quantity : 0;
 };

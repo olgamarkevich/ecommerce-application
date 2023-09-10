@@ -101,7 +101,6 @@ const useCart = () => {
   }, [dispatch, isCreateCartLoading]);
 
   useEffect(() => {
-    console.log(isCartUpdateLoading);
     dispatch(
       setLoadingSet({
         value: 'cartUpdateLoadingInCart',
