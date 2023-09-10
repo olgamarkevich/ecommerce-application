@@ -15,6 +15,7 @@ import Product from './pages/product/Product';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
 import useCart from './hooks/useCart';
+import Cart from './pages/cart/Cart';
 
 const routes: RouteObject[] = [
   {
@@ -74,6 +75,15 @@ const routes: RouteObject[] = [
                   : 'Product'}
               </Link>
             );
+          },
+        },
+      },
+      {
+        path: 'cart',
+        element: <Cart />,
+        handle: {
+          crumb: () => {
+            return <Link to={'/cart'}>Shopping Cart</Link>;
           },
         },
       },
