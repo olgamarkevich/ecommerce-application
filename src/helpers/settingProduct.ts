@@ -28,6 +28,24 @@ export const getListImgSrc = (product: Product) => {
   return [`/store/productImages/abb_1.jpg`];
 };
 
+export const getProductSku = (
+  product: Product,
+  variantIndex?: number,
+): string => {
+  if (
+    variantIndex &&
+    variantIndex > 0 &&
+    product.variants &&
+    variantIndex - 1 < product.variants.length &&
+    product.variants[variantIndex - 1] &&
+    product.variants[variantIndex - 1].sku !== undefined
+  ) {
+    return product.variants[variantIndex - 1].sku ?? '';
+  }
+
+  return product.masterVariant?.sku ?? '';
+};
+
 export const getPrice = (product: Product, variantIndex?: number) => {
   const masterVariantPrice =
     product.masterVariant &&
