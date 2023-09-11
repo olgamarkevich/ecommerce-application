@@ -17,6 +17,7 @@ import ProtectedRoute from './hoc/ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import useCart from './hooks/useCart';
 
 const routes: RouteObject[] = [
   {
@@ -144,6 +145,7 @@ const router = createBrowserRouter(routes);
 
 function App() {
   useInit();
+  useCart();
 
   return (
     <>

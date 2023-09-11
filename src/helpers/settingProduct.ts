@@ -1,4 +1,5 @@
 import type {
+  Attribute,
   ProductProjection,
   ProductVariant,
 } from '@commercetools/platform-sdk';
@@ -25,6 +26,24 @@ export const getListImgSrc = (product: Product) => {
       return `/store/productImages/${img.url}`;
     });
   return [`/store/productImages/abb_1.jpg`];
+};
+
+export const getProductSku = (
+  product: Product,
+  variantIndex?: number,
+): string => {
+  if (
+    variantIndex &&
+    variantIndex > 0 &&
+    product.variants &&
+    variantIndex - 1 < product.variants.length &&
+    product.variants[variantIndex - 1] &&
+    product.variants[variantIndex - 1].sku !== undefined
+  ) {
+    return product.variants[variantIndex - 1].sku ?? '';
+  }
+
+  return product.masterVariant?.sku ?? '';
 };
 
 export const getPrice = (product: Product, variantIndex?: number) => {
@@ -207,4 +226,48 @@ export const getVariantToShow = (
     : -1;
 
   return { index: index + 1, options: params };
+};
+
+const getProductVariantAttributes = (
+  product: Partial<ProductProjection>,
+  sku: string,
+): Attribute[] => {
+  if (
+    product.masterVariant &&
+    product.masterVariant.sku === sku &&
+    product.masterVariant.attributes
+  ) {
+    return product.masterVariant.attributes;
+  }
+
+  if (product.variants && product.variants.length) {
+    const variant = product.variants.find((variant) => {
+      return variant.sku === sku;
+    });
+
+    return variant && variant.attributes ? variant.attributes : [];
+  }
+
+  return [];
+};
+
+export const getAttributesBySku = (
+  product: Partial<ProductProjection>,
+  sku: string,
+): Record<string, string>[] | null => {
+  const variantAttributes = getProductVariantAttributes(product, sku).filter(
+    (attribute) => {
+      return attribute.name !== 'vendor';
+    },
+  );
+
+  if (variantAttributes.length === 0) return null;
+
+  return variantAttributes.map((attribute) => {
+    const { name, value } = attribute;
+
+    return value !== null && typeof value === 'object'
+      ? { [name]: value.en as string }
+      : { [name]: String(value) };
+  });
 };
