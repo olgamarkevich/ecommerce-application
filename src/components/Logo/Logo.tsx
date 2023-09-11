@@ -8,7 +8,7 @@ const LogoLink: FC<Pick<ILinkItem, 'to'>> = ({ to }) => {
   return (
     <NavLink
       to={to}
-      className={`flex justify-center items-center 
+      className={`flex justify-center items-end
       bg-gradient-to-r from-blue-800 to-c-pink-red
       bg-clip-text text-transparent text-xl`}
     >
