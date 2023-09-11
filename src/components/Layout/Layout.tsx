@@ -5,6 +5,8 @@ import Loader from '../Loader/Loader';
 import PopUp from '../PopUp/PopUp';
 import { useAppSelector } from '../../hooks/hooks';
 import Breadcrumbs from '../Breadcrumbs/Breadcrumbs';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Layout: FC = () => {
   const { loadingSet, textInfo } = useAppSelector((state) => {
@@ -21,6 +23,7 @@ const Layout: FC = () => {
           <PopUp text={textInfo.msgText} isOnView={textInfo.isOnView} />
         )}
         <Outlet />
+        <ToastContainer />
       </div>
     </div>
   );

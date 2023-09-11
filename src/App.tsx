@@ -14,10 +14,8 @@ import Product from './pages/product/Product';
 import ShoppingCart from './pages/shoppingCart/ShoppingCart';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
-import { ToastContainer } from 'react-toastify';
 import useCart from './hooks/useCart';
 import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 const routes: RouteObject[] = [
   {
@@ -150,7 +148,6 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
-      <ToastContainer />
     </>
   );
 }
