@@ -15,9 +15,9 @@ import ShoppingCart from './pages/shoppingCart/ShoppingCart';
 import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
 import { ToastContainer } from 'react-toastify';
+import useCart from './hooks/useCart';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-import useCart from './hooks/useCart';
 
 const routes: RouteObject[] = [
   {

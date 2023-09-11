@@ -10,9 +10,11 @@ import {
 import LinkItem from 'components/LinkItem/LinkItem';
 import style from './RightNav.module.css';
 import LinkItemSVG from 'components/LinkItem/LinkItemSVG/LinkItemSVG';
+import Basket from 'components/Basket/Basket';
 import { ReactComponent as ProfileSVG } from '../../../assets/svg/profile.svg';
 import { ReactComponent as LogOutSVG } from '../../../assets/svg/logout.svg';
-import Basket from 'components/Basket/Basket';
+import { ReactComponent as SignUpSVG } from '../../../assets/svg/sign-up.svg';
+import { ReactComponent as LoginSVG } from '../../../assets/svg/login.svg';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const dispatch = useAppDispatch();
@@ -46,12 +48,16 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/login'>log in</LinkItem>
+          <LinkItemSVG to='/login'>
+            <LoginSVG />
+          </LinkItemSVG>
         </li>
       )}
       {!isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/signup'>sign up</LinkItem>
+          <LinkItemSVG to='/signup'>
+            <SignUpSVG />
+          </LinkItemSVG>
         </li>
       )}
       {isCustomerLogged && (
