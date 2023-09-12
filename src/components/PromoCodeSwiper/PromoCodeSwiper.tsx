@@ -3,8 +3,11 @@ import type { FC } from 'react';
 import style from './PromoCodeSwiper.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper';
+import { showTextInfo } from 'store/appSlice';
+import { useAppDispatch } from 'hooks/hooks';
 
 const PromoCodeSwiper: FC = () => {
+  const dispatch = useAppDispatch();
   return (
     <Swiper
       spaceBetween={10}
@@ -20,7 +23,15 @@ const PromoCodeSwiper: FC = () => {
         <div className={`${style.promo_slide} ${style.slide_1}`}>
           <div className={style.promo_wrapper}>
             <div className={style.promo_label}>20% off your first order</div>
-            <div className={style.promo_code}>First20</div>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('First20');
+                dispatch(showTextInfo('First20 copied to clipboard'));
+              }}
+              className={style.promo_code}
+            >
+              First20
+            </button>
           </div>
         </div>
       </SwiperSlide>
@@ -31,7 +42,15 @@ const PromoCodeSwiper: FC = () => {
               10% off
               <br /> any order
             </div>
-            <div className={style.promo_code}>Sale10</div>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('Sale10');
+                dispatch(showTextInfo('Sale10 copied to clipboard'));
+              }}
+              className={style.promo_code}
+            >
+              Sale10
+            </button>
           </div>
         </div>
       </SwiperSlide>
@@ -39,7 +58,15 @@ const PromoCodeSwiper: FC = () => {
         <div className={`${style.promo_slide} ${style.slide_3}`}>
           <div className={style.promo_wrapper}>
             <div className={style.promo_label}>today 15% discount on cart</div>
-            <div className={style.promo_code}>Happy15</div>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('Happy15');
+                dispatch(showTextInfo('Happy15 copied to clipboard'));
+              }}
+              className={style.promo_code}
+            >
+              Happy15
+            </button>
           </div>
         </div>
       </SwiperSlide>
