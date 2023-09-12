@@ -9,7 +9,7 @@ const LogoLink: FC<Pick<ILinkItem, 'to'>> = ({ to }) => {
     <NavLink
       to={to}
       className={`flex justify-center items-end
-      bg-gradient-to-r from-blue-800 to-c-pink-red
+      bg-gradient-to-r from-blue-800 to-c-pink-red pb-2
       bg-clip-text text-transparent text-xl hover:scale-110 transition-transform duration-300`}
     >
       <Logo />
