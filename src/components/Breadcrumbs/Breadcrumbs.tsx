@@ -27,16 +27,14 @@ const Breadcrumbs: FC = () => {
     <ul className={'flex items-center my-2 px-3 text-xs text-blue-950'}>
       {crumbs.map((crumb, index) => {
         return (
-          <>
-            <li
-              key={index}
-              className={`breadcrumbs-li ${
-                index === crumbs.length - 1 ? '' : 'breadcrumbs-split-line'
-              }`}
-            >
-              {crumb}
-            </li>
-          </>
+          <li
+            key={index}
+            className={`breadcrumbs-li ${
+              index === crumbs.length - 1 ? '' : 'breadcrumbs-split-line'
+            }`}
+          >
+            {crumb}
+          </li>
         );
       })}
     </ul>
