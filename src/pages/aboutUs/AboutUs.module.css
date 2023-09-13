@@ -1,0 +1,17 @@
+.aboutUs_wrapper {
+  display: flex;
+  margin: 0 -15px;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.aboutUs_wrapper .col {
+  width: 33.3%;
+  padding: 0 15px;
+}
+
+.about_us_item {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
