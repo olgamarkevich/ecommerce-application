@@ -14,6 +14,19 @@
   @apply opacity-60 max-w-20% h-max;
 }
 
+.swiperThumb .modal-swiper-slide {
+  @apply max-w-max;
+}
+
 .swiperThumb .swiper-slide-thumb-active {
   @apply opacity-100 border-2 border-blue-950 rounded;
+}
+
+.modal .swiper-button-prev::after,
+.modal .swiper-button-next::after {
+  @apply fixed;
+}
+
+.modal .swiper-pagination {
+  @apply hidden;
 }

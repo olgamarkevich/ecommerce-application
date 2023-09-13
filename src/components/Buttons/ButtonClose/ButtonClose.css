@@ -1,5 +1,5 @@
 .ButtonClose {
-  @apply w-12 h-12 absolute rounded-full z-10 cursor-pointer;
+  @apply w-12 h-12 fixed rounded-full z-10 cursor-pointer;
 }
 
 .ButtonClose::before {

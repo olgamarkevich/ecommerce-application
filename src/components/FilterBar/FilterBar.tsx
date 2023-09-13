@@ -206,16 +206,14 @@ const FilterBar: FC<{ products: ProductProjection[] }> = (props) => {
             isFiltersShown ? 'scale-y-100 h-auto' : 'scale-y-0 h-0'
           } transition-all duration-75 origin-top`}
         >
-          <div
-            className='filter_option'
-            onClick={() => {
-              setIsPriceFilterShown(!isPriceFilterShown);
-            }}
-          >
+          <div className='filter_option relative z-5'>
             <div
               className={
                 'flex p-2 justify-between items-center w-full cursor-pointer hover:scale-105'
               }
+              onClick={() => {
+                setIsPriceFilterShown(!isPriceFilterShown);
+              }}
             >
               <h4>By price</h4>
               <div
