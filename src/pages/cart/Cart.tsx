@@ -1,4 +1,4 @@
-import React, { type FC, useState } from 'react';
+import React, { type FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Select from 'react-select';
 import Title from 'components/Title/Title';
@@ -18,11 +18,10 @@ const shippingOptions = [
 
 const Cart: FC = () => {
   const dispatch = useAppDispatch();
-  const { products, totalProductsQuantity, totalPrice } = useAppSelector(
-    (state) => {
+  const { products, totalProductsQuantity, totalPrice, discountCodes } =
+    useAppSelector((state) => {
       return state.cart;
-    },
-  );
+    });
   const [shippingCost, setShippingCost] = useState<number>(0);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -50,6 +49,22 @@ const Cart: FC = () => {
   const closeModalHandler = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    if (products.length === 0 && discountCodes.length > 0) {
+      const actions = discountCodes.map((id): MyCartUpdateAction => {
+        return {
+          action: 'removeDiscountCode',
+          discountCode: {
+            typeId: 'discount-code',
+            id,
+          },
+        };
+      });
+
+      dispatch(addUpdateActions(actions));
+    }
+  }, [products, discountCodes]);
 
   return (
     <div className={'flex flex-wrap'}>
