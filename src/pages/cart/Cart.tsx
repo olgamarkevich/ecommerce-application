@@ -2,6 +2,7 @@ import React, { type FC, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Select from 'react-select';
 import Title from 'components/Title/Title';
+import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import CartItemRow from 'components/CartItemRow/CartItemRow';
 import CartDiscountCode from 'components/CartDiscountCode/CartDiscountCode';
 import { getCostString } from '../../helpers/componentsHelpers';
@@ -23,6 +24,7 @@ const Cart: FC = () => {
     },
   );
   const [shippingCost, setShippingCost] = useState<number>(0);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const totalWithoutCode = products.reduce((acc, product) => {
     if (product.price.discounted) {
@@ -38,6 +40,15 @@ const Cart: FC = () => {
     });
 
     dispatch(addUpdateActions(actions));
+    setIsModalOpen(false);
+  };
+
+  const openModalHandler = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModalHandler = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -85,7 +96,7 @@ const Cart: FC = () => {
                 'opacity-70 hover:opacity-100 hover:text-c-pink-red hover:font-bold transition-all cursor-pointer'
               }
               onClick={() => {
-                clearCartHandler(products);
+                openModalHandler();
               }}
             >
               Clear Cart
@@ -151,6 +162,37 @@ const Cart: FC = () => {
                   ? `$${getCostString(totalPrice + shippingCost)}`
                   : ''}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {isModalOpen && (
+        <div
+          className={
+            'fixed top-0 left-0 right-0 bottom-0 w-full h-screen overflow-hidden z-50 flex items-center justify-center backdrop-blur-sm'
+          }
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeModalHandler();
+          }}
+        >
+          <div className={'max-w-little-xs bg-c-alice-blue rounded-md'}>
+            <h3 className={'p-2 text-c-pink-red font-bold'}>
+              All items will be removed from your shopping Cart.
+            </h3>
+            <h3 className={'p-2 text-c-light-blue font-bold'}>Are you sure?</h3>
+            <div className={'p-4 flex justify-around'}>
+              <ButtonSubmit
+                text={'Confirm'}
+                onClick={() => {
+                  clearCartHandler(products);
+                }}
+              />
+              <ButtonSubmit
+                text={'Cancel'}
+                onClick={() => {
+                  closeModalHandler();
+                }}
+              />
             </div>
           </div>
         </div>
