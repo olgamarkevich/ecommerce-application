@@ -1,5 +1,6 @@
 import React, { type FC } from 'react';
 import { useMatches } from 'react-router-dom';
+import './Breadcrumbs.css';
 
 const Breadcrumbs: FC = () => {
   const matches = useMatches();
@@ -23,12 +24,16 @@ const Breadcrumbs: FC = () => {
     });
 
   return (
-    <ul className={'flex my-2 px-3 text-xs text-blue-950'}>
+    <ul className={'flex items-center my-2 px-3 text-xs text-blue-950'}>
       {crumbs.map((crumb, index) => {
         return (
-          <li key={index}>
+          <li
+            key={index}
+            className={`breadcrumbs-li ${
+              index === crumbs.length - 1 ? '' : 'breadcrumbs-split-line'
+            }`}
+          >
             {crumb}
-            {index === crumbs.length - 1 ? '' : ' \u21D2'}
           </li>
         );
       })}

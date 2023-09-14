@@ -7,9 +7,14 @@ import {
   setAuthorizationState,
   setCustomerLoggedState,
 } from '../../../store/appSlice';
-
 import LinkItem from 'components/LinkItem/LinkItem';
 import style from './RightNav.module.css';
+import LinkItemSVG from 'components/LinkItem/LinkItemSVG/LinkItemSVG';
+import Basket from 'components/Basket/Basket';
+import { ReactComponent as ProfileSVG } from '../../../assets/svg/profile.svg';
+import { ReactComponent as LogOutSVG } from '../../../assets/svg/logout.svg';
+import { ReactComponent as SignUpSVG } from '../../../assets/svg/sign-up.svg';
+import { ReactComponent as LoginSVG } from '../../../assets/svg/login.svg';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const dispatch = useAppDispatch();
@@ -46,26 +51,37 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/login'>log in</LinkItem>
+          <LinkItemSVG to='/login'>
+            <LoginSVG />
+          </LinkItemSVG>
         </li>
       )}
       {!isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/signup'>sign up</LinkItem>
+          <LinkItemSVG to='/signup'>
+            <SignUpSVG />
+          </LinkItemSVG>
         </li>
       )}
       {isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/profile'>Profile</LinkItem>
+          <LinkItemSVG to='/profile'>
+            <ProfileSVG />
+          </LinkItemSVG>
         </li>
       )}
       {isCustomerLogged && (
         <li className={style.nav__link}>
-          <LinkItem to='/' onClick={logoutHandler}>
-            log out
-          </LinkItem>
+          <LinkItemSVG to='/' onClick={logoutHandler}>
+            <LogOutSVG />
+          </LinkItemSVG>
         </li>
       )}
+      <li className={style.nav__link}>
+        <LinkItemSVG to='/shopping-cart/'>
+          <Basket />
+        </LinkItemSVG>
+      </li>
     </ul>
   );
 };

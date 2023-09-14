@@ -13,7 +13,7 @@ const Header: FC = () => {
         {' '}
         <LogoLink to='/' />
       </div>
-      <div className={style.header__left}>
+      <div className='p-2'>
         <nav className={style.nav}>
           <BurgerMenu />
         </nav>
