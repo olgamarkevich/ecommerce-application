@@ -46,9 +46,6 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
       <li className={style.nav__link}>
         <LinkItem to='/products/all?page=1'>Catalog</LinkItem>
       </li>
-      <li className={style.nav__link}>
-        <LinkItem to='/cart'>Cart</LinkItem>
-      </li>
       {!isCustomerLogged && (
         <li className={style.nav__link}>
           <LinkItemSVG to='/login'>
@@ -78,7 +75,7 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         </li>
       )}
       <li className={style.nav__link}>
-        <LinkItemSVG to='/shopping-cart/'>
+        <LinkItemSVG to='/cart'>
           <Basket />
         </LinkItemSVG>
       </li>
