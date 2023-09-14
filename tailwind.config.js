@@ -23,6 +23,7 @@ module.exports = {
       },
       maxWidth: {
         '100px': '100px',
+        '240px': '240px',
         'little-s': '220px',
         'little-xs': '280px',
         'small-s': '360px',
@@ -60,7 +61,9 @@ module.exports = {
         '20%': '20%',
       },
       flexBasis: {
+        '768px': '768px',
         '320px': '320px',
+        '240px': '240px',
         '180px': '180px',
       },
       paddingLeft: {
@@ -80,6 +83,7 @@ module.exports = {
         md: { max: '768px' },
         'md-min': { min: '640px' },
         'md-xl': { max: '916px' } /* max: 916px */,
+        l: { max: '1088px' },
         xl: { min: '768px', max: '1280px' },
         lg: { min: '1280px' },
       },
@@ -102,6 +106,8 @@ module.exports = {
         'c-grass': '#df6c4f',
         'c-dry-sand': '#ffe0da',
         'c-alice-blue': '#f0f8ff',
+        'c-light-grey': '#cccccc',
+        'c-dark-grey': '#999999',
         'c-shadow-blue': '#2c343f',
         'c-shadow': '#2c2a2a',
         'c-sale-red': '#d55016',
