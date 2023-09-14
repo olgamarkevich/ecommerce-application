@@ -1,0 +1,49 @@
+.form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  @apply text-blue-950
+}
+
+.form_line {
+  margin-bottom: 10px;
+}
+
+.form {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.form button:hover {
+  opacity: 0.7;
+}
+
+.form p {
+  font-size: 12px;
+  text-align: left;
+  margin-top: 5px;
+  color: brown;
+}
+
+.passwordHide_line {
+  position: relative;
+}
+
+.hidePassword {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  cursor: pointer;
+}
+
+.password {
+  background: url(./img/show-icon.svg) center center no-repeat;
+  background-size: 20px;
+}
+
+.text {
+  background: url(./img/hide-icon.svg) center center no-repeat;
+  background-size: 20px;
+}

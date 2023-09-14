@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Open-Sans';
+  src: url('./assets/fonts/OpenSans-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('./assets/fonts/Rubik-Regular.ttf') format('trueType');
+}
+
+body {
+  margin: 0;
+  font-family: 'Rubik', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-sky-50;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+svg {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  @apply text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2;
+}
+
+.input {
+  @apply border border-blue-900 rounded w-full py-2 px-3 text-gray-700  focus:outline-none bg-sky-100;
+}
+
+.input:selected {
+  background-color: #fff;
+  font-size: 14px;
+}
+
+.label {
+  @apply block text-sm font-medium text-slate-700;
+}
+
+.select {
+  @apply border border-blue-900 rounded w-full py-3 px-2 bg-sky-100	 text-gray-700 focus:border-gray-500 focus:outline-none w-full p-2.5;
+}
+
+.input[aria-invalid='true'],
+.select[aria-invalid='true'] {
+  @apply border-red-500;
+  filter: drop-shadow(0px 0px 2px theme('colors.c-pink-red'));
+}
+
+.checkbox {
+  @apply my-1 w-4 h-4 text-blue-600 bg-gray-100 text-gray-700 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+}
+
+.checkbox + label {
+  @apply ml-2  text-sm font-medium text-slate-700;
+  margin-top: 2px;
+}
+
+.checkbox-line {
+  margin-bottom: 20px;
+}
+
+.form_links {
+  margin: 30px 0 0 0;
+  font-size: 14px;
+}
+
+.form_links a {
+  text-decoration: none;
+  color: blue;
+}
