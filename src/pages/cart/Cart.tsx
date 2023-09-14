@@ -6,7 +6,7 @@ import ButtonSubmit from 'components/Buttons/ButtonSubmit/ButtonSubmit';
 import CartItemRow from 'components/CartItemRow/CartItemRow';
 import CartDiscountCode from 'components/CartDiscountCode/CartDiscountCode';
 import { getCostString } from '../../helpers/componentsHelpers';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { LineItem } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/cart';
 import { addUpdateActions } from '../../store/cartSlice';
 import type { MyCartUpdateAction } from '@commercetools/platform-sdk';
@@ -18,6 +18,7 @@ const shippingOptions = [
 
 const Cart: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { products, totalProductsQuantity, totalPrice, discountCodes } =
     useAppSelector((state) => {
       return state.cart;
@@ -170,12 +171,26 @@ const Cart: FC = () => {
                 />
               </div>
             </div>
-            <div className={'mx-auto my-5 basis-240px flex justify-between'}>
-              <div>Total:</div>
+            <div
+              className={
+                'mx-auto my-5 basis-240px flex flex-col justify-between gap-y-7'
+              }
+            >
+              <div className={'flex justify-between'}>
+                <div>Total:</div>
+                <div>
+                  {totalPrice
+                    ? `$${getCostString(totalPrice + shippingCost)}`
+                    : ''}
+                </div>
+              </div>
               <div>
-                {totalPrice
-                  ? `$${getCostString(totalPrice + shippingCost)}`
-                  : ''}
+                <ButtonSubmit
+                  text={'Checkout'}
+                  onClick={() => {
+                    navigate('/checkout');
+                  }}
+                />
               </div>
             </div>
           </div>
