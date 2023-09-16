@@ -3,15 +3,9 @@ ul li:not(:last-child) {
 }
 
 .ul {
-  @apply flex items-center p-0 m-0;
+  @apply flex flex-col fixed items-start top-0 left-0 h-screen w-60 pt-16 px-5 bg-violet-300 bg-opacity-95 z-10 transition-transform duration-300;
 }
 
-@media (max-width: 768px) {
-  .ul {
-    @apply flex flex-col fixed items-start top-0 right-0 h-screen w-60 pt-16 px-5 bg-c-green-by-loader bg-opacity-95 z-10;
-  }
-
-  .nav__link {
-    @apply w-full mx-auto mb-1 !important;
-  }
+.nav__link {
+  @apply w-full mx-auto mb-1 !important;
 }
