@@ -2,7 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 import LinkItem from 'components/LinkItem/LinkItem';
 import style from './RightNav.module.css';
-import LinkButtons from '../LinkButtons/LinkButtons';
+import LinkButtons from '../LinkIconButtons/LinkIconButtons';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
   return (
@@ -16,9 +16,11 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         }
       }}
     >
-      <LinkButtons className='md-min:hidden' />
+      <LinkButtons className='right-nav md-min:hidden justify-around w-full mb-2' />
       <li className={style.nav__link}>
-        <LinkItem to='/products/all?page=1'>Catalog</LinkItem>
+        <LinkItem to='/products/all?page=1' className='bg-sky-100'>
+          Catalog
+        </LinkItem>
       </li>
     </ul>
   );

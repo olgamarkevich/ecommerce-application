@@ -19,6 +19,7 @@ export interface ILinkItem {
   to: string;
   children: React.ReactNode;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
+  className?: string;
 }
 
 export interface IButton {

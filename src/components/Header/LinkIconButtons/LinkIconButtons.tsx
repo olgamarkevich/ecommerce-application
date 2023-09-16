@@ -14,7 +14,9 @@ import { ReactComponent as LogOutSVG } from '../../../assets/svg/logout.svg';
 import { ReactComponent as SignUpSVG } from '../../../assets/svg/sign-up.svg';
 import { ReactComponent as LoginSVG } from '../../../assets/svg/login.svg';
 
-const LinkButtons: FC<{ className?: string }> = ({ className }) => {
+import './LinkIconButtons.css';
+
+const LinkIconButtons: FC<{ className?: string }> = ({ className }) => {
   const dispatch = useAppDispatch();
   const { isCustomerLogged } = useAppSelector((state) => {
     return state.app;
@@ -28,7 +30,7 @@ const LinkButtons: FC<{ className?: string }> = ({ className }) => {
     dispatch(setCustomerLoggedState(false));
   };
   return (
-    <ul className={`absolute right-4 top-4 flex ${className}`}>
+    <ul className={`right-4 top-4 flex ${className}`}>
       {!isCustomerLogged && (
         <li className=''>
           <LinkItemSVG to='/login'>
@@ -66,4 +68,4 @@ const LinkButtons: FC<{ className?: string }> = ({ className }) => {
   );
 };
 
-export default LinkButtons;
+export default LinkIconButtons;

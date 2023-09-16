@@ -17,8 +17,9 @@ const BurgerMenu: FC = () => {
     >
       <div
         className={`
-        ${isOpen ? 'fixed' : 'absolute'}
-        w-8 h-8 top-4 left-4 z-20 justify-around flex-col flex-nowrap cursor-pointer flex`}
+        ${isOpen ? 'fixed hover:drop-shadow-drop' : 'absolute'}
+        w-8 h-8 top-4 left-4 z-20 justify-around flex-col flex-nowrap cursor-pointer flex
+        transition-all duration-500`}
       >
         <div
           className={`

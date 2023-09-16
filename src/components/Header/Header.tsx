@@ -3,7 +3,7 @@ import type { FC } from 'react';
 import LogoLink from 'components/Logo/Logo';
 import BurgerMenu from 'components/Header/BurgerMenu/BurgerMenu';
 import style from './Header.module.css';
-import LinkButtons from './LinkButtons/LinkButtons';
+import LinkButtons from './LinkIconButtons/LinkIconButtons';
 
 const Header: FC = () => {
   return (
@@ -15,7 +15,7 @@ const Header: FC = () => {
       <div className='p-2'>
         <nav className={style.nav}>
           <BurgerMenu />
-          <LinkButtons className='md:hidden' />
+          <LinkButtons className='md:hidden absolute' />
         </nav>
       </div>
     </header>
