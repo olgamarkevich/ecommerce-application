@@ -9,7 +9,7 @@ import {
   markCategoryActive,
   markCategoryOpen,
 } from 'helpers/categoryTreeHelpers';
-import { setCategories, setIsActive } from 'store/catalogSlice';
+import { setCategories, setIsActive, setIsOpen } from 'store/catalogSlice';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { prepareCatalogQueryParams } from 'helpers/prepareCatalogQueryParams';
 import Title from 'components/Title/Title';
@@ -44,6 +44,14 @@ const CategoryButtons: FC = () => {
     }
   }, [dispatch, data, categorySlug, categories]);
 
+  const toggleIsOpen = (id: string) => {
+    const target = categories.find((category) => {
+      return category.id === id;
+    });
+
+    dispatch(setIsOpen({ id, isOpen: !target?.isOpen }));
+  };
+
   const setActive = (id: string) => {
     dispatch(setIsActive(id));
   };
@@ -72,6 +80,7 @@ const CategoryButtons: FC = () => {
               ${category.isActive ? 'bg-sky-200' : ''}`}
               onClick={() => {
                 setActive(category.id);
+                toggleIsOpen(category.id);
               }}
             >
               <Link
