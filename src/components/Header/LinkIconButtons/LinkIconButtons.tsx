@@ -14,8 +14,6 @@ import { ReactComponent as LogOutSVG } from '../../../assets/svg/logout.svg';
 import { ReactComponent as SignUpSVG } from '../../../assets/svg/sign-up.svg';
 import { ReactComponent as LoginSVG } from '../../../assets/svg/login.svg';
 
-import './LinkIconButtons.css';
-
 const LinkIconButtons: FC<{ className?: string }> = ({ className }) => {
   const dispatch = useAppDispatch();
   const { isCustomerLogged } = useAppSelector((state) => {
