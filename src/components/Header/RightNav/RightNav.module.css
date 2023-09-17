@@ -2,10 +2,6 @@ ul li:not(:last-child) {
   margin-right: 15px;
 }
 
-.ul {
+.linkList {
   @apply flex flex-col fixed items-start top-0 left-0 h-screen w-60 pt-16 px-5 bg-violet-300 bg-opacity-95 z-10 transition-transform duration-300;
-}
-
-.nav__link {
-  @apply w-full mx-auto mb-1 !important;
 }
