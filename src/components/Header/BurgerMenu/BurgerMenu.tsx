@@ -43,7 +43,7 @@ const BurgerMenu: FC = () => {
       <div
         className={`${
           isOpen
-            ? 'absolute top-0 left-0 h-full w-full bg-blend-difference bg-black bg-opacity-50 z-10'
+            ? 'absolute top-0 left-0 h-screen w-full bg-blend-difference bg-black bg-opacity-50 z-10'
             : ''
         } transition-all duration-500`}
       >
