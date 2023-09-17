@@ -64,12 +64,14 @@ const CategoryButtons: FC = () => {
         margin='mb-2'
         color='text-blue-950'
       />
-      <ul className='px-4'>
+      <ul className='px-2'>
         {categories.map((category) => {
+          const isCategoryActive =
+            location.pathname === `/products/${category.slug}`;
           return (
             <li
               key={category.id}
-              className={`w-full flex rounded-2xl p-1 hover:scale-105 transition-all cursor-pointer
+              className={`w-full flex rounded-xl p-1 hover:scale-105 transition-all cursor-pointer
                ${
                  category.level === 1
                    ? 'pl-1'
@@ -77,7 +79,7 @@ const CategoryButtons: FC = () => {
                    ? 'pl-3'
                    : 'pl-5'
                }
-              ${category.isActive ? 'bg-sky-200' : ''}`}
+              ${isCategoryActive ? 'bg-sky-200' : ''}`}
               onClick={() => {
                 setActive(category.id);
                 toggleIsOpen(category.id);
@@ -85,7 +87,7 @@ const CategoryButtons: FC = () => {
             >
               <Link
                 to={`/products/${category.slug}`}
-                className='text-lg text-blue-950 hover:text-sky-950'
+                className='px-2 text-lg text-blue-950 hover:text-sky-950'
               >
                 {category.name}
               </Link>
