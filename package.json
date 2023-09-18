@@ -5,6 +5,7 @@
   "dependencies": {
     "@commercetools/platform-sdk": "^4.11.0",
     "@commercetools/sdk-client-v2": "^2.2.0",
+    "@fireworks-js/react": "^2.10.7",
     "@hookform/resolvers": "^3.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
