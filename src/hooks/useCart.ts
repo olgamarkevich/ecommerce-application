@@ -8,16 +8,22 @@ import { useEffect } from 'react';
 import { setLoadingSet } from '../store/appSlice';
 import { clearUpdateActions, setCart, setNullCart } from '../store/cartSlice';
 import type { Cart } from '@commercetools/platform-sdk';
-import { getCartFromResponse } from '../helpers/cartHelpers';
+import {
+  getCartFromResponse,
+  getCartUpdateSuccessMessage,
+} from '../helpers/cartHelpers';
+import { toast } from 'react-toastify';
 
 const useCart = () => {
   const dispatch = useAppDispatch();
   const { customerId } = useAppSelector((state) => {
     return state.auth;
   });
-  const { cartId, version, updateActions } = useAppSelector((state) => {
-    return state.cart;
-  });
+  const { cartId, version, updateActions, products } = useAppSelector(
+    (state) => {
+      return state.cart;
+    },
+  );
 
   // Fetch active cart
   const {
@@ -36,19 +42,21 @@ const useCart = () => {
     );
 
   // Update cart
-  const { data: cartUpdateData, isLoading: isCartUpdateLoading } =
-    useUpdateCartQuery(
-      {
-        id: cartId as string,
-        body: { version: version as number, actions: updateActions },
-      },
-      { skip: !cartId || !version || updateActions.length === 0 },
-    );
+  const {
+    data: cartUpdateData,
+    error: cartUpdateError,
+    isLoading: isCartUpdateLoading,
+  } = useUpdateCartQuery(
+    {
+      id: cartId as string,
+      body: { version: version as number, actions: updateActions },
+    },
+    { skip: !cartId || !version || updateActions.length === 0 },
+  );
 
   // Set active cart when exist
   useEffect(() => {
     if (activeCartData) {
-      console.log('Load');
       const cart = getCartFromResponse(activeCartData as Cart);
       dispatch(setCart(cart));
     }
@@ -57,7 +65,6 @@ const useCart = () => {
   // Set null when no active cart
   useEffect(() => {
     if (activeCartError) {
-      console.log('Nothing to Load');
       dispatch(setNullCart());
     }
   }, [dispatch, activeCartError]);
@@ -65,16 +72,40 @@ const useCart = () => {
   // Set new cart
   useEffect(() => {
     if (createCartData) {
-      console.log('Create New');
       const cart = getCartFromResponse(createCartData as Cart);
       dispatch(setCart(cart));
     }
   }, [dispatch, createCartData]);
 
+  // Show Cart Update Success message
+  useEffect(() => {
+    if (cartUpdateData && updateActions.length) {
+      const nextProducts = getCartFromResponse(cartUpdateData as Cart).products;
+      const message = getCartUpdateSuccessMessage(
+        updateActions,
+        products,
+        nextProducts,
+      );
+      toast.success(message);
+    }
+  }, [cartUpdateData]);
+
+  useEffect(() => {
+    if (cartUpdateError) {
+      toast.error(
+        'data' in cartUpdateError &&
+          cartUpdateError.data &&
+          typeof cartUpdateError.data === 'object' &&
+          'message' in cartUpdateError.data
+          ? (cartUpdateError.data.message as string)
+          : 'Server Error. Try later!',
+      );
+    }
+  }, [cartUpdateError]);
+
   // Set cart after updating
   useEffect(() => {
     if (cartUpdateData) {
-      console.log('Update');
       const cart = getCartFromResponse(cartUpdateData as Cart);
       dispatch(setCart(cart));
       dispatch(clearUpdateActions());

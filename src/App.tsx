@@ -16,6 +16,7 @@ import ProtectedRoute from './hoc/ProtectedRoute';
 import useCart from './hooks/useCart';
 import Cart from './pages/cart/Cart';
 import './App.css';
+import Checkout from './pages/checkout/Checkout';
 
 const routes: RouteObject[] = [
   {
@@ -84,6 +85,15 @@ const routes: RouteObject[] = [
         handle: {
           crumb: () => {
             return <Link to={'/cart'}>Shopping Cart</Link>;
+          },
+        },
+      },
+      {
+        path: 'checkout',
+        element: <Checkout />,
+        handle: {
+          crumb: () => {
+            return <Link to={'/checkout'}>Checkout</Link>;
           },
         },
       },
