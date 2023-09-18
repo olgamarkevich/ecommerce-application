@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
-import { ReactComponent as RecycledSVG } from '../../assets/svg/recycled-packaging.svg';
-import { ReactComponent as PlasticFreeSvg } from '../../assets/svg/plastic-free.svg';
+import { ReactComponent as RecycledSVG } from '../../../assets/svg/recycled-packaging.svg';
+import { ReactComponent as PlasticFreeSvg } from '../../../assets/svg/plastic-free.svg';
 
 interface ProductDescriptionProps {
   description: string | undefined;

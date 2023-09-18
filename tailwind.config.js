@@ -10,6 +10,9 @@ module.exports = {
         'custom-inner': 'inset 0 0 0 2em green',
         'custom-invert': 'inset 0 0 0 2em #5d77c7',
       },
+      dropShadow: {
+        drop: '0px 0px 6px #000',
+      },
       width: {
         '55%': '55%',
         '30%': '30%',
@@ -18,9 +21,12 @@ module.exports = {
         '50vh': '50vh',
         '70vh': '70vh',
         '80vh': '80vh',
+        '80%': '80%',
+        10: '2.5em',
       },
       maxWidth: {
         '100px': '100px',
+        '240px': '240px',
         'little-s': '220px',
         'little-xs': '280px',
         'small-s': '360px',
@@ -41,6 +47,7 @@ module.exports = {
         '60%': '60%',
         '30%': '30%',
         '20%': '20%',
+        10: '2.5em',
         24: '6rem' /* 96px */,
       },
       minWidth: {
@@ -52,11 +59,14 @@ module.exports = {
       },
       maxHeight: {
         '60vh': '60vh',
+        '80vh': '80vh',
         '320px': '320px',
         '20%': '20%',
       },
       flexBasis: {
+        '768px': '768px',
         '320px': '320px',
+        '240px': '240px',
         '180px': '180px',
       },
       paddingLeft: {
@@ -74,8 +84,9 @@ module.exports = {
         m: { max: '554px' },
         sm: { min: '300px', max: '767px' },
         md: { max: '768px' },
-        'md-min': { min: '640px' },
+        'md-min': { min: '768px' },
         'md-xl': { max: '916px' } /* max: 916px */,
+        l: { max: '1088px' },
         xl: { min: '768px', max: '1280px' },
         lg: { min: '1280px' },
       },
@@ -98,6 +109,8 @@ module.exports = {
         'c-grass': '#df6c4f',
         'c-dry-sand': '#ffe0da',
         'c-alice-blue': '#f0f8ff',
+        'c-light-grey': '#cccccc',
+        'c-dark-grey': '#999999',
         'c-shadow-blue': '#2c343f',
         'c-shadow': '#2c2a2a',
         'c-sale-red': '#d55016',

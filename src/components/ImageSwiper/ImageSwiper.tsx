@@ -37,7 +37,7 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
       : maxThumbSlidesPerView;
 
   const handleThumbClick = (index: number) => {
-    if (thumbsSwiper) {
+    if (thumbsSwiper && !isModal) {
       if (index === swiperIndexStart && swiperIndexStart !== 0) {
         thumbsSwiper.slideTo(swiperIndexStart - 1);
         setSwiperIndexStart(swiperIndexStart - 1);
@@ -94,13 +94,11 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
     >
       <div
         className={`min-w-0 ${
-          isModal
-            ? ' max-w-medium-s md:max-w-small-xs m:max-w-little-s relative top-10'
-            : ''
+          isModal ? 'absolute w-full h-full top-0 left-0 px-20 pt-10' : ''
         }`}
       >
         {isModal && (
-          <ButtonClose onClick={disableModal} className='-top-9 -right-9' />
+          <ButtonClose onClick={disableModal} className='top-1 right-6' />
         )}
         <Swiper
           navigation={true}
@@ -117,7 +115,11 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
           modules={[Navigation, Pagination, Zoom, Thumbs]}
           onClick={activeModal}
           zoom={{ toggle: false }}
-          className={`mb-4 ${isModal ? '' : 'cursor-pointer'}`}
+          className={`mb-4 ${
+            isModal
+              ? 'modal w-1/2 md:w-3/4 m:w-full overflow-y-auto max-h-80vh'
+              : 'cursor-pointer'
+          }`}
         >
           {images.map((src, idx) => {
             return (
@@ -128,7 +130,11 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
               </SwiperSlide>
             );
           })}
-          <div className='absolute z-10 w-10 bottom-0 right-0 bg-cyan-400 rounded-md'>
+          <div
+            className={`absolute z-10 w-10 h-10 bottom-0 right-0 ${
+              isModal ? '' : 'bg-cyan-400'
+            } rounded-md`}
+          >
             {!isModal && (
               <FullScreenSVG
                 className='stroke-sky-50 hover:stroke-c-light-blue transition-colors'
@@ -138,12 +144,12 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
             {isModal &&
               (!isZoom ? (
                 <ZoomOutSVG
-                  className='stroke-sky-50 hover:stroke-c-light-blue transition-colors'
+                  className='stroke-sky-50 hover:stroke-c-light-blue transition-colors fixed max-w-10 max-h-10 bg-cyan-400 rounded-md'
                   onClick={disableZoomMode}
                 />
               ) : (
                 <ZoomInSVG
-                  className='stroke-sky-50 hover:stroke-c-light-blue transition-colors'
+                  className='stroke-sky-50 hover:stroke-c-light-blue transition-colors fixed max-w-10 max-h-10 bg-cyan-400 rounded-md'
                   onClick={activeZoomMode}
                 />
               ))}
@@ -156,15 +162,20 @@ const ImageSwiper: FC<ImageSwiperProps> = ({
           freeMode={true}
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
-          className='swiperThumb'
+          className={`${isModal ? 'swiperThumbModal' : ''} swiperThumb`}
         >
           {images.map((src, idx) => {
             return (
-              <SwiperSlide key={idx}>
+              <SwiperSlide
+                key={idx}
+                className={`${isModal ? 'modal-swiper-slide' : 'swiper-slide'}`}
+              >
                 <img
                   src={src}
                   alt=''
-                  className='h-auto rounded cursor-pointer'
+                  className={`${
+                    isModal ? 'max-h-24' : 'h-auto'
+                  } rounded cursor-pointer`}
                   onClick={() => {
                     handleThumbClick(idx);
                   }}

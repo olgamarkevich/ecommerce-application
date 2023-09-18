@@ -12,7 +12,7 @@ import {
   getProductSku,
 } from 'helpers/settingProduct';
 import ImageSwiper from 'components/ImageSwiper/ImageSwiper';
-import ProductDescription from 'components/ProductDescription/ProductDescription';
+import ProductDescription from './ProductDescription/ProductDescription';
 import { useSearchParams } from 'react-router-dom';
 import AttributesForm from './AttributesForm/AttributesForm';
 import CartButton from '../Buttons/CartButton/CartButton';

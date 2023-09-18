@@ -5,7 +5,7 @@ import type { ILinkItem } from 'types/componentTypes';
 import { NavLink, useMatch } from 'react-router-dom';
 import styles from './LinkItem.module.css';
 
-const LinkItem: FC<ILinkItem> = ({ to, children, onClick }) => {
+const LinkItem: FC<ILinkItem> = ({ to, children, onClick, className }) => {
   const isActive = useMatch(to);
   return (
     <NavLink
@@ -22,6 +22,7 @@ const LinkItem: FC<ILinkItem> = ({ to, children, onClick }) => {
           ? 'bg-blue-800 text-sky-100 hover:bg-blue-900'
           : `hover:bg-blue-900 hover:text-sky-100 Link_media ${styles.link_media}`
       }
+      ${className}
       `}
       onClick={onClick}
     >

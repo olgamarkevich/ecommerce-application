@@ -1,36 +1,14 @@
-import React, { type MouseEventHandler } from 'react';
+import React from 'react';
 import type { FC } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
-import { removeCustomer } from '../../../store/customerSlice';
-import { logoutCustomer } from '../../../store/authSlice';
-import {
-  setAuthorizationState,
-  setCustomerLoggedState,
-} from '../../../store/appSlice';
-
-import LinkItem from 'components/LinkItem/LinkItem';
 import style from './RightNav.module.css';
+import LinkButtons from '../LinkIconButtons/LinkIconButtons';
+import CategoryButtons from '../CategoryButtons/CategoryButtons';
 
 const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
-  const dispatch = useAppDispatch();
-  const { isCustomerLogged } = useAppSelector((state) => {
-    return state.app;
-  });
-
-  const logoutHandler: MouseEventHandler = async (e) => {
-    e.preventDefault();
-    dispatch(setAuthorizationState(false));
-    await dispatch(logoutCustomer());
-    dispatch(removeCustomer());
-    dispatch(setCustomerLoggedState(false));
-  };
-
   return (
-    <ul
-      className={`${style.ul} ${
-        isOpen
-          ? 'md:translate-x-0 md:transition-transform duration-300'
-          : 'md:translate-x-full'
+    <div
+      className={`${style.linkList} ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
       onClick={(e: React.MouseEvent) => {
         if (isOpen && e.target === e.currentTarget) {
@@ -38,6 +16,7 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         }
       }}
     >
+
       <li className={style.nav__link}>
         <LinkItem to='/products/all?page=1'>Catalog</LinkItem>
       </li>
@@ -67,6 +46,10 @@ const RightNav: FC<{ isOpen: boolean }> = ({ isOpen }) => {
         </li>
       )}
     </ul>
+      <LinkButtons className='right-nav md-min:hidden justify-around w-full mb-2' />
+      <CategoryButtons />
+    </div>
+
   );
 };
 

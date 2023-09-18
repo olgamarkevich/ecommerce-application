@@ -8,7 +8,6 @@ import {
 import { Login, Main, Page404, SignUp } from 'pages';
 import Layout from './components/Layout/Layout';
 import useInit from './hooks/useInit';
-import './App.css';
 import Profile from './pages/profile/Profile';
 import Catalog from './pages/catalog/Catalog';
 import Product from './pages/product/Product';
@@ -16,6 +15,9 @@ import AnonymousRoute from './hoc/AnonymousRoute';
 import ProtectedRoute from './hoc/ProtectedRoute';
 import useCart from './hooks/useCart';
 import AboutUs from 'pages/aboutUs/AboutUs';
+import Cart from './pages/cart/Cart';
+import './App.css';
+import Checkout from './pages/checkout/Checkout';
 
 const routes: RouteObject[] = [
   {
@@ -88,6 +90,24 @@ const routes: RouteObject[] = [
         },
       },
       {
+        path: 'cart',
+        element: <Cart />,
+        handle: {
+          crumb: () => {
+            return <Link to={'/cart'}>Shopping Cart</Link>;
+          },
+        },
+      },
+      {
+        path: 'checkout',
+        element: <Checkout />,
+        handle: {
+          crumb: () => {
+            return <Link to={'/checkout'}>Checkout</Link>;
+          },
+        },
+      },
+      {
         path: 'profile',
         element: (
           <ProtectedRoute>
@@ -145,7 +165,11 @@ function App() {
   useInit();
   useCart();
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+    </>
+  );
 }
 
 export default App;
