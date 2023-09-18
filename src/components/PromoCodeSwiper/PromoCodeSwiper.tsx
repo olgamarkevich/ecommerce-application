@@ -30,7 +30,7 @@ const PromoCodeSwiper: FC = () => {
               }}
               className={style.promo_code}
             >
-              First20
+              <span>First20</span>
             </button>
           </div>
         </div>
@@ -49,7 +49,7 @@ const PromoCodeSwiper: FC = () => {
               }}
               className={style.promo_code}
             >
-              Sale10
+              <span>Sale10</span>
             </button>
           </div>
         </div>
@@ -65,7 +65,7 @@ const PromoCodeSwiper: FC = () => {
               }}
               className={style.promo_code}
             >
-              Happy15
+              <span>Happy15</span>
             </button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 .promo_slide {
+  position: relative;
   min-height: 500px;
   background: #f0f0f0;
   background-size: cover;
@@ -30,6 +31,8 @@
 }
 
 .promo_code {
+  position: relative;
+  overflow: hidden;
   background: #fff906a6;
   padding: 0.3em;
   border-radius: 8px;
@@ -37,6 +40,37 @@
   font-size: 20px;
   cursor: pointer;
   text-align: center;
+  @apply max-w-240px w-full transition-transform duration-500;
+}
+
+.promo_code:hover {
+  @apply scale-110;
+}
+
+.promo_code::after,
+.promo_code::before {
+  content: '';
+  @apply absolute bg-c-light-blue w-0 h-[55%] rounded-md transition-all duration-300;
+}
+.promo_code::after {
+  @apply bottom-0 left-0;
+}
+
+.promo_code::before {
+  @apply top-0 right-0;
+}
+
+.promo_code::after:hover,
+.promo_code::before:hover {
+  @apply w-full rounded-none;
+}
+
+.promo_code span {
+  @apply relative z-5 transition-colors;
+}
+
+.promo_code:hover span {
+  @apply text-sky-50;
 }
 
 .slide_2 {
