@@ -31,6 +31,13 @@ const LinkIconButtons: FC<{ className?: string }> = ({ className }) => {
     <ul className={`right-4 top-4 flex ${className}`}>
       {!isCustomerLogged && (
         <li className=''>
+          <LinkItemSVG to='/about_us'>
+            <LoginSVG />
+          </LinkItemSVG>
+        </li>
+      )}
+      {!isCustomerLogged && (
+        <li className=''>
           <LinkItemSVG to='/login'>
             <LoginSVG />
           </LinkItemSVG>
