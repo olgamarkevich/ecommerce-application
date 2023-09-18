@@ -180,6 +180,8 @@ ul li:after {
 .team_info {
   text-align: left;
   padding: 0 15px;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
 .team_info h3 {
