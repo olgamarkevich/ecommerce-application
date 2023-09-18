@@ -86,7 +86,7 @@ const CartItemRow: FC<{ item: LineItemWithDiscount }> = (props) => {
             <div>
               <Link
                 to={`/product/${productSlug?.en ?? ''}`}
-                className={'font-medium text-c-light-blue'}
+                className={'font-medium text-blue-950'}
               >
                 {name}
               </Link>
@@ -107,7 +107,7 @@ const CartItemRow: FC<{ item: LineItemWithDiscount }> = (props) => {
             </div>
             <div
               className='
-              text-xs text-c-light-blue
+              text-xs text-blue-950
               opacity-30 hover:opacity-70
               cursor-pointer transition-all
               '
@@ -124,7 +124,7 @@ const CartItemRow: FC<{ item: LineItemWithDiscount }> = (props) => {
             className='
             flex justify-between items-center
             bg-c-alice-blue
-            font-medium text-c-light-blue
+            font-medium text-blue-950
             rounded-full
             '
           >
@@ -164,32 +164,34 @@ const CartItemRow: FC<{ item: LineItemWithDiscount }> = (props) => {
             </button>
           </div>
         </div>
-        <div className={'w-1/5 flex justify-center items-center text-sm'}>
+        <div
+          className={'w-1/5 flex flex-col justify-center items-center text-sm'}
+        >
           {withCodePrice && (
             <>
-              <span className={'text-c-light-blue'}>{`$${getCostString(
+              <span className={'text-c-sale-red font-bold'}>{`$${getCostString(
                 withCodePrice,
               )}`}</span>{' '}
-              <span className={'text-xs line-through'}>{`$${getCostString(
-                fullPrice,
-              )}`}</span>
+              <span
+                className={'text-blue-950 text-xs line-through'}
+              >{`$${getCostString(fullPrice)}`}</span>
             </>
           )}
           {!withCodePrice && discountedPrice && (
             <>
-              <span className={'text-c-light-blue'}>{`$${getCostString(
+              <span className={'text-c-sale-red font-bold'}>{`$${getCostString(
                 discountedPrice,
               )}`}</span>{' '}
-              <span className={'text-xs line-through'}>{`$${getCostString(
-                fullPrice,
-              )}`}</span>
+              <span
+                className={'text-blue-950 text-xs line-through'}
+              >{`$${getCostString(fullPrice)}`}</span>
             </>
           )}
           {!withCodePrice && !discountedPrice && `$${getCostString(fullPrice)}`}
         </div>
         <div
           className={`w-1/5 flex justify-center items-center text-sm ${
-            withCodePrice || discountedPrice ? 'text-c-light-blue' : ''
+            withCodePrice || discountedPrice ? 'text-blue-950' : ''
           }`}
         >{`$${getCostString(total)}`}</div>
       </div>

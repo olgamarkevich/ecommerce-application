@@ -1,0 +1,25 @@
+.filter-option {
+  cursor: pointer !important;
+}
+
+.filter-option input:checked ~ .checkmark {
+  @apply bg-blue-800;
+}
+
+.filter-option:hover input ~ .checkmark {
+  @apply bg-c-light-blue;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.filter-option input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.filter-option .checkmark:after {
+  @apply left-1 top-0 w-[6px] h-3 border-r-[3px] border-b-[3px] border-c-sky rotate-45;
+}

@@ -107,13 +107,11 @@ const CartButton: FC<ICartButton> = (props) => {
   return (
     <div
       className={`cart-button__main-area min-w-[100px] max-w-little-s flex ${
-        buttonState === 'add' ? 'bg-c-light-blue' : 'bg-c-green'
+        buttonState === 'add' ? 'bg-c-light-blue' : 'bg-c-leafs'
       } rounded-full border-solid border-2 ${
         buttonState === 'add' ? 'border-light-blue' : 'border-green'
       } font-medium text-c-alice-blue transition duration-500 ease-in-out ${
-        buttonState === 'add'
-          ? 'hover:shadow-custom-inner'
-          : 'hover:shadow-custom-invert'
+        buttonState === 'add' ? 'hover:bg-c-leafs' : 'hover:bg-c-sale-red'
       } hover:text-sky-100 cursor-pointer`}
       onClick={(e) => {
         mainButtonHandler(e, sku, productId);
@@ -125,6 +123,7 @@ const CartButton: FC<ICartButton> = (props) => {
         bg-c-alice-blue
         font-medium text-c-light-blue
         rounded-full
+        p-[0.15rem]
         '
       >
         <button
@@ -132,9 +131,7 @@ const CartButton: FC<ICartButton> = (props) => {
           px-2 rounded-s-full
           transition duration-500 ease-in-out
           ${
-            buttonState === 'add'
-              ? 'hover:shadow-custom-inner'
-              : 'hover:shadow-custom-invert'
+            buttonState === 'add' ? 'hover:bg-c-leafs' : 'hover:bg-c-sale-red'
           } hover:text-sky-100
           `}
           disabled={minusButtonDisabled}
@@ -158,9 +155,7 @@ const CartButton: FC<ICartButton> = (props) => {
             px-2 rounded-e-full
             transition duration-500 ease-in-out
             ${
-              buttonState === 'add'
-                ? 'hover:shadow-custom-inner'
-                : 'hover:shadow-custom-invert'
+              buttonState === 'add' ? 'hover:bg-c-leafs' : 'hover:bg-c-leafs'
             } hover:text-sky-100
             `}
           disabled={plusButtonDisabled}

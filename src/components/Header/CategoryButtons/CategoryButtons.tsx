@@ -87,7 +87,15 @@ const CategoryButtons: FC = () => {
             >
               <Link
                 to={`/products/${category.slug}`}
-                className='px-2 text-lg text-blue-950 hover:text-sky-950'
+                className={`relative px-2 text-lg text-blue-950 hover:text-sky-950
+                ${
+                  isCategoryActive
+                    ? ''
+                    : `after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-c-sky
+                       after:rounded-lg after:z-[-5] after:ml-1
+                       after:hover:w-[95%] after:transition-all after:duration-500`
+                }
+              `}
               >
                 {category.name}
               </Link>

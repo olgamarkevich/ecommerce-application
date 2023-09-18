@@ -1,5 +1,6 @@
 import React, { type FC, useState } from 'react';
 import type { AttributesItem } from '../../../types/componentTypes';
+import './AttributeItem.css';
 
 const AttributeItem: FC<AttributesItem> = ({
   attributeName,
@@ -48,7 +49,9 @@ const AttributeItem: FC<AttributesItem> = ({
         {attributeValues.sort().map((attributeValue) => {
           return (
             <li key={attributeValue}>
-              <label className={'flex justify-start items-center gap-1'}>
+              <label
+                className={`flex relative items-start gap-1 ml-2 filter-option`}
+              >
                 <input
                   type={'checkbox'}
                   checked={
@@ -62,8 +65,14 @@ const AttributeItem: FC<AttributesItem> = ({
                       e.target.checked,
                     );
                   }}
+                  className={`absolute opacity-0 h-4 w-4 left-0 top-1`}
                 />{' '}
-                <div className={'text-left'}>{attributeValue}</div>
+                <span
+                  className='h-4 w-4 checkmark absolute top-1 left-0
+                  border border-c-light-blue rounded
+                  transition-colors duration-300'
+                />
+                <div className={'ml-5 text-left'}>{attributeValue}</div>
               </label>
             </li>
           );
