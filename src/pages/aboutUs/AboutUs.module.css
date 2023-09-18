@@ -152,12 +152,14 @@
   font-size: 16px;
 }
 
-ul li {
+.completed_tasks li,
+.team_info_line li {
   position: relative;
   padding-left: 10px;
 }
 
-ul li:after {
+.completed_tasks li:after,
+.team_info_line li:after {
   content: '';
   position: absolute;
   left: 0;
