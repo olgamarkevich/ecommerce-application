@@ -179,12 +179,12 @@ const CartItemRow: FC<{ item: LineItemWithDiscount }> = (props) => {
           )}
           {!withCodePrice && discountedPrice && (
             <>
-              <span className={'text-blue-950'}>{`$${getCostString(
+              <span className={'text-c-sale-red font-bold'}>{`$${getCostString(
                 discountedPrice,
               )}`}</span>{' '}
-              <span className={'text-xs line-through'}>{`$${getCostString(
-                fullPrice,
-              )}`}</span>
+              <span
+                className={'text-blue-950 text-xs line-through'}
+              >{`$${getCostString(fullPrice)}`}</span>
             </>
           )}
           {!withCodePrice && !discountedPrice && `$${getCostString(fullPrice)}`}
