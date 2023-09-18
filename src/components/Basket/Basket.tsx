@@ -11,7 +11,7 @@ const Basket: FC = () => {
   return (
     <div>
       {!!totalProductsQuantity && totalProductsQuantity > 0 && (
-        <div className='absolute -top-2 -right-2 z-10 w-5 h-5 rounded-full bg-red-500 text-sky-50 font-f-open-sans text-sm'>
+        <div className='absolute -top-2 -right-2 z-5 w-5 h-5 rounded-full bg-red-500 text-sky-50 font-f-open-sans text-sm'>
           {totalProductsQuantity}
         </div>
       )}

@@ -10,6 +10,9 @@ module.exports = {
         'custom-inner': 'inset 0 0 0 2em green',
         'custom-invert': 'inset 0 0 0 2em #5d77c7',
       },
+      dropShadow: {
+        drop: '0px 0px 6px #000',
+      },
       width: {
         '55%': '55%',
         '30%': '30%',
@@ -81,7 +84,7 @@ module.exports = {
         m: { max: '554px' },
         sm: { min: '300px', max: '767px' },
         md: { max: '768px' },
-        'md-min': { min: '640px' },
+        'md-min': { min: '768px' },
         'md-xl': { max: '916px' } /* max: 916px */,
         l: { max: '1088px' },
         xl: { min: '768px', max: '1280px' },

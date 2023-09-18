@@ -17,8 +17,9 @@ const BurgerMenu: FC = () => {
     >
       <div
         className={`
-        ${isOpen ? 'fixed' : 'absolute'}
-        hidden w-8 h-8 top-2 right-4 z-20 justify-around flex-col flex-nowrap cursor-pointer md:flex`}
+        ${isOpen ? 'fixed hover:drop-shadow-drop' : 'absolute'}
+        w-8 h-8 top-4 left-4 z-20 justify-around flex-col flex-nowrap cursor-pointer flex
+        transition-all duration-500`}
       >
         <div
           className={`
@@ -42,9 +43,9 @@ const BurgerMenu: FC = () => {
       <div
         className={`${
           isOpen
-            ? 'md:absolute top-0 left-0 h-full w-full bg-blend-difference'
+            ? 'fixed top-0 left-0 h-screen w-full bg-blend-difference bg-black bg-opacity-50 z-10'
             : ''
-        }`}
+        } transition-all duration-500`}
       >
         <RightNav isOpen={isOpen} />
       </div>
