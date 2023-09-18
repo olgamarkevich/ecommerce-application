@@ -128,8 +128,7 @@ const CartButton: FC<ICartButton> = (props) => {
       >
         <button
           className={`
-          w-[1.5rem] h-full
-          rounded-s-full
+          px-2 rounded-s-full
           transition duration-500 ease-in-out
           ${
             buttonState === 'add' ? 'hover:bg-c-leafs' : 'hover:bg-c-sale-red'
@@ -153,8 +152,7 @@ const CartButton: FC<ICartButton> = (props) => {
         </div>
         <button
           className={`
-            w-[1.5rem] h-full
-            rounded-e-full
+            px-2 rounded-e-full
             transition duration-500 ease-in-out
             ${
               buttonState === 'add' ? 'hover:bg-c-leafs' : 'hover:bg-c-leafs'
