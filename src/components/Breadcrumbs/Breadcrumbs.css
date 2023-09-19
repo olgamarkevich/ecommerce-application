@@ -1,0 +1,13 @@
+.breadcrumbs-li {
+  margin: 0 !important;
+}
+
+.breadcrumbs-split-line {
+  @apply flex;
+}
+
+.breadcrumbs-split-line::after {
+  content: '';
+  height: 1px;
+  @apply inline-block w-3 bg-blue-950 mx-3 my-auto;
+} 

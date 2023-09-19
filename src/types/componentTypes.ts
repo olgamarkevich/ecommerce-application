@@ -19,6 +19,7 @@ export interface ILinkItem {
   to: string;
   children: React.ReactNode;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
+  className?: string;
 }
 
 export interface IButton {
@@ -31,6 +32,8 @@ export type TitleSizes = 'small' | 'medium' | 'large';
 export interface ITitle {
   text: string;
   size: TitleSizes;
+  margin?: string;
+  color?: string;
 }
 
 export interface IProductCardList {

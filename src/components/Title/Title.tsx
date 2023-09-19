@@ -11,11 +11,11 @@ const getSize = (size: TitleSizes) => {
   return sizeMap[size] || 'text-xl';
 };
 
-const Title: FC<ITitle> = ({ text, size }) => {
+const Title: FC<ITitle> = ({ text, size, margin, color }) => {
   return (
     <div
-      className={`title ${getSize(size)}
-      font-bold text-blue-900
+      className={`${margin ? margin : 'title'} ${getSize(size)}
+      font-bold ${color ? color : 'text-blue-900'}
       font-f-open-sans tracking-[0.3em]`}
     >
       {text}

@@ -1,0 +1,11 @@
+.childSVG .childPathSVG {
+  @apply transition-transform duration-500 ease-linear;
+}
+
+.svg-link:hover .childSVG .childPathSVG {
+  @apply scale-150 stroke-slate-200 stroke-1;
+}
+
+.activeSVG {
+  @apply saturate-50;
+}

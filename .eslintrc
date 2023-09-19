@@ -33,7 +33,7 @@
     "react/display-name": "off",
     "react/self-closing-comp": ["error", { "component": true, "html": true }],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "prefer-const": "warn",
     "arrow-body-style": ["error", "always"],

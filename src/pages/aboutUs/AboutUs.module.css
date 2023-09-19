@@ -1,0 +1,241 @@
+.aboutUs_wrapper {
+  display: flex;
+  margin: 0 -15px;
+  padding: 20px;
+  justify-content: space-between;
+}
+
+.aboutUs_wrapper .col {
+  width: 33.3%;
+  padding: 0 15px;
+}
+
+.about_us_item {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  transition: all 0.3s;
+  height: 100%;
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.about_us_item:hover {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-scale-x: 1.05;
+  --tw-scale-y: 1.05;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.about_us_img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.about_us_img.team1 {
+  background: url('../../assets/abous_us/user_1.jpg') top center no-repeat;
+  background-size: cover;
+}
+
+.about_us_img.team2 {
+  background: url('../../assets/abous_us/user_2.jpg') top center no-repeat;
+  background-size: cover;
+}
+
+.about_us_img.team3 {
+  background: url('../../assets/abous_us/user_3.jpg') top center no-repeat;
+  background-size: cover;
+}
+
+.about_us_user {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-bg-opacity));
+  font-size: 20px;
+  letter-spacing: 0.2em;
+}
+
+.about_us_location {
+  color: #6a6a6a;
+  margin-bottom: 10px;
+}
+
+.abous_us_description {
+  font-size: 14px;
+  color: #6a6a6a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+}
+
+.address_icon {
+  background: url(../../assets/abous_us/address.icon.svg) left center no-repeat;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background-size: 18px;
+  position: relative;
+  top: 3px;
+}
+
+.about_us_position {
+  margin-bottom: 5px;
+}
+
+.rss_logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.rss_logo img {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.rss_logo .title {
+  text-align: left;
+}
+
+.teamName {
+  font-size: 20px;
+  line-height: 1.1em;
+  color: #974084;
+  font-weight: 600;
+}
+
+.completed_tasks {
+  text-align: left;
+}
+
+.github_link_icon {
+  width: 20px;
+  height: 20px;
+  background: url('../../assets/abous_us/github_icon.svg') center no-repeat;
+  background-size: 20px;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.github_link a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.github_link a:hover {
+  color: #974084;
+}
+
+.github_link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+}
+
+.completed_tasks {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.completed_tasks li,
+.team_info_line li {
+  position: relative;
+  padding-left: 10px;
+}
+
+.completed_tasks li:after,
+.team_info_line li:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #974084;
+}
+
+.abous_us_description {
+  margin-bottom: 20px;
+}
+
+.aboutUs_label {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.team_info {
+  text-align: left;
+  padding: 0 15px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.team_info h3 {
+  font-size: 25px;
+  letter-spacing: 0.23em;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+.team_info h4 {
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: #974084;
+}
+
+.team_info_line {
+  margin-bottom: 30px;
+}
+
+.team_info_line span {
+  font-size: 40px;
+  color: #5e429a;
+  display: block;
+}
+
+.team_statistics {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.team_statistics li {
+  padding: 0;
+  min-width: 200px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.team_statistics li:after {
+  display: none;
+}
+
+@media screen and (max-width: 991px) {
+  .aboutUs_wrapper .col {
+    width: 100%;
+  }
+  .aboutUs_wrapper {
+    flex-wrap: wrap;
+  }
+  .about_us_item {
+    margin-bottom: 20px;
+    height: auto;
+  }
+}

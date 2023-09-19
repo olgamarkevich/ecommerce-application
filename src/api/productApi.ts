@@ -1,5 +1,6 @@
 import { apiClient } from './apiClient';
 import type { ProductProjectionPagedQueryResponse } from '../types/apiTypes';
+import type { ProductProjection } from '@commercetools/platform-sdk';
 
 const productApi = apiClient.injectEndpoints({
   endpoints: (build) => {
@@ -8,6 +9,14 @@ const productApi = apiClient.injectEndpoints({
         query: (params) => {
           const method = 'GET';
           const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/product-projections?${params}`;
+
+          return { url, method };
+        },
+      }),
+      getProductById: build.query<ProductProjection, string>({
+        query: (id) => {
+          const method = 'GET';
+          const url = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_PROJECT_KEY}/product-projections/${id}`;
 
           return { url, method };
         },
@@ -25,4 +34,8 @@ const productApi = apiClient.injectEndpoints({
 });
 
 // Built-in hooks to make request
-export const { useGetProductsQuery, useSearchProductsQuery } = productApi;
+export const {
+  useGetProductsQuery,
+  useGetProductByIdQuery,
+  useSearchProductsQuery,
+} = productApi;

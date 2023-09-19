@@ -8,6 +8,8 @@ import { Pagination, Autoplay } from 'swiper';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import CartButton from '../Buttons/CartButton/CartButton';
+import AttributeBlock from '../AttributeBlock/AttributeBlock';
 
 const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
   const [swiper, setSwiper] = useState<SwiperType | null>(null);
@@ -35,13 +37,13 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
 
   return (
     <div
-      className='flex w-1/5 min-w-240px rounded-2xl border border-c-sky-green
+      className='pb-1 flex flex-col justify-between w-1/5 min-w-240px rounded-2xl border border-c-sky-green
               transition-all duration-300
               hover:shadow-2xl hover:scale-105'
     >
       <Link
         to={`/product/${product.slug?.en}`}
-        className='flex flex-col min-w-0'
+        className='grow flex flex-col min-w-0'
       >
         <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Swiper
@@ -66,11 +68,17 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
           </Swiper>
         </div>
 
-        <div className='flex flex-col flex-grow justify-between p-3'>
+        <div className='grow flex flex-col justify-between p-3'>
           <p className='font-bold first-letter:uppercase'>{product.name?.en}</p>
-          <p className='my-2'>
-            {getShortDescription(product.description?.en ?? '')}
-          </p>
+          <div className='my-2 self-start'>
+            <AttributeBlock
+              product={product}
+              sku={product.masterVariant?.sku || ''}
+              shortDescription={getShortDescription(
+                product.description?.en ?? '',
+              )}
+            />
+          </div>
           <div>
             {discountedPrice.toLowerCase() !== 'no price' ? (
               <>
@@ -87,6 +95,9 @@ const Card: FC<ICard> = ({ product, imgSrcList, price, discountedPrice }) => {
           </div>
         </div>
       </Link>
+      <div className={'mx-auto'}>
+        <CartButton sku={product.masterVariant?.sku || ''} />
+      </div>
     </div>
   );
 };

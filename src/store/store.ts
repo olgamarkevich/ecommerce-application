@@ -4,6 +4,7 @@ import appReducer from './appSlice';
 import authReducer from './authSlice';
 import customerReducer from './customerSlice';
 import catalogReducer from './catalogSlice';
+import cartReducer from './cartSlice';
 import customerSignUpReducer from './customerSignUpSlice';
 import { apiClient } from '../api/apiClient';
 
@@ -15,6 +16,7 @@ const store = configureStore({
     auth: authReducer,
     customer: customerReducer,
     catalog: catalogReducer,
+    cart: cartReducer,
     customerSignUp: customerSignUpReducer,
     [apiClient.reducerPath]: apiClient.reducer,
   },
@@ -30,5 +32,6 @@ const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type RootDispatch = typeof store.dispatch;
+export type AppStore = typeof store;
 
 export default store;
